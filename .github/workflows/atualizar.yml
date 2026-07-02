@@ -1,0 +1,33 @@
+name: Atualizar Dados
+
+on:
+  schedule:
+    - cron: '0 * * * *'   # toda hora (UTC)
+  workflow_dispatch:        # botão manual / Atualizar agora
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Gerar dados JSON
+        env:
+          META_ACCESS_TOKEN: ${{ secrets.META_ACCESS_TOKEN }}
+          HOTMART_BASIC: ${{ secrets.HOTMART_BASIC }}
+        run: python gerar_dados.py
+
+      - name: Commit e push
+        run: |
+          git config user.name "dados-bot"
+          git config user.email "bot@github.com"
+          git add data/
+          git diff --staged --quiet || git commit -m "dados: $(date +'%d/%m/%Y %H:%M BRT')"
+          git push
