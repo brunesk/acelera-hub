@@ -10,6 +10,14 @@ AD_ACCOUNT = 'act_913802749957339'
 ADSET_ID   = '120253420414220339'
 BRT        = timezone(timedelta(hours=-3))
 
+# Receita de plataformas externas (Green etc.) que não aparecem no Hotmart
+# Formato: 'YYYY-MM': {'liq': valor, 'fonte': 'nome'}
+RECEITA_EXTERNA = {
+    '2025-09': {'liq': 1030.49, 'fonte': 'Green'},
+    '2025-10': {'liq': 7834.00, 'fonte': 'Green'},
+    '2025-11': {'liq': 1283.30, 'fonte': 'Green'},  # início do mês, antes de migrar para Hotmart
+}
+
 def env(k):
     v = os.environ.get(k, '')
     if not v:
@@ -234,16 +242,26 @@ for d in curr_days:
 # Histórico mensal
 historico = []
 for mk in reversed(prev_months):
-    hm_m = hm_mes.get(mk, {}); mt_m = meta_mes.get(mk, {})
-    tb_m = hm_m.get('bruto', 0); tl_m = hm_m.get('liq', 0)
-    ts_m = mt_m.get('gasto', 0); tlr_m = tl_m - ts_m
-    historico.append({
+    hm_m  = hm_mes.get(mk, {})
+    mt_m  = meta_mes.get(mk, {})
+    ext   = RECEITA_EXTERNA.get(mk, {})
+
+    tb_m  = hm_m.get('bruto', 0)
+    tl_m  = hm_m.get('liq', 0) + ext.get('liq', 0)   # soma receita externa
+    ts_m  = mt_m.get('gasto', 0)
+    tlr_m = tl_m - ts_m
+
+    entry = {
         'mes': fmt_mes(mk), 'mes_key': mk,
         'vendas': hm_m.get('v', 0), 'bruto': round(tb_m, 2),
         'liq': round(tl_m, 2), 'gasto_meta': round(ts_m, 2),
         'lucro': round(tlr_m, 2),
         'roas': round(tl_m / ts_m, 2) if ts_m > 0 else 0
-    })
+    }
+    if ext:
+        entry['receita_externa'] = round(ext['liq'], 2)
+        entry['fonte_externa']   = ext['fonte']
+    historico.append(entry)
 
 # Monta JSON
 data = {

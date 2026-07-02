@@ -6,8 +6,8 @@
     "vendas": 8,
     "bruto": 542.0,
     "liq": 480.35,
-    "gasto_meta": 366.58,
-    "lucro": 113.77,
+    "gasto_meta": 366.8,
+    "lucro": 113.55,
     "roas": 1.31,
     "ticket": 67.75
   },
@@ -17,8 +17,8 @@
       "vendas": 6,
       "bruto": 474.0,
       "liq": 421.08,
-      "gasto_meta": 366.58,
-      "lucro": 54.5,
+      "gasto_meta": 366.8,
+      "lucro": 54.28,
       "roas": 1.15
     },
     {
@@ -38,8 +38,8 @@
       "vendas": 8,
       "bruto": 542.0,
       "liq": 480.35,
-      "gasto_meta": 366.58,
-      "lucro": 113.77,
+      "gasto_meta": 366.8,
+      "lucro": 113.55,
       "roas": 1.31,
       "atual": true
     }
@@ -48,22 +48,22 @@
     {
       "nome": "Video 05 — Cópia",
       "status": "ACTIVE",
-      "gasto": 162.14,
-      "impressoes": 8007,
-      "ctr": 1.94,
+      "gasto": 162.23,
+      "impressoes": 8012,
+      "ctr": 1.93,
       "cpm": 20.25,
       "compras": 2,
       "receita_meta": 104.32,
       "roas": 0.64,
-      "cpa": 81.07
+      "cpa": 81.11
     },
     {
       "nome": "Video 01 — Cópia",
       "status": "ACTIVE",
       "gasto": 124.25,
-      "impressoes": 5261,
+      "impressoes": 5262,
       "ctr": 2.05,
-      "cpm": 23.62,
+      "cpm": 23.61,
       "compras": 1,
       "receita_meta": 70.18,
       "roas": 0.56,
@@ -72,14 +72,14 @@
     {
       "nome": "Criativo 03 — Cópia",
       "status": "ACTIVE",
-      "gasto": 51.14,
-      "impressoes": 1705,
+      "gasto": 51.27,
+      "impressoes": 1707,
       "ctr": 2.17,
-      "cpm": 29.99,
+      "cpm": 30.04,
       "compras": 1,
       "receita_meta": 70.18,
       "roas": 1.37,
-      "cpa": 51.14
+      "cpa": 51.27
     },
     {
       "nome": "Video 02 — Cópia",
@@ -182,30 +182,36 @@
       "mes_key": "2025-11",
       "vendas": 130,
       "bruto": 6548.52,
-      "liq": 5779.52,
+      "liq": 7062.82,
       "gasto_meta": 4409.85,
-      "lucro": 1369.67,
-      "roas": 1.31
+      "lucro": 2652.97,
+      "roas": 1.6,
+      "receita_externa": 1283.3,
+      "fonte_externa": "Green"
     },
     {
       "mes": "Out/2025",
       "mes_key": "2025-10",
       "vendas": 0,
       "bruto": 0,
-      "liq": 0,
+      "liq": 7834.0,
       "gasto_meta": 4816.68,
-      "lucro": -4816.68,
-      "roas": 0.0
+      "lucro": 3017.32,
+      "roas": 1.63,
+      "receita_externa": 7834.0,
+      "fonte_externa": "Green"
     },
     {
       "mes": "Set/2025",
       "mes_key": "2025-09",
       "vendas": 0,
       "bruto": 0,
-      "liq": 0,
+      "liq": 1030.49,
       "gasto_meta": 1386.14,
-      "lucro": -1386.14,
-      "roas": 0.0
+      "lucro": -355.65,
+      "roas": 0.74,
+      "receita_externa": 1030.49,
+      "fonte_externa": "Green"
     }
   ]
 }
