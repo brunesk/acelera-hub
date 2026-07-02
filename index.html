@@ -1,0 +1,1200 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Acelera Hub — Painel de Controle</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Syne:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg:         #0a0b0e;
+  --surface:    #111318;
+  --surface2:   #181b21;
+  --border:     #1c2028;
+  --border2:    #252b35;
+  --text:       #e8eaf0;
+  --muted:      #52596a;
+  --muted2:     #8891a0;
+  --amber:      #f5a623;
+  --amber-dim:  rgba(245,166,35,.13);
+  --amber-glow: rgba(245,166,35,.06);
+  --green:      #27c97a;
+  --green-dim:  rgba(39,201,122,.13);
+  --red:        #e74c3c;
+  --red-dim:    rgba(231,76,60,.13);
+  --blue:       #4a9eff;
+  --blue-dim:   rgba(74,158,255,.13);
+  --purple:     #a78bfa;
+  --purple-dim: rgba(167,139,250,.13);
+  --orange:     #ff6b35;
+  --orange-dim: rgba(255,107,53,.13);
+  --mono: 'DM Mono', monospace;
+  --sans: 'Syne', sans-serif;
+  --sidebar-w: 240px;
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { height: 100%; }
+body { font-family: var(--sans); background: var(--bg); color: var(--text); font-size: 14px; display: flex; overflow: hidden; }
+
+/* ── SIDEBAR ──────────────────────────────────────────── */
+.sidebar {
+  width: var(--sidebar-w);
+  background: var(--surface);
+  border-right: 1px solid var(--border);
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  position: fixed;
+  left: 0; top: 0;
+  z-index: 100;
+  padding: 0;
+}
+.sidebar-brand {
+  padding: 24px 20px 20px;
+  border-bottom: 1px solid var(--border);
+}
+.brand-logo {
+  display: flex; align-items: center; gap: 10px; margin-bottom: 4px;
+}
+.brand-icon {
+  width: 32px; height: 32px;
+  background: var(--amber);
+  border-radius: 8px;
+  display: flex; align-items: center; justify-content: center;
+  font-weight: 800; font-size: 14px; color: #000; font-family: var(--sans);
+  flex-shrink: 0;
+}
+.brand-name { font-size: 15px; font-weight: 800; color: var(--text); }
+.brand-sub { font-size: 11px; color: var(--muted); margin-top: 1px; font-family: var(--mono); }
+
+.sidebar-nav { flex: 1; padding: 12px 10px; overflow-y: auto; }
+.nav-section-label {
+  font-size: 10px; font-weight: 700; letter-spacing: .1em;
+  text-transform: uppercase; color: var(--muted);
+  padding: 12px 10px 6px;
+}
+.nav-item {
+  display: flex; align-items: center; gap: 10px;
+  padding: 9px 12px;
+  border-radius: 10px;
+  cursor: pointer;
+  color: var(--muted2);
+  font-size: 13px; font-weight: 600;
+  transition: all .15s;
+  margin-bottom: 2px;
+  border: 1px solid transparent;
+  text-decoration: none;
+}
+.nav-item:hover { background: var(--surface2); color: var(--text); }
+.nav-item.active {
+  background: var(--amber-dim);
+  color: var(--amber);
+  border-color: rgba(245,166,35,.2);
+}
+.nav-icon { font-size: 16px; width: 20px; text-align: center; flex-shrink: 0; }
+.nav-badge {
+  margin-left: auto;
+  font-size: 10px; font-weight: 700;
+  background: var(--amber);
+  color: #000;
+  border-radius: 20px;
+  padding: 2px 7px;
+  font-family: var(--mono);
+}
+
+.sidebar-footer {
+  padding: 16px 20px;
+  border-top: 1px solid var(--border);
+}
+.footer-status {
+  display: flex; align-items: center; gap: 8px;
+  font-size: 11px; color: var(--muted);
+  font-family: var(--mono);
+}
+.status-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--green); animation: pulse 2s infinite; flex-shrink: 0; }
+@keyframes pulse { 0%,100% { opacity: 1; } 50% { opacity: .4; } }
+
+/* ── MAIN ─────────────────────────────────────────────── */
+.main {
+  margin-left: var(--sidebar-w);
+  flex: 1;
+  height: 100vh;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ── TOP BAR ──────────────────────────────────────────── */
+.topbar {
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+  padding: 14px 28px;
+  display: flex; align-items: center; justify-content: space-between;
+  flex-shrink: 0;
+}
+.topbar-title { font-size: 16px; font-weight: 700; }
+.topbar-sub { font-size: 12px; color: var(--muted); margin-top: 1px; font-family: var(--mono); }
+.topbar-right { display: flex; align-items: center; gap: 12px; }
+.topbar-date { font-size: 12px; color: var(--muted); font-family: var(--mono); }
+
+/* ── PAGES ────────────────────────────────────────────── */
+.page { display: none; flex: 1; overflow-y: auto; height: calc(100vh - 65px); }
+.page.active { display: block; }
+.page-iframe { display: none; flex: 1; height: calc(100vh - 65px); }
+.page-iframe.active { display: block; }
+.page-iframe iframe { width: 100%; height: 100%; border: none; }
+
+/* ── CONTAINERS ───────────────────────────────────────── */
+.container { padding: 28px; max-width: 1200px; }
+.section-header { margin-bottom: 24px; }
+.section-header h2 { font-size: 20px; font-weight: 800; margin-bottom: 4px; }
+.section-header p { font-size: 13px; color: var(--muted); }
+
+/* ── CARDS GRID ───────────────────────────────────────── */
+.cards-grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-bottom: 24px; }
+.cards-grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-bottom: 24px; }
+.cards-grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+
+.kpi-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 20px;
+  position: relative;
+  overflow: hidden;
+}
+.kpi-card::before { content:''; position:absolute; top:0;left:0;right:0; height:2px; }
+.kpi-card.c-amber::before { background: var(--amber); }
+.kpi-card.c-green::before { background: var(--green); }
+.kpi-card.c-red::before   { background: var(--red); }
+.kpi-card.c-blue::before  { background: var(--blue); }
+.kpi-card.c-purple::before{ background: var(--purple); }
+.kpi-card.c-orange::before{ background: var(--orange); }
+.kpi-label { font-size: 10px; font-weight: 700; letter-spacing:.08em; text-transform:uppercase; color: var(--muted); margin-bottom: 10px; }
+.kpi-value { font-family: var(--mono); font-size: 26px; font-weight: 500; line-height: 1; margin-bottom: 6px; }
+.kpi-value.c-amber  { color: var(--amber); }
+.kpi-value.c-green  { color: var(--green); }
+.kpi-value.c-red    { color: var(--red); }
+.kpi-value.c-blue   { color: var(--blue); }
+.kpi-value.c-purple { color: var(--purple); }
+.kpi-value.c-orange { color: var(--orange); }
+.kpi-sub { font-size: 11px; color: var(--muted); font-family: var(--mono); }
+.kpi-icon { position:absolute; top:16px;right:16px; font-size:20px; opacity:.2; }
+
+/* ── BLOCK ────────────────────────────────────────────── */
+.block {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  overflow: hidden;
+  margin-bottom: 20px;
+}
+.block-head {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 16px 20px;
+  border-bottom: 1px solid var(--border);
+}
+.block-head-title {
+  font-size: 13px; font-weight: 700;
+  display: flex; align-items: center; gap: 8px;
+}
+.bdot { width: 7px; height: 7px; border-radius: 50%; }
+.block-body { padding: 20px; }
+
+/* ── BUTTONS ──────────────────────────────────────────── */
+.btn {
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 9px 16px; border-radius: 9px; border: none;
+  font-size: 13px; font-weight: 700; cursor: pointer;
+  font-family: var(--sans); transition: opacity .15s;
+}
+.btn:hover { opacity: .85; }
+.btn-amber  { background: var(--amber); color: #000; }
+.btn-ghost  { background: var(--surface2); color: var(--muted2); border: 1px solid var(--border); }
+.btn-green  { background: var(--green-dim); color: var(--green); border: 1px solid transparent; }
+.btn-red    { background: var(--red-dim); color: var(--red); border: 1px solid transparent; }
+.btn-sm     { padding: 6px 12px; font-size: 12px; }
+
+/* ── FORMS ────────────────────────────────────────────── */
+.field { display: flex; flex-direction: column; gap: 5px; }
+.field label { font-size: 11px; font-weight: 700; color: var(--muted); text-transform: uppercase; letter-spacing: .07em; }
+.field input, .field select, .field textarea {
+  background: var(--surface2); border: 1px solid var(--border);
+  border-radius: 9px; padding: 10px 12px;
+  color: var(--text); font-family: var(--sans); font-size: 13px;
+  outline: none; transition: border-color .15s;
+  width: 100%;
+}
+.field input:focus, .field select:focus, .field textarea:focus { border-color: var(--amber); }
+.field input::placeholder { color: var(--muted); }
+.field select option { background: var(--surface2); }
+.field-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.field-row-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; }
+.form-grid { display: flex; flex-direction: column; gap: 12px; }
+
+/* ── BADGES ───────────────────────────────────────────── */
+.badge {
+  font-size: 10px; font-weight: 700; padding: 3px 8px;
+  border-radius: 20px; letter-spacing: .04em;
+  display: inline-block;
+}
+.badge-green  { background: var(--green-dim);  color: var(--green); }
+.badge-amber  { background: var(--amber-dim);  color: var(--amber); }
+.badge-red    { background: var(--red-dim);    color: var(--red); }
+.badge-blue   { background: var(--blue-dim);   color: var(--blue); }
+.badge-purple { background: var(--purple-dim); color: var(--purple); }
+
+/* ── MENTORIAS ────────────────────────────────────────── */
+.ment-tabs { display:flex; gap:4px; padding:0 20px 0; border-bottom:1px solid var(--border); }
+.ment-tab {
+  padding: 12px 16px; font-size: 12px; font-weight: 700;
+  color: var(--muted); cursor: pointer; border-bottom: 2px solid transparent;
+  transition: all .15s;
+}
+.ment-tab.active { color: var(--amber); border-color: var(--amber); }
+.ment-tab:hover:not(.active) { color: var(--text); }
+
+.mentor-card {
+  background: var(--surface2); border: 1px solid var(--border);
+  border-radius: 12px; padding: 18px 20px;
+  display: grid; grid-template-columns: 1fr auto;
+  gap: 12px; align-items: center;
+  position: relative; overflow: hidden;
+  margin-bottom: 10px;
+}
+.mentor-card::before { content:''; position:absolute; left:0;top:0;bottom:0; width:3px; border-radius:3px 0 0 3px; }
+.mentor-card.disp::before  { background: var(--amber); }
+.mentor-card.agend::before { background: var(--green); }
+
+.cal-grid { display: grid; grid-template-columns: repeat(7,1fr); gap:5px; max-width: 540px; }
+.cal-dow { text-align:center; font-size:10px; font-weight:700; color:var(--muted); text-transform:uppercase; padding:6px 0; }
+.cal-day {
+  aspect-ratio: 1; border-radius: 9px;
+  display: flex; flex-direction:column; align-items:center; justify-content:center;
+  background: var(--surface2); border: 1px solid var(--border); gap: 2px;
+}
+.cal-day.empty, .cal-day.passado { background: transparent; border-color: transparent; opacity: .3; }
+.cal-day.has-slot { background: var(--amber-dim); border-color: rgba(245,166,35,.35); cursor:pointer; transition:.15s; }
+.cal-day.has-slot:hover { background: var(--amber); }
+.cal-day.has-slot:hover * { color: #000 !important; }
+.cal-day.agendado { background: var(--green-dim); border-color: rgba(39,201,122,.35); cursor:pointer; transition:.15s; }
+.cal-day.agendado:hover { background: var(--green); }
+.cal-day.agendado:hover * { color: #000 !important; }
+.cal-day.livre { cursor:pointer; }
+.cal-day.livre:hover { border-color: var(--border2); background: var(--surface); }
+.cal-day-num { font-size:13px; font-weight:700; color:var(--text); }
+.cal-slot-hora { font-size:9px; font-weight:700; color:var(--amber); }
+.cal-day.agendado .cal-slot-hora { color: var(--green); }
+.cal-slot-nome { font-size:8px; font-weight:700; color:var(--green); max-width:90%; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+.cal-legend { display:flex; gap:16px; flex-wrap:wrap; margin-top:16px; padding-top:16px; border-top:1px solid var(--border); font-size:11px; color:var(--muted); }
+.cal-legend-item { display:flex; align-items:center; gap:6px; }
+.cal-dot-l { width:8px;height:8px;border-radius:50%; flex-shrink:0; }
+.cal-nav-row { display:flex;align-items:center;justify-content:space-between;margin-bottom:16px; }
+.cal-month-title { font-size:15px;font-weight:800;text-transform:capitalize; }
+.cal-nav-btn { background:var(--surface2);border:1px solid var(--border);border-radius:8px;width:32px;height:32px;cursor:pointer;color:var(--text);font-size:18px;display:flex;align-items:center;justify-content:center;transition:.15s; }
+.cal-nav-btn:hover { border-color:var(--amber);color:var(--amber); }
+
+.dash-mentor-grid { display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:12px;margin-bottom:20px; }
+.dm-card { background:var(--surface2);border:1px solid var(--border);border-radius:12px;padding:16px; }
+.dm-label { font-size:10px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.08em;margin-bottom:6px; }
+.dm-value { font-family:var(--mono);font-size:26px;font-weight:500;color:var(--amber); }
+.dm-value.green { color:var(--green); }
+.dm-value.blue  { color:var(--blue); }
+.dm-value.amber { color:var(--amber); }
+.dm-sub { font-size:11px;color:var(--muted);margin-top:4px;font-family:var(--mono); }
+
+/* ── ASSESSORIAS ──────────────────────────────────────── */
+.assess-table { width:100%; border-collapse:collapse; }
+.assess-table th {
+  text-align:left; font-size:10px; font-weight:700;
+  text-transform:uppercase; letter-spacing:.08em; color:var(--muted);
+  padding:10px 14px; border-bottom:1px solid var(--border);
+}
+.assess-table td { padding:14px; border-bottom:1px solid var(--border); vertical-align:middle; }
+.assess-table tr:last-child td { border-bottom:none; }
+.assess-table tr:hover td { background: var(--amber-glow); }
+.assess-table td .client-name { font-size:14px;font-weight:700;margin-bottom:2px; }
+.assess-table td .client-store { font-size:12px;color:var(--muted);font-family:var(--mono); }
+.pwd-field { display:flex;align-items:center;gap:6px; }
+.pwd-text { font-family:var(--mono);font-size:12px; }
+.pwd-toggle { background:none;border:none;cursor:pointer;color:var(--muted);font-size:12px;padding:2px; }
+.renov-near { color:var(--amber);font-weight:700; }
+.renov-overdue { color:var(--red);font-weight:700; }
+.action-btns { display:flex;gap:6px; }
+
+/* ── MODAL ────────────────────────────────────────────── */
+.modal-overlay {
+  display:none;position:fixed;inset:0;background:rgba(0,0,0,.75);
+  z-index:1000;align-items:center;justify-content:center;
+  backdrop-filter:blur(4px);
+}
+.modal-overlay.open { display:flex; }
+.modal-box {
+  background:var(--surface);border:1px solid var(--border2);
+  border-radius:18px;padding:28px;width:480px;max-width:95vw;
+  max-height:90vh;overflow-y:auto;
+}
+.modal-title { font-size:17px;font-weight:800;margin-bottom:20px; }
+.modal-actions { display:flex;gap:10px;margin-top:20px;justify-content:flex-end; }
+
+/* ── FINANCEIRO ───────────────────────────────────────── */
+.retencao-banner {
+  background:rgba(245,166,35,.06);border:1px solid rgba(245,166,35,.25);
+  border-radius:14px;padding:18px 22px;margin-bottom:20px;
+  display:flex;align-items:center;gap:16px;
+}
+.ret-icon { font-size:24px;flex-shrink:0; }
+.ret-val { font-family:var(--mono);font-size:22px;color:var(--amber);font-weight:500; }
+.ret-sub { font-size:11px;color:var(--muted);font-family:var(--mono); }
+
+.fin-row { display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-bottom:1px solid var(--border);font-family:var(--mono);font-size:13px; }
+.fin-row:last-child { border-bottom:none; }
+.fin-row .lbl { color:var(--muted);font-size:12px; }
+.fin-total { padding-top:12px;margin-top:4px; }
+.fin-total .lbl { color:var(--amber);font-size:14px;font-weight:500; }
+.fin-total .val { color:var(--amber);font-size:22px; }
+
+/* ── AVISO ────────────────────────────────────────────── */
+.aviso { font-size:12px;padding:8px 12px;border-radius:8px;display:none;margin-top:8px; }
+.aviso.ok   { color:var(--green);background:var(--green-dim); }
+.aviso.erro { color:var(--red);background:var(--red-dim); }
+
+.empty-state { text-align:center;padding:60px 20px;color:var(--muted); }
+.empty-state .icon { font-size:40px;margin-bottom:12px; }
+.empty-state p { font-size:14px;line-height:1.6; }
+
+::-webkit-scrollbar { width:5px; height:5px; }
+::-webkit-scrollbar-thumb { background:var(--border2);border-radius:3px; }
+input[type="date"]::-webkit-calendar-picker-indicator,
+input[type="time"]::-webkit-calendar-picker-indicator,
+input[type="month"]::-webkit-calendar-picker-indicator { filter:invert(.6);cursor:pointer; }
+
+@media(max-width:900px){
+  :root { --sidebar-w: 56px; }
+  .brand-name,.brand-sub,.nav-item span:not(.nav-icon),.nav-section-label,.nav-badge,.footer-status span { display:none; }
+  .nav-item { justify-content:center;padding:10px; }
+  .nav-icon { width:auto; }
+  .sidebar-brand { padding:16px 10px; }
+  .brand-logo { justify-content:center; }
+  .brand-icon { margin:0; }
+}
+</style>
+</head>
+<body>
+
+<!-- ══ SIDEBAR ══════════════════════════════════════════════ -->
+<aside class="sidebar">
+  <div class="sidebar-brand">
+    <div class="brand-logo">
+      <div class="brand-icon">A</div>
+      <div>
+        <div class="brand-name">Acelera Hub</div>
+        <div class="brand-sub">Bruno Ferracini</div>
+      </div>
+    </div>
+  </div>
+
+  <nav class="sidebar-nav">
+    <div class="nav-section-label">Gestão</div>
+    <div class="nav-item active" onclick="showPage('dashboard')" id="nav-dashboard">
+      <span class="nav-icon">📊</span>
+      <span>Dashboard Cursos</span>
+    </div>
+    <div class="nav-item" onclick="showPage('mentorias')" id="nav-mentorias">
+      <span class="nav-icon">📅</span>
+      <span>Agenda Mentorias</span>
+      <span class="nav-badge" id="nb-disp" style="display:none">0</span>
+    </div>
+    <div class="nav-item" onclick="showPage('assessorias')" id="nav-assessorias">
+      <span class="nav-icon">🏪</span>
+      <span>Assessorias de Loja</span>
+      <span class="nav-badge" id="nb-assess" style="display:none;background:var(--red);color:#fff">0</span>
+    </div>
+
+    <div class="nav-section-label" style="margin-top:8px">Financeiro</div>
+    <div class="nav-item" onclick="showPage('financeiro')" id="nav-financeiro">
+      <span class="nav-icon">💰</span>
+      <span>Visão Financeira</span>
+    </div>
+  </nav>
+
+  <div class="sidebar-footer">
+    <div class="footer-status">
+      <div class="status-dot"></div>
+      <span>Sistemas ativos</span>
+    </div>
+  </div>
+</aside>
+
+<!-- ══ MAIN ═════════════════════════════════════════════════ -->
+<div class="main">
+
+  <!-- TOP BAR -->
+  <div class="topbar">
+    <div>
+      <div class="topbar-title" id="page-title">Dashboard Cursos</div>
+      <div class="topbar-sub" id="page-sub">Meta Ads + Hotmart · atualização automática via GitHub Actions</div>
+    </div>
+    <div class="topbar-right">
+      <div class="topbar-date" id="topbar-date"></div>
+    </div>
+  </div>
+
+  <!-- ── PÁGINA: DASHBOARD (iframe) ── -->
+  <div class="page-iframe active" id="page-dashboard">
+    <iframe src="https://brunesk.github.io/dashboard-acelera/" title="Dashboard Cursos Acelera Shopee" allow="same-origin"></iframe>
+  </div>
+
+  <!-- ── PÁGINA: MENTORIAS ── -->
+  <div class="page" id="page-mentorias">
+    <div style="height:100%;display:flex;flex-direction:column;">
+
+      <!-- TABS MENTORIAS -->
+      <div style="display:flex;align-items:center;justify-content:space-between;padding:0 20px;border-bottom:1px solid var(--border);background:var(--surface);flex-shrink:0;">
+        <div class="ment-tabs" style="padding:0;border:none;">
+          <div class="ment-tab active" onclick="setMentTab('calendario',this)">📅 Calendário</div>
+          <div class="ment-tab" onclick="setMentTab('disponiveis',this)">🟡 Disponíveis</div>
+          <div class="ment-tab" onclick="setMentTab('agendadas',this)">✅ Agendadas</div>
+          <div class="ment-tab" onclick="setMentTab('dashboard',this)">📊 Dashboard</div>
+        </div>
+        <div style="display:flex;gap:8px;padding:10px 0;">
+          <button class="btn btn-ghost btn-sm" onclick="abrirModalNovoSlot()">+ Novo horário</button>
+        </div>
+      </div>
+
+      <!-- STATS BAR -->
+      <div style="display:flex;gap:12px;padding:14px 20px;border-bottom:1px solid var(--border);background:var(--surface);flex-shrink:0;">
+        <div style="display:flex;align-items:center;gap:8px;">
+          <span style="font-size:11px;color:var(--muted);">Disponíveis:</span>
+          <span style="font-family:var(--mono);font-size:13px;color:var(--amber);font-weight:500;" id="stat-disp">—</span>
+        </div>
+        <div style="color:var(--border2);">|</div>
+        <div style="display:flex;align-items:center;gap:8px;">
+          <span style="font-size:11px;color:var(--muted);">Agendadas:</span>
+          <span style="font-family:var(--mono);font-size:13px;color:var(--green);font-weight:500;" id="stat-agend">—</span>
+        </div>
+        <div style="color:var(--border2);">|</div>
+        <div style="display:flex;align-items:center;gap:8px;">
+          <span style="font-size:11px;color:var(--muted);">Hoje:</span>
+          <span style="font-family:var(--mono);font-size:13px;color:var(--text);font-weight:500;" id="stat-hoje">—</span>
+        </div>
+      </div>
+
+      <!-- CONTENT -->
+      <div style="flex:1;overflow-y:auto;padding:24px 28px;" id="ment-content">
+        <div class="empty-state"><div class="icon">⏳</div><p>Carregando mentorias...</p></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── PÁGINA: ASSESSORIAS ── -->
+  <div class="page" id="page-assessorias">
+    <div class="container">
+      <div class="section-header" style="display:flex;align-items:center;justify-content:space-between;">
+        <div>
+          <h2>Assessorias de Loja</h2>
+          <p>Gerencie lojas de clientes — acesso, renovação e pagamentos</p>
+        </div>
+        <button class="btn btn-amber" onclick="abrirModalAssess()">+ Nova assessoria</button>
+      </div>
+
+      <!-- Resumo -->
+      <div class="cards-grid-4" id="assess-kpis">
+        <div class="kpi-card c-purple"><div class="kpi-icon">🏪</div><div class="kpi-label">Total clientes</div><div class="kpi-value c-purple" id="ak-total">0</div></div>
+        <div class="kpi-card c-green"><div class="kpi-icon">✅</div><div class="kpi-label">Pagamentos ok</div><div class="kpi-value c-green" id="ak-pago">0</div></div>
+        <div class="kpi-card c-amber"><div class="kpi-icon">⚠️</div><div class="kpi-label">Renovando em breve</div><div class="kpi-value c-amber" id="ak-renov">0</div></div>
+        <div class="kpi-card c-red"><div class="kpi-icon">🚨</div><div class="kpi-label">Pendentes</div><div class="kpi-value c-red" id="ak-pend">0</div></div>
+      </div>
+
+      <!-- Tabela -->
+      <div class="block">
+        <div class="block-head">
+          <div class="block-head-title">
+            <span class="bdot" style="background:var(--purple)"></span>
+            Clientes ativos
+          </div>
+          <input type="text" placeholder="🔍 Buscar cliente..." oninput="filtrarAssess(this.value)"
+            style="background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:6px 12px;color:var(--text);font-family:var(--sans);font-size:12px;outline:none;width:200px;">
+        </div>
+        <div style="overflow-x:auto;">
+          <table class="assess-table" id="assess-table">
+            <thead>
+              <tr>
+                <th>Cliente / Loja</th>
+                <th>Login</th>
+                <th>Senha</th>
+                <th>Renovação</th>
+                <th>Pagamento</th>
+                <th>Ações</th>
+              </tr>
+            </thead>
+            <tbody id="assess-tbody">
+              <tr><td colspan="6" class="empty-state" style="padding:40px;"><div class="icon">🏪</div><p>Nenhuma assessoria cadastrada.<br>Clique em "+ Nova assessoria" para começar.</p></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── PÁGINA: FINANCEIRO ── -->
+  <div class="page" id="page-financeiro">
+    <div class="container">
+      <div class="section-header">
+        <h2>Visão Financeira</h2>
+        <p>Consolidado de todas as fontes de receita — Junho 2026</p>
+      </div>
+
+      <!-- KPIs -->
+      <div class="cards-grid-4">
+        <div class="kpi-card c-green"><div class="kpi-icon">💰</div><div class="kpi-label">Receita Total</div><div class="kpi-value c-green" id="fin-receita">—</div><div class="kpi-sub" id="fin-receita-sub">3 fontes</div></div>
+        <div class="kpi-card c-red"><div class="kpi-icon">📣</div><div class="kpi-label">Gasto Meta</div><div class="kpi-value c-red">R$10.557</div><div class="kpi-sub">R$352/dia em média</div></div>
+        <div class="kpi-card c-blue"><div class="kpi-icon">🔧</div><div class="kpi-label">Custos Fixos</div><div class="kpi-value c-blue">R$311</div><div class="kpi-sub">AppSell + Verif + Make</div></div>
+        <div class="kpi-card c-amber"><div class="kpi-icon">✦</div><div class="kpi-label">Lucro Líquido</div><div class="kpi-value c-amber" id="fin-lucro">—</div><div class="kpi-sub" id="fin-lucro-sub">calculando...</div></div>
+      </div>
+
+      <!-- Retenção -->
+      <div class="retencao-banner">
+        <div class="ret-icon">🔒</div>
+        <div style="flex:1">
+          <div style="font-size:11px;font-weight:700;color:var(--amber);text-transform:uppercase;letter-spacing:.08em;margin-bottom:3px;">Retido no Hotmart</div>
+          <div style="font-size:12px;color:var(--muted);">Vendas de junho aguardando hold de 30 dias — chegam ao longo de julho.</div>
+        </div>
+        <div style="text-align:right;">
+          <div class="ret-val">R$2.527</div>
+          <div class="ret-sub">+ R$1.900 saque pendente</div>
+        </div>
+      </div>
+
+      <!-- Receitas + Custos -->
+      <div class="cards-grid-2">
+        <div class="block">
+          <div class="block-head">
+            <div class="block-head-title"><span class="bdot" style="background:var(--green)"></span>Receitas por Fonte</div>
+          </div>
+          <div class="block-body">
+            <div class="fin-row"><span class="lbl">🎓 Cursos — Hotmart</span><span style="color:var(--green);font-family:var(--mono);">+R$16.091</span></div>
+            <div class="fin-row"><span class="lbl">🏪 Assessorias de Loja</span><span style="color:var(--purple);font-family:var(--mono);" id="fin-assess-val">+R$0</span></div>
+            <div class="fin-row"><span class="lbl">🤝 Mentorias</span><span style="color:var(--blue);font-family:var(--mono);" id="fin-ment-val">+R$0</span></div>
+            <div class="fin-row fin-total"><span class="lbl">Total Receitas</span><span style="color:var(--green);font-family:var(--mono);font-size:18px;" id="fin-total-rec">R$16.091</span></div>
+          </div>
+        </div>
+
+        <div class="block">
+          <div class="block-head">
+            <div class="block-head-title"><span class="bdot" style="background:var(--red)"></span>Custos</div>
+          </div>
+          <div class="block-body">
+            <div class="fin-row"><span class="lbl">📣 Meta Ads</span><span style="color:var(--red);font-family:var(--mono);">-R$10.557</span></div>
+            <div class="fin-row"><span class="lbl">AppSell</span><span style="color:var(--red);font-family:var(--mono);">-R$97</span></div>
+            <div class="fin-row"><span class="lbl">Verificado Meta</span><span style="color:var(--red);font-family:var(--mono);">-R$87</span></div>
+            <div class="fin-row"><span class="lbl">Make Funnels</span><span style="color:var(--red);font-family:var(--mono);">-R$127</span></div>
+            <div class="fin-row fin-total"><span class="lbl">Total Custos</span><span style="color:var(--red);font-family:var(--mono);font-size:18px;">-R$10.868</span></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Resultado -->
+      <div class="block">
+        <div class="block-head">
+          <div class="block-head-title"><span class="bdot" style="background:var(--amber)"></span>Resultado Junho 2026</div>
+        </div>
+        <div class="block-body" style="display:grid;grid-template-columns:1fr auto;gap:20px;align-items:center;">
+          <div>
+            <div class="fin-row"><span class="lbl">Receita Líquida HM</span><span style="color:var(--green);font-family:var(--mono);">+R$16.091</span></div>
+            <div class="fin-row"><span class="lbl">Assessorias</span><span style="color:var(--purple);font-family:var(--mono);" id="fin-res-assess">+R$0</span></div>
+            <div class="fin-row"><span class="lbl">Mentorias</span><span style="color:var(--blue);font-family:var(--mono);" id="fin-res-ment">+R$0</span></div>
+            <div class="fin-row"><span class="lbl">Meta Ads</span><span style="color:var(--red);font-family:var(--mono);">-R$10.557</span></div>
+            <div class="fin-row"><span class="lbl">Ferramentas</span><span style="color:var(--red);font-family:var(--mono);">-R$311</span></div>
+            <div class="fin-row fin-total" style="border-top:1px solid var(--border2);margin-top:8px;padding-top:16px;">
+              <span class="lbl" style="font-size:15px;">✦ Lucro Líquido</span>
+              <span style="color:var(--amber);font-family:var(--mono);font-size:24px;" id="fin-resultado">—</span>
+            </div>
+          </div>
+          <div style="text-align:center;padding:20px;">
+            <div style="font-family:var(--mono);font-size:40px;color:var(--amber);font-weight:500;" id="fin-margem">—%</div>
+            <div style="font-size:11px;color:var(--muted);margin-top:4px;">margem líquida</div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+</div><!-- /main -->
+
+<!-- ══ MODAL: NOVO SLOT MENTORIA ══════════════════════════════ -->
+<div class="modal-overlay" id="modal-slot" onclick="if(event.target===this)fecharModalSlot()">
+  <div class="modal-box">
+    <div class="modal-title">📅 Novo horário de mentoria</div>
+    <div class="form-grid">
+      <div class="field-row">
+        <div class="field">
+          <label>Data</label>
+          <input type="date" id="slot-data" onchange="validarDataSlot()">
+          <div class="aviso" id="aviso-data"></div>
+        </div>
+        <div class="field">
+          <label>Horário</label>
+          <input type="time" id="slot-hora">
+        </div>
+      </div>
+    </div>
+    <div class="modal-actions">
+      <button class="btn btn-ghost" onclick="fecharModalSlot()">Cancelar</button>
+      <button class="btn btn-amber" onclick="adicionarSlot()">Salvar horário</button>
+    </div>
+  </div>
+</div>
+
+<!-- ══ MODAL: AGENDAR MENTORIA ════════════════════════════════ -->
+<div class="modal-overlay" id="modal-agendar" onclick="if(event.target===this)fecharModalAgendar()">
+  <div class="modal-box">
+    <div class="modal-title">✅ Agendar mentoria</div>
+    <div style="font-size:13px;color:var(--amber);margin-bottom:20px;font-family:var(--mono);" id="modal-slot-info"></div>
+    <div class="form-grid">
+      <div class="field"><label>Nome do cliente</label><input type="text" id="modal-nome" placeholder="Nome completo"></div>
+      <div class="field"><label>WhatsApp</label><input type="text" id="modal-tel" placeholder="(11) 99999-9999"></div>
+    </div>
+    <div class="modal-actions">
+      <button class="btn btn-ghost" onclick="fecharModalAgendar()">Cancelar</button>
+      <button class="btn btn-green" onclick="confirmarAgendamento()" id="btn-conf-agt">Confirmar agendamento</button>
+    </div>
+  </div>
+</div>
+
+<!-- ══ MODAL: LIBERAR DATA CALENDÁRIO ════════════════════════ -->
+<div class="modal-overlay" id="modal-liberar" onclick="if(event.target===this)fecharModalLiberar()">
+  <div class="modal-box">
+    <div class="modal-title">🗓️ Liberar horário</div>
+    <div style="font-size:13px;color:var(--amber);margin-bottom:20px;font-family:var(--mono);" id="liberar-data-info"></div>
+    <div class="field"><label>Horário</label><input type="time" id="liberar-hora"></div>
+    <div class="modal-actions">
+      <button class="btn btn-ghost" onclick="fecharModalLiberar()">Cancelar</button>
+      <button class="btn btn-amber" onclick="confirmarLiberar()">Liberar</button>
+    </div>
+  </div>
+</div>
+
+<!-- ══ MODAL: ASSESSORIA ══════════════════════════════════════ -->
+<div class="modal-overlay" id="modal-assess" onclick="if(event.target===this)fecharModalAssess()">
+  <div class="modal-box">
+    <div class="modal-title" id="modal-assess-title">🏪 Nova assessoria</div>
+    <div class="form-grid">
+      <div class="field-row">
+        <div class="field"><label>Nome do cliente</label><input type="text" id="a-nome" placeholder="Ex: Maria Silva"></div>
+        <div class="field"><label>Nome da loja</label><input type="text" id="a-loja" placeholder="Ex: Maria Moda"></div>
+      </div>
+      <div class="field"><label>URL da loja (opcional)</label><input type="text" id="a-url" placeholder="https://shopee.com.br/..."></div>
+      <div class="field-row">
+        <div class="field"><label>Login / Email</label><input type="text" id="a-login" placeholder="email@exemplo.com"></div>
+        <div class="field"><label>Senha</label><input type="text" id="a-senha" placeholder="senha123"></div>
+      </div>
+      <div class="field-row">
+        <div class="field"><label>Valor mensal (R$)</label><input type="number" id="a-valor" placeholder="500"></div>
+        <div class="field"><label>Data de renovação</label><input type="date" id="a-renov"></div>
+      </div>
+      <div class="field">
+        <label>Status do pagamento</label>
+        <select id="a-pag">
+          <option value="pago">✅ Pago</option>
+          <option value="pendente">⚠️ Pendente</option>
+          <option value="atrasado">🚨 Atrasado</option>
+        </select>
+      </div>
+      <div class="field"><label>Observações</label><textarea id="a-obs" rows="2" placeholder="Notas sobre o cliente..."></textarea></div>
+    </div>
+    <div class="modal-actions">
+      <button class="btn btn-ghost" onclick="fecharModalAssess()">Cancelar</button>
+      <button class="btn btn-amber" onclick="salvarAssess()" id="btn-salvar-assess">Salvar</button>
+    </div>
+  </div>
+</div>
+
+<script>
+// ══════════════════════════════════════════════════════════════
+// GLOBALS
+// ══════════════════════════════════════════════════════════════
+const DB = 'https://mentorias-bruno-default-rtdb.firebaseio.com';
+let todosSlots = {};
+let configAtual = {};
+let slotParaAgendar = null;
+let dataParaLiberar = null;
+let tabMentoria = 'calendario';
+let mesCalendario = `${new Date().getFullYear()}-${String(new Date().getMonth()+1).padStart(2,'0')}`;
+let mesDashboard  = `${new Date().getFullYear()}-${String(new Date().getMonth()+1).padStart(2,'0')}`;
+let assessEditId  = null;
+let assessFiltro  = '';
+
+// ══════════════════════════════════════════════════════════════
+// NAV
+// ══════════════════════════════════════════════════════════════
+const pageTitles = {
+  dashboard:    ['Dashboard Cursos', 'Meta Ads + Hotmart · atualização automática via GitHub Actions'],
+  mentorias:    ['Agenda de Mentorias', 'Gestão de slots e agendamentos · Firebase Realtime DB'],
+  assessorias:  ['Assessorias de Loja', 'Clientes recorrentes · login, renovação e pagamentos'],
+  financeiro:   ['Visão Financeira', 'Consolidado de receitas e custos do ecossistema'],
+};
+
+function showPage(page) {
+  document.querySelectorAll('.page, .page-iframe').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+  document.getElementById(`page-${page}`).classList.add('active');
+  document.getElementById(`nav-${page}`).classList.add('active');
+  const [title, sub] = pageTitles[page];
+  document.getElementById('page-title').textContent = title;
+  document.getElementById('page-sub').textContent = sub;
+  if (page === 'financeiro') calcFinanceiro();
+}
+
+// ══════════════════════════════════════════════════════════════
+// DATA / TIME
+// ══════════════════════════════════════════════════════════════
+function updateDate() {
+  const d = new Date();
+  document.getElementById('topbar-date').textContent =
+    d.toLocaleDateString('pt-BR', {weekday:'short', day:'numeric', month:'short', year:'numeric'});
+}
+updateDate();
+setInterval(updateDate, 60000);
+
+// ══════════════════════════════════════════════════════════════
+// MENTORIAS — Firebase
+// ══════════════════════════════════════════════════════════════
+async function carregarConfig() {
+  try {
+    const r = await fetch(`${DB}/config.json`);
+    configAtual = (await r.json()) || {};
+  } catch(e) {}
+}
+
+async function carregarSlots() {
+  try {
+    const r = await fetch(`${DB}/slots.json`);
+    todosSlots = (await r.json()) || {};
+    renderMentorias();
+    atualizarBadgeMent();
+  } catch(e) {}
+}
+
+function atualizarBadgeMent() {
+  const slots = Object.values(todosSlots);
+  const disp = slots.filter(s => s.disponivel).length;
+  const nb = document.getElementById('nb-disp');
+  if (disp > 0) { nb.textContent = disp; nb.style.display = ''; }
+  else nb.style.display = 'none';
+
+  const hj = new Date(); hj.setHours(0,0,0,0);
+  document.getElementById('stat-disp').textContent  = slots.filter(s => s.disponivel).length;
+  document.getElementById('stat-agend').textContent = slots.filter(s => !s.disponivel).length;
+  document.getElementById('stat-hoje').textContent  = slots.filter(s => new Date(s.data+'T00:00:00').getTime() === hj.getTime()).length;
+}
+
+function setMentTab(tab, el) {
+  tabMentoria = tab;
+  document.querySelectorAll('.ment-tab').forEach(t => t.classList.remove('active'));
+  el.classList.add('active');
+  renderMentorias();
+}
+
+function renderMentorias() {
+  if (tabMentoria === 'calendario') { renderCalendario(); return; }
+  if (tabMentoria === 'dashboard')  { renderDashMent(); return; }
+
+  let slots = Object.entries(todosSlots).map(([id,s]) => ({id,...s})).sort((a,b) => (a.data+a.hora).localeCompare(b.data+b.hora));
+  if (tabMentoria === 'agendadas') slots = slots.filter(s => !s.disponivel);
+
+  const c = document.getElementById('ment-content');
+  if (!slots.length) {
+    c.innerHTML = `<div class="empty-state"><div class="icon">📭</div><p>Nenhuma mentoria encontrada.</p></div>`;
+    return;
+  }
+  c.innerHTML = slots.map(s => {
+    const waNum = (s.clienteTel||'').replace(/\D/g,'');
+    const waLink = waNum ? `https://wa.me/55${waNum}?text=${encodeURIComponent('Olá! Tudo certo para nossa mentoria?')}` : '';
+    return `<div class="mentor-card ${s.disponivel?'disp':'agend'}">
+      <div>
+        <div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:${s.disponivel?'var(--amber)':'var(--green)'};margin-bottom:6px;">${s.disponivel?'Disponível':'Agendada'}</div>
+        <div style="font-size:15px;font-weight:700;margin-bottom:8px;">${s.disponivel ? 'Horário livre' : (s.clienteNome||'Cliente')}</div>
+        <div style="display:flex;gap:8px;flex-wrap:wrap;">
+          <span class="badge badge-amber">📅 ${fmt(s.data)}</span>
+          <span class="badge badge-amber">🕐 ${s.hora}</span>
+          ${!s.disponivel && waLink ? `<a href="${waLink}" target="_blank" class="badge badge-green" style="text-decoration:none;">💬 ${s.clienteTel}</a>` : ''}
+        </div>
+      </div>
+      <div style="display:flex;gap:8px;flex-wrap:wrap;justify-content:flex-end;">
+        ${s.disponivel ? `<button class="btn btn-green btn-sm" onclick="abrirModalAgendar('${s.id}','${s.data}','${s.hora}')">+ Agendar</button>` : ''}
+        <button class="btn btn-red btn-sm" onclick="deletarSlot('${s.id}')">Remover</button>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function renderCalendario() {
+  const [ano, mes] = mesCalendario.split('-').map(Number);
+  const nomeMes = new Date(ano, mes-1, 1).toLocaleDateString('pt-BR', {month:'long', year:'numeric'});
+  const hj = new Date(); hj.setHours(0,0,0,0);
+  const slotsMes = {};
+  Object.entries(todosSlots).forEach(([id, s]) => {
+    const [sa, sm] = s.data.split('-').map(Number);
+    if (sa === ano && sm === mes) slotsMes[s.data] = {id, hora:s.hora, disponivel:s.disponivel, nome:s.clienteNome};
+  });
+  const prim = new Date(ano, mes-1, 1).getDay();
+  const dias = new Date(ano, mes, 0).getDate();
+  let cells = ['Dom','Seg','Ter','Qua','Qui','Sex','Sáb'].map(d => `<div class="cal-dow">${d}</div>`).join('');
+  for (let i=0;i<prim;i++) cells += `<div class="cal-day empty"></div>`;
+  for (let d=1; d<=dias; d++) {
+    const ds = `${ano}-${String(mes).padStart(2,'0')}-${String(d).padStart(2,'0')}`;
+    const passado = new Date(ds+'T00:00:00') < hj;
+    const slot = slotsMes[ds];
+    if (slot && slot.disponivel) {
+      cells += `<div class="cal-day has-slot${passado?' passado':''}" onclick="abrirModalAgendar('${slot.id}','${ds}','${slot.hora}')">
+        <span class="cal-day-num">${d}</span><span class="cal-slot-hora">${slot.hora}</span></div>`;
+    } else if (slot && !slot.disponivel) {
+      cells += `<div class="cal-day agendado${passado?' passado':''}" onclick="if(confirm('Remover agendamento de ${(slot.nome||'').split(' ')[0]}?'))deletarSlot('${slot.id}')">
+        <span class="cal-day-num">${d}</span><span class="cal-slot-hora">${slot.hora}</span>
+        <span class="cal-slot-nome">${(slot.nome||'').split(' ')[0]}</span></div>`;
+    } else if (!passado) {
+      cells += `<div class="cal-day livre" onclick="abrirModalLiberar('${ds}')"><span class="cal-day-num">${d}</span></div>`;
+    } else {
+      cells += `<div class="cal-day passado"><span class="cal-day-num">${d}</span></div>`;
+    }
+  }
+  const disp  = Object.values(todosSlots).filter(s=>s.disponivel).length;
+  const agend = Object.values(todosSlots).filter(s=>!s.disponivel).length;
+  document.getElementById('ment-content').innerHTML = `
+    <div style="max-width:560px;">
+      <div class="cal-nav-row">
+        <button class="cal-nav-btn" onclick="prevMes()">‹</button>
+        <span class="cal-month-title">${nomeMes.charAt(0).toUpperCase()+nomeMes.slice(1)}</span>
+        <button class="cal-nav-btn" onclick="nextMes()">›</button>
+      </div>
+      <div class="cal-grid">${cells}</div>
+      <div class="cal-legend">
+        <div class="cal-legend-item"><div class="cal-dot-l" style="background:#2a2a2a;border:1px solid #444;"></div>Livre — clique para liberar</div>
+        <div class="cal-legend-item"><div class="cal-dot-l" style="background:var(--amber)"></div>Disponível <strong style="color:var(--amber)">(${disp})</strong></div>
+        <div class="cal-legend-item"><div class="cal-dot-l" style="background:var(--green)"></div>Agendado <strong style="color:var(--green)">(${agend})</strong></div>
+      </div>
+    </div>`;
+}
+
+function prevMes() {
+  const [a,m] = mesCalendario.split('-').map(Number);
+  const d = new Date(a, m-2, 1);
+  mesCalendario = `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}`;
+  renderCalendario();
+}
+function nextMes() {
+  const [a,m] = mesCalendario.split('-').map(Number);
+  const d = new Date(a, m, 1);
+  mesCalendario = `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}`;
+  renderCalendario();
+}
+
+function renderDashMent() {
+  const slots = Object.values(todosSlots);
+  const preco = parseFloat(configAtual.preco) || 0;
+  const fmt2  = v => v > 0 ? 'R$ '+v.toLocaleString('pt-BR',{minimumFractionDigits:2}) : '—';
+  const [anoSel, mesSel] = mesDashboard.split('-');
+  const doMes = slots.filter(s => { const [a,m] = s.data.split('-'); return a===anoSel && m===mesSel && !s.disponivel; });
+  const agend = slots.filter(s=>!s.disponivel);
+  const real  = agend.filter(s=>new Date(s.data+'T23:59:59')<new Date());
+  const fut   = agend.filter(s=>new Date(s.data+'T00:00:00')>=new Date(new Date().toDateString()));
+  const meses = new Set(agend.map(s=>s.data.substring(0,7))).size || 1;
+  document.getElementById('ment-content').innerHTML = `
+    <div>
+      <div style="display:flex;align-items:center;gap:12px;margin-bottom:20px;">
+        <span style="font-size:13px;font-weight:700;color:var(--muted2);">Mês:</span>
+        <input type="month" value="${mesDashboard}" onchange="mesDashboard=this.value;renderDashMent()"
+          style="background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:6px 12px;color:var(--text);font-family:var(--sans);font-size:13px;outline:none;">
+      </div>
+      <div class="dash-mentor-grid">
+        <div class="dm-card"><div class="dm-label">Mentorias no mês</div><div class="dm-value green">${doMes.length}</div><div class="dm-sub">sessões</div></div>
+        <div class="dm-card"><div class="dm-label">Faturamento est.</div><div class="dm-value">${fmt2(doMes.length * preco)}</div><div class="dm-sub">R$${preco||'—'} × ${doMes.length}</div></div>
+        <div class="dm-card"><div class="dm-label">Total realizadas</div><div class="dm-value blue">${real.length}</div><div class="dm-sub">desde o início</div></div>
+        <div class="dm-card"><div class="dm-label">A realizar</div><div class="dm-value amber">${fut.length}</div><div class="dm-sub">próximas</div></div>
+        <div class="dm-card"><div class="dm-label">Total geral</div><div class="dm-value">${agend.length}</div><div class="dm-sub">mentorias</div></div>
+        <div class="dm-card"><div class="dm-label">Fat. total est.</div><div class="dm-value green" style="font-size:${agend.length*preco>=10000?'18px':'26px'}">${fmt2(agend.length*preco)}</div></div>
+      </div>
+      ${doMes.length ? `<div style="display:flex;flex-direction:column;gap:8px;">${doMes.sort((a,b)=>a.data.localeCompare(b.data)).map(s=>`
+        <div style="background:var(--surface2);border:1px solid var(--border);border-radius:10px;padding:14px 18px;display:flex;justify-content:space-between;align-items:center;">
+          <div><div style="font-size:13px;font-weight:700;">${s.clienteNome||'Cliente'}</div><div style="font-size:11px;color:var(--muted);margin-top:3px;font-family:var(--mono);">📅 ${fmt(s.data)} · 🕐 ${s.hora}</div></div>
+          <div style="font-family:var(--mono);color:var(--green);font-size:14px;">${fmt2(preco)}</div>
+        </div>`).join('')}</div>` : `<div class="empty-state"><div class="icon">📭</div><p>Nenhuma mentoria neste mês.</p></div>`}
+    </div>`;
+}
+
+// Slot management
+function abrirModalNovoSlot() { document.getElementById('modal-slot').classList.add('open'); }
+function fecharModalSlot()    { document.getElementById('modal-slot').classList.remove('open'); }
+
+async function adicionarSlot() {
+  const data = document.getElementById('slot-data').value;
+  const hora = document.getElementById('slot-hora').value;
+  if (!data || !hora) { alert('Selecione data e horário!'); return; }
+  const d = new Date(data+'T00:00:00'); const dia = d.getDay();
+  if (dia === 3) { alert('Bruno não dá mentoria às quartas!'); return; }
+  const h = parseInt(hora.split(':')[0]);
+  if (dia === 6) { if (h >= 13) { alert('Sábado só de manhã!'); return; } }
+  else { if (h < 18) { alert('Apenas após 18h!'); return; } }
+  if (Object.values(todosSlots).some(s => s.data === data)) { alert('Já existe horário para essa data!'); return; }
+  await fetch(`${DB}/slots.json`, { method:'POST', headers:{'Content-Type':'application/json'},
+    body: JSON.stringify({data, hora, disponivel:true, clienteNome:null, clienteTel:null, criadoEm:Date.now()}) });
+  fecharModalSlot();
+  document.getElementById('slot-data').value = '';
+  document.getElementById('slot-hora').value = '';
+  carregarSlots();
+}
+
+function validarDataSlot() {
+  const data = document.getElementById('slot-data').value;
+  if (!data) return;
+  const av = document.getElementById('aviso-data');
+  if (new Date(data+'T00:00:00').getDay() === 3) { av.textContent = '⚠️ Quarta-feira — Bruno não dá mentoria.'; av.style.display = 'block'; av.className = 'aviso erro'; }
+  else { av.style.display = 'none'; }
+}
+
+function abrirModalAgendar(id, data, hora) {
+  slotParaAgendar = {id, data, hora};
+  document.getElementById('modal-slot-info').textContent = `📅 ${fmt(data)} às 🕐 ${hora}`;
+  document.getElementById('modal-nome').value = '';
+  document.getElementById('modal-tel').value = '';
+  document.getElementById('modal-agendar').classList.add('open');
+  setTimeout(() => document.getElementById('modal-nome').focus(), 100);
+}
+function fecharModalAgendar() { document.getElementById('modal-agendar').classList.remove('open'); slotParaAgendar = null; }
+
+async function confirmarAgendamento() {
+  const nome = document.getElementById('modal-nome').value.trim();
+  const tel  = document.getElementById('modal-tel').value.trim();
+  if (!nome || !tel) { alert('Preencha nome e WhatsApp!'); return; }
+  const btn = document.getElementById('btn-conf-agt');
+  btn.disabled = true; btn.textContent = 'Confirmando...';
+  await fetch(`${DB}/slots/${slotParaAgendar.id}.json`, { method:'PATCH', headers:{'Content-Type':'application/json'},
+    body: JSON.stringify({disponivel:false, clienteNome:nome, clienteTel:tel, agendadoEm:Date.now()}) });
+  fecharModalAgendar();
+  btn.disabled = false; btn.textContent = 'Confirmar agendamento';
+  carregarSlots();
+}
+
+function abrirModalLiberar(data) {
+  dataParaLiberar = data;
+  document.getElementById('liberar-data-info').textContent = `📅 ${fmt(data)}`;
+  document.getElementById('liberar-hora').value = '';
+  document.getElementById('modal-liberar').classList.add('open');
+  setTimeout(() => document.getElementById('liberar-hora').focus(), 100);
+}
+function fecharModalLiberar() { document.getElementById('modal-liberar').classList.remove('open'); dataParaLiberar = null; }
+
+async function confirmarLiberar() {
+  const hora = document.getElementById('liberar-hora').value;
+  if (!hora) { alert('Selecione um horário!'); return; }
+  const d = new Date(dataParaLiberar+'T00:00:00'); const dia = d.getDay();
+  if (dia === 3) { alert('Bruno não dá mentoria às quartas!'); return; }
+  const h = parseInt(hora.split(':')[0]);
+  if (dia === 6) { if (h >= 13) { alert('Sábado só de manhã!'); return; } }
+  else { if (h < 18) { alert('Apenas após 18h!'); return; } }
+  await fetch(`${DB}/slots.json`, { method:'POST', headers:{'Content-Type':'application/json'},
+    body: JSON.stringify({data:dataParaLiberar, hora, disponivel:true, clienteNome:null, clienteTel:null, criadoEm:Date.now()}) });
+  fecharModalLiberar();
+  carregarSlots();
+}
+
+async function deletarSlot(id) {
+  await fetch(`${DB}/slots/${id}.json`, {method:'DELETE'});
+  carregarSlots();
+}
+
+function fmt(d) { const [a,m,dia] = d.split('-'); return `${dia}/${m}/${a}`; }
+
+// ══════════════════════════════════════════════════════════════
+// ASSESSORIAS — localStorage
+// ══════════════════════════════════════════════════════════════
+function getAssessorias() { return JSON.parse(localStorage.getItem('acelera_assessorias') || '[]'); }
+function saveAssessorias(data) { localStorage.setItem('acelera_assessorias', JSON.stringify(data)); }
+
+function abrirModalAssess(id) {
+  assessEditId = id || null;
+  const modal = document.getElementById('modal-assess');
+  document.getElementById('modal-assess-title').textContent = id ? '✏️ Editar assessoria' : '🏪 Nova assessoria';
+  if (id) {
+    const assess = getAssessorias().find(a => a.id === id);
+    if (assess) {
+      document.getElementById('a-nome').value  = assess.nome || '';
+      document.getElementById('a-loja').value  = assess.loja || '';
+      document.getElementById('a-url').value   = assess.url || '';
+      document.getElementById('a-login').value = assess.login || '';
+      document.getElementById('a-senha').value = assess.senha || '';
+      document.getElementById('a-valor').value = assess.valor || '';
+      document.getElementById('a-renov').value = assess.renov || '';
+      document.getElementById('a-pag').value   = assess.pag || 'pago';
+      document.getElementById('a-obs').value   = assess.obs || '';
+    }
+  } else {
+    ['a-nome','a-loja','a-url','a-login','a-senha','a-valor','a-renov','a-obs'].forEach(id => document.getElementById(id).value = '');
+    document.getElementById('a-pag').value = 'pago';
+  }
+  modal.classList.add('open');
+}
+function fecharModalAssess() { document.getElementById('modal-assess').classList.remove('open'); assessEditId = null; }
+
+function salvarAssess() {
+  const nome  = document.getElementById('a-nome').value.trim();
+  const loja  = document.getElementById('a-loja').value.trim();
+  if (!nome || !loja) { alert('Preencha nome e loja!'); return; }
+  const assess = getAssessorias();
+  const dados = {
+    id: assessEditId || Date.now().toString(),
+    nome, loja,
+    url:   document.getElementById('a-url').value.trim(),
+    login: document.getElementById('a-login').value.trim(),
+    senha: document.getElementById('a-senha').value.trim(),
+    valor: parseFloat(document.getElementById('a-valor').value) || 0,
+    renov: document.getElementById('a-renov').value,
+    pag:   document.getElementById('a-pag').value,
+    obs:   document.getElementById('a-obs').value.trim(),
+    atualizadoEm: Date.now()
+  };
+  if (assessEditId) {
+    const idx = assess.findIndex(a => a.id === assessEditId);
+    if (idx > -1) assess[idx] = dados;
+  } else {
+    assess.push(dados);
+  }
+  saveAssessorias(assess);
+  fecharModalAssess();
+  renderAssessorias();
+  calcFinanceiro();
+}
+
+function deletarAssess(id) {
+  if (!confirm('Remover esta assessoria?')) return;
+  saveAssessorias(getAssessorias().filter(a => a.id !== id));
+  renderAssessorias();
+  calcFinanceiro();
+}
+
+function togglePag(id) {
+  const assess = getAssessorias();
+  const item = assess.find(a => a.id === id);
+  if (!item) return;
+  const order = ['pago','pendente','atrasado'];
+  item.pag = order[(order.indexOf(item.pag) + 1) % 3];
+  saveAssessorias(assess);
+  renderAssessorias();
+  calcFinanceiro();
+}
+
+function filtrarAssess(v) { assessFiltro = v.toLowerCase(); renderAssessorias(); }
+
+function renderAssessorias() {
+  const todos = getAssessorias();
+  const hoje = new Date(); hoje.setHours(0,0,0,0);
+  const lista = todos.filter(a => !assessFiltro || a.nome.toLowerCase().includes(assessFiltro) || a.loja.toLowerCase().includes(assessFiltro));
+
+  // KPIs
+  document.getElementById('ak-total').textContent = todos.length;
+  document.getElementById('ak-pago').textContent  = todos.filter(a => a.pag === 'pago').length;
+  document.getElementById('ak-pend').textContent  = todos.filter(a => a.pag === 'pendente' || a.pag === 'atrasado').length;
+  const nb = document.getElementById('nb-assess');
+  const pend = todos.filter(a => a.pag !== 'pago').length;
+  if (pend > 0) { nb.textContent = pend; nb.style.display = ''; } else nb.style.display = 'none';
+
+  // Renovando em breve (≤7 dias)
+  let renovBreve = 0;
+  todos.forEach(a => {
+    if (!a.renov) return;
+    const diff = Math.ceil((new Date(a.renov+'T00:00:00') - hoje) / 86400000);
+    if (diff >= 0 && diff <= 7) renovBreve++;
+  });
+  document.getElementById('ak-renov').textContent = renovBreve;
+
+  if (!lista.length) {
+    document.getElementById('assess-tbody').innerHTML = `<tr><td colspan="6"><div class="empty-state"><div class="icon">🏪</div><p>Nenhuma assessoria encontrada.</p></div></td></tr>`;
+    return;
+  }
+
+  document.getElementById('assess-tbody').innerHTML = lista.map(a => {
+    let renovClass = '', renovText = '';
+    if (a.renov) {
+      const diff = Math.ceil((new Date(a.renov+'T00:00:00') - hoje) / 86400000);
+      renovText = fmt(a.renov.replace(/-/g,'‑').split('‑').reverse().join('/'));
+      renovText = a.renov.split('-').reverse().join('/');
+      if (diff < 0)      renovClass = 'renov-overdue';
+      else if (diff <= 7) renovClass = 'renov-near';
+      renovText += diff < 0 ? ` <span class="badge badge-red">vencido</span>` : diff <= 7 ? ` <span class="badge badge-amber">${diff}d</span>` : '';
+    }
+    const pagBadge = a.pag === 'pago' ? `<span class="badge badge-green">✅ Pago</span>` :
+                     a.pag === 'atrasado' ? `<span class="badge badge-red">🚨 Atrasado</span>` :
+                     `<span class="badge badge-amber">⚠️ Pendente</span>`;
+    return `<tr>
+      <td>
+        <div class="client-name">${a.nome}</div>
+        <div class="client-store">🏪 ${a.loja}${a.url ? ` · <a href="${a.url}" target="_blank" style="color:var(--blue);text-decoration:none;">${a.url.replace('https://','')}</a>` : ''}</div>
+      </td>
+      <td style="font-family:var(--mono);font-size:12px;">${a.login || '—'}</td>
+      <td>
+        <div class="pwd-field">
+          <span class="pwd-text" id="pwd-${a.id}">••••••</span>
+          <button class="pwd-toggle" onclick="togglePwd('${a.id}','${(a.senha||'').replace(/'/g,"\\'")}')">👁</button>
+        </div>
+      </td>
+      <td class="${renovClass}" style="font-family:var(--mono);font-size:12px;">${renovText || '—'}</td>
+      <td><span onclick="togglePag('${a.id}')" style="cursor:pointer;" title="Clique para alternar">${pagBadge}</span></td>
+      <td>
+        <div class="action-btns">
+          <button class="btn btn-ghost btn-sm" onclick="abrirModalAssess('${a.id}')">✏️</button>
+          <button class="btn btn-red btn-sm" onclick="deletarAssess('${a.id}')">🗑</button>
+        </div>
+      </td>
+    </tr>`;
+  }).join('');
+}
+
+function togglePwd(id, senha) {
+  const el = document.getElementById(`pwd-${id}`);
+  el.textContent = el.textContent === '••••••' ? senha : '••••••';
+}
+
+// ══════════════════════════════════════════════════════════════
+// FINANCEIRO
+// ══════════════════════════════════════════════════════════════
+function calcFinanceiro() {
+  const assess = getAssessorias();
+  const assessVal = assess.reduce((s, a) => s + (a.pag === 'pago' ? (a.valor || 0) : 0), 0);
+  const preco = parseFloat(configAtual.preco) || 0;
+  const slots = Object.values(todosSlots);
+  const [ano, mes] = [new Date().getFullYear(), String(new Date().getMonth()+1).padStart(2,'0')];
+  const mentVal = slots.filter(s => { const [a,m] = s.data.split('-'); return a===String(ano)&&m===mes&&!s.disponivel; }).length * preco;
+
+  const recHM    = 16091;
+  const metaGast = 10557;
+  const fixos    = 311;
+  const total    = recHM + assessVal + mentVal;
+  const lucro    = total - metaGast - fixos;
+  const margem   = total > 0 ? Math.round(lucro / total * 100) : 0;
+
+  const br = v => 'R$'+v.toLocaleString('pt-BR',{minimumFractionDigits:0});
+  document.getElementById('fin-receita').textContent   = br(total);
+  document.getElementById('fin-lucro').textContent     = '+'+br(lucro);
+  document.getElementById('fin-lucro-sub').textContent = `margem ${margem}% · +${br(Math.round(lucro/30))}/dia`;
+  document.getElementById('fin-assess-val').textContent  = '+'+br(assessVal);
+  document.getElementById('fin-ment-val').textContent    = '+'+br(mentVal);
+  document.getElementById('fin-total-rec').textContent   = br(total);
+  document.getElementById('fin-res-assess').textContent  = '+'+br(assessVal);
+  document.getElementById('fin-res-ment').textContent    = '+'+br(mentVal);
+  document.getElementById('fin-resultado').textContent   = '+'+br(lucro);
+  document.getElementById('fin-margem').textContent      = margem+'%';
+}
+
+// ══════════════════════════════════════════════════════════════
+// INIT
+// ══════════════════════════════════════════════════════════════
+carregarConfig();
+carregarSlots();
+setInterval(carregarSlots, 15000);
+renderAssessorias();
+</script>
+</body>
+</html>
