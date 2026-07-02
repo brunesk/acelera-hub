@@ -25,15 +25,17 @@ def hotmart_token(basic):
     with urllib.request.urlopen(req) as r:
         return json.loads(r.read())['access_token']
 
-def hotmart_all(token):
+def hotmart_all(token, start_ms, end_ms):
     items, page_token = [], None
     while True:
-        params = {'max_results': 100}
+        params = {'max_results': 500, 'start_date': start_ms, 'end_date': end_ms}
         if page_token: params['page_token'] = page_token
         url = 'https://developers.hotmart.com/payments/api/v1/sales/history?' + urllib.parse.urlencode(params)
         req = urllib.request.Request(url, headers={'Authorization': f'Bearer {token}'})
         with urllib.request.urlopen(req) as r: data = json.loads(r.read())
-        items.extend(data.get('items', []))
+        batch = data.get('items', [])
+        items.extend(batch)
+        print(f'  HM página: {len(batch)} itens (total {len(items)})')
         page_token = data.get('page_info', {}).get('next_page_token')
         if not page_token: break
     return items
@@ -42,12 +44,18 @@ def hotmart_all(token):
 def meta_daily(token, since, until):
     params = {
         'access_token': token, 'level': 'account', 'time_increment': '1',
-        'time_range': json.dumps({'since': since, 'until': until}), 'limit': 100,
+        'time_range': json.dumps({'since': since, 'until': until}), 'limit': 500,
         'fields': 'date_start,spend,impressions,clicks,ctr,cpm,actions,action_values'
     }
+    results = []
     url = f'https://graph.facebook.com/v19.0/{AD_ACCOUNT}/insights?' + urllib.parse.urlencode(params)
     try:
-        with urllib.request.urlopen(url) as r: return json.loads(r.read()).get('data', [])
+        while url:
+            with urllib.request.urlopen(url) as r:
+                data = json.loads(r.read())
+            results.extend(data.get('data', []))
+            url = data.get('paging', {}).get('next')
+        return results
     except urllib.error.HTTPError as e:
         err = json.loads(e.read().decode())
         sys.exit(f"❌ Meta API: {err.get('error',{}).get('message','erro desconhecido')}")
@@ -97,8 +105,14 @@ m_start   = today.replace(day=1)
 print('🔑 Buscando token Hotmart...')
 hm_token = hotmart_token(hotmart_basic)
 
-print('📦 Buscando vendas Hotmart...')
-hm_all = hotmart_all(hm_token)
+# Busca desde Jan/2025 até agora para ter histórico completo
+hist_start = datetime(2025, 1, 1, tzinfo=BRT)
+hist_end   = now
+hist_start_ms = int(hist_start.timestamp() * 1000)
+hist_end_ms   = int(hist_end.timestamp() * 1000)
+
+print(f'📦 Buscando vendas Hotmart ({hist_start.strftime("%d/%m/%Y")} → hoje)...')
+hm_all = hotmart_all(hm_token, hist_start_ms, hist_end_ms)
 
 # Agrupa por dia e por mês
 hm_dia = defaultdict(lambda: {'v': 0, 'bruto': 0.0, 'liq': 0.0})
@@ -136,21 +150,28 @@ for d in meta_raw:
 print('🎨 Buscando criativos...')
 criativos = meta_ads(meta_token, since_str, until_str)
 
-# Busca histórico Meta (meses anteriores)
+# Busca histórico Meta (todos os meses anteriores ao atual)
 all_months = sorted(hm_mes.keys())
 prev_months = [m for m in all_months if m < curr_key]
 meta_mes = {}
 if prev_months:
     print('📅 Buscando histórico Meta...')
-    hist_since = f'{prev_months[0]}-01'
+    # Sempre começa do primeiro mês que temos no Hotmart ou Jan/2025
+    hist_since = min(f'{prev_months[0]}-01', '2025-01-01')
     last_prev  = prev_months[-1]
     yr, mo     = int(last_prev[:4]), int(last_prev[5:7])
     hist_until = f'{last_prev}-{calendar.monthrange(yr, mo)[1]:02d}'
-    for d in meta_daily(meta_token, hist_since, hist_until):
+    raw = meta_daily(meta_token, hist_since, hist_until)
+    print(f'  Meta histórico: {len(raw)} dias')
+    for d in raw:
         mk = d['date_start'][:7]
         if mk not in meta_mes: meta_mes[mk] = {'gasto': 0.0, 'compras_pixel': 0}
         meta_mes[mk]['gasto'] += float(d.get('spend', 0))
         meta_mes[mk]['compras_pixel'] += next((int(a['value']) for a in d.get('actions', []) if a['action_type'] == 'purchase'), 0)
+    # Adiciona meses que podem estar no Meta mas não no Hotmart
+    for mk in list(meta_mes.keys()):
+        if mk < curr_key and mk not in prev_months:
+            prev_months = sorted(prev_months + [mk])
 
 # KPIs mês vigente
 all_days = sorted(set(list(hm_dia.keys()) + list(meta_dia.keys())))
