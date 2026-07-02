@@ -463,6 +463,10 @@ input[type="month"]::-webkit-calendar-picker-indicator { filter:invert(.6);curso
             <span style="width:6px;height:6px;border-radius:50%;background:var(--green);display:inline-block;animation:pulse 2s infinite;"></span>
             <span id="dash-update-txt">atualizando...</span>
           </div>
+          <button onclick="atualizarDashboard()"
+            style="display:flex;align-items:center;gap:6px;padding:7px 14px;background:var(--surface2);border:1px solid var(--border);border-radius:9px;font-size:12px;font-weight:700;color:var(--amber);cursor:pointer;font-family:var(--sans);">
+            ↻ Atualizar agora
+          </button>
           <a href="https://brunesk.github.io/dashboard-acelera/" target="_blank"
             style="display:flex;align-items:center;gap:6px;padding:7px 14px;background:var(--surface2);border:1px solid var(--border);border-radius:9px;font-size:12px;font-weight:700;color:var(--muted2);text-decoration:none;">
             ↗ Ver original
@@ -1296,153 +1300,202 @@ setInterval(carregarSlots, 15000);
 renderAssessorias();
 
 // ══════════════════════════════════════════════════════════════
-// DASHBOARD CURSOS — fetch do GitHub Pages + render dark theme
+// DASHBOARD CURSOS — iframe oculto (mesmo domínio) com switchMonth
 // ══════════════════════════════════════════════════════════════
-let dashDiario = [], dashSemanas = [], dashCriativos = [];
+let dashMesAtual = '2026-06';
+let dashIframe = null;
+let dashIframeReady = false;
 
-async function carregarDashboard(mes) {
-  document.getElementById('dash-update-txt').textContent = 'buscando dados...';
+function initDashIframe() {
+  dashIframe = document.createElement('iframe');
+  dashIframe.src = 'https://brunesk.github.io/dashboard-acelera/';
+  dashIframe.style.cssText = 'position:absolute;left:-9999px;top:-9999px;width:1px;height:1px;opacity:0;pointer-events:none;';
+  dashIframe.id = 'dash-hidden-iframe';
+  document.body.appendChild(dashIframe);
+  dashIframe.addEventListener('load', () => {
+    dashIframeReady = true;
+    renderDashFromIframe(dashMesAtual);
+  });
+}
+
+function carregarDashboard(mes) {
+  dashMesAtual = mes;
+  document.getElementById('dash-update-txt').textContent = 'carregando...';
+  // Desabilita loading visual nos KPIs
+  ['d-vendas','d-liq','d-meta','d-lucro','d-roas','d-ticket'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) { el.style.opacity = '0.4'; }
+  });
+
+  if (!dashIframe) { initDashIframe(); return; }
+  if (dashIframeReady) renderDashFromIframe(mes);
+}
+
+function atualizarDashboard() {
+  dashIframeReady = false;
+  document.getElementById('dash-update-txt').textContent = 'atualizando...';
+  dashIframe.src = 'https://brunesk.github.io/dashboard-acelera/?t=' + Date.now();
+}
+
+function renderDashFromIframe(mes) {
   try {
-    const url = 'https://brunesk.github.io/dashboard-acelera/';
-    const r = await fetch(url, {cache:'no-store'});
-    const html = await r.text();
-    const doc = new DOMParser().parseFromString(html, 'text/html');
+    const iDoc = dashIframe.contentDocument || dashIframe.contentWindow.document;
+    const iWin = dashIframe.contentWindow;
 
-    // KPIs
-    const get = id => doc.getElementById(id)?.textContent?.trim() || '—';
-    document.getElementById('d-vendas').textContent  = get('kpi-vendas');
-    document.getElementById('d-liq').textContent     = get('kpi-liq');
-    document.getElementById('d-meta').textContent    = get('kpi-meta');
-    document.getElementById('d-lucro').textContent   = get('kpi-lucro');
-    document.getElementById('d-lucro-dia').textContent = get('kpi-lucro-dia') || 'por dia';
-    document.getElementById('d-roas').textContent    = get('kpi-roas');
-    document.getElementById('d-ticket').textContent  = get('kpi-ticket');
-
-    // Período
-    const per = doc.getElementById('periodo-header')?.textContent?.trim();
-    if (per) document.getElementById('dash-periodo').textContent = 'Meta Ads + Hotmart · ' + per;
-
-    // Criativos
-    const cRows = doc.querySelectorAll('#weekly-tbody')?.length
-      ? [...doc.querySelectorAll('table tbody tr')]
-      : [];
-
-    // Parse weekly tbody
-    const weeklyTbody = doc.getElementById('weekly-tbody');
-    if (weeklyTbody) {
-      const rows = weeklyTbody.querySelectorAll('tr');
-      let html2 = '';
-      rows.forEach(row => {
-        const tds = row.querySelectorAll('td');
-        if (tds.length < 8) return;
-        const semana = tds[0].textContent.trim();
-        const periodo = tds[1].textContent.trim();
-        const vendas = tds[2].textContent.trim();
-        const lucro = tds[6].textContent.trim();
-        const roas = tds[7].textContent.trim();
-        const roasVal = parseFloat(roas);
-        const roasColor = roasVal >= 1.5 ? 'var(--green)' : roasVal >= 1.2 ? 'var(--amber)' : 'var(--red)';
-        const lucroColor = lucro.startsWith('+') ? 'var(--green)' : 'var(--red)';
-        const isCurrent = semana.includes('atual') || row.className.includes('blue');
-        html2 += `<tr style="${isCurrent ? 'background:var(--amber-glow)' : ''}">
-          <td style="padding:12px 14px;border-bottom:1px solid var(--border);">
-            <div style="font-size:13px;font-weight:700;">${semana.replace(/\s*atual\s*/gi,'')}</div>
-            <div style="font-size:10px;color:var(--muted);font-family:var(--mono);">${periodo}</div>
-          </td>
-          <td style="padding:12px 14px;border-bottom:1px solid var(--border);text-align:right;font-family:var(--mono);font-size:13px;">${vendas}</td>
-          <td style="padding:12px 14px;border-bottom:1px solid var(--border);text-align:right;font-family:var(--mono);font-size:13px;font-weight:700;color:${lucroColor};">${lucro}</td>
-          <td style="padding:12px 14px;border-bottom:1px solid var(--border);text-align:right;font-family:var(--mono);font-size:13px;font-weight:700;color:${roasColor};">${roas}</td>
-        </tr>`;
-      });
-      document.getElementById('semanas-tbody').innerHTML = html2 || '<tr><td colspan="4" style="padding:16px;text-align:center;color:var(--muted);">Sem dados</td></tr>';
+    // Troca o mês se necessário
+    const sel = iDoc.getElementById('monthSel');
+    if (sel && sel.value !== mes) {
+      sel.value = mes;
+      if (typeof iWin.switchMonth === 'function') {
+        iWin.switchMonth(mes);
+      }
+      // Aguarda a atualização do DOM pelo switchMonth
+      setTimeout(() => extrairDados(iDoc, iWin), 120);
+      return;
     }
+    extrairDados(iDoc, iWin);
+  } catch(e) {
+    document.getElementById('dash-update-txt').textContent = '⚠ erro ao ler dados';
+    console.error(e);
+  }
+}
 
-    // Criativos — busca a tabela de criativos (a que tem Criativo/Gasto/ROAS/CPA)
-    const allTbodies = doc.querySelectorAll('table tbody');
-    let criativosBody = null;
-    allTbodies.forEach(tb => {
-      const text = tb.textContent;
-      if (text.includes('Video') || text.includes('Criativo')) criativosBody = tb;
+function extrairDados(iDoc, iWin) {
+  const get = id => iDoc.getElementById(id)?.textContent?.trim() || '—';
+
+  // KPIs
+  const fields = {
+    'd-vendas': get('kpi-vendas'),
+    'd-liq':    get('kpi-liq'),
+    'd-meta':   get('kpi-meta'),
+    'd-lucro':  get('kpi-lucro'),
+    'd-roas':   get('kpi-roas'),
+    'd-ticket': get('kpi-ticket'),
+  };
+  Object.entries(fields).forEach(([id, val]) => {
+    const el = document.getElementById(id);
+    if (el) { el.textContent = val; el.style.opacity = '1'; }
+  });
+  const lucDia = get('kpi-lucro-dia');
+  if (lucDia) document.getElementById('d-lucro-dia').textContent = lucDia;
+
+  // Período
+  const per = iDoc.getElementById('periodo-header')?.textContent?.trim();
+  if (per) document.getElementById('dash-periodo').textContent = 'Meta Ads + Hotmart · ' + per;
+
+  // Semanas
+  const weeklyTbody = iDoc.getElementById('weekly-tbody');
+  if (weeklyTbody) {
+    let h = '';
+    weeklyTbody.querySelectorAll('tr').forEach(row => {
+      const tds = row.querySelectorAll('td');
+      if (tds.length < 8) return;
+      const semana  = tds[0].textContent.replace(/atual/gi,'').trim();
+      const periodo = tds[1].textContent.trim();
+      const vendas  = tds[2].textContent.trim();
+      const lucro   = tds[6].textContent.trim();
+      const roas    = tds[7].textContent.trim();
+      const rv      = parseFloat(roas);
+      const rc      = rv >= 1.5 ? 'var(--green)' : rv >= 1.2 ? 'var(--amber)' : 'var(--red)';
+      const lc      = lucro.startsWith('+') ? 'var(--green)' : 'var(--red)';
+      const curr    = row.className.includes('blue') || tds[0].textContent.includes('atual');
+      h += `<tr style="${curr ? 'background:rgba(245,166,35,.06)' : ''}">
+        <td style="padding:12px 14px;border-bottom:1px solid var(--border);">
+          <div style="font-size:13px;font-weight:700;">${semana}</div>
+          <div style="font-size:10px;color:var(--muted);font-family:var(--mono);">${periodo}</div>
+        </td>
+        <td style="padding:12px 14px;border-bottom:1px solid var(--border);text-align:right;font-family:var(--mono);font-size:13px;">${vendas}</td>
+        <td style="padding:12px 14px;border-bottom:1px solid var(--border);text-align:right;font-family:var(--mono);font-size:13px;font-weight:700;color:${lc};">${lucro}</td>
+        <td style="padding:12px 14px;border-bottom:1px solid var(--border);text-align:right;font-family:var(--mono);font-size:13px;font-weight:700;color:${rc};">${roas}</td>
+      </tr>`;
     });
+    document.getElementById('semanas-tbody').innerHTML = h || '<tr><td colspan="4" style="padding:16px;text-align:center;color:var(--muted);">Sem dados</td></tr>';
+  }
 
-    if (criativosBody) {
-      const rows = criativosBody.querySelectorAll('tr');
-      const medals = ['🥇','🥈','🥉','4º','5º','6º','7º','8º'];
-      let cHtml = '';
-      rows.forEach((row, i) => {
-        const tds = row.querySelectorAll('td');
-        if (tds.length < 9) return;
-        // td[0]=criativo, td[2]=gasto, td[6]=compras, td[7]=ROAS, td[8]=CPA
-        const nome = tds[0].querySelector('p')?.textContent?.trim() || tds[0].textContent.trim().substring(0,30);
-        const gasto = tds[2].textContent.trim();
-        const compras = tds[6].textContent.trim();
-        const roas = tds[7].textContent.trim();
-        const cpa = tds[8].textContent.trim();
-        const statusEl = tds[1].querySelector('span');
-        const status = statusEl?.textContent?.trim() || '';
-        const ativo = status === 'ACTIVE';
-        const roasVal = parseFloat(roas);
-        const roasColor = roasVal >= 1.5 ? 'var(--green)' : roasVal >= 1.2 ? 'var(--amber)' : 'var(--red)';
-
-        // barra de gasto relativa
-        const gastoNum = parseFloat(gasto.replace(/[^\d.]/g,'')) || 0;
-        cHtml += `
-          <div style="display:flex;align-items:center;gap:12px;padding:10px 14px;border-bottom:1px solid var(--border);">
-            <span style="font-size:14px;width:24px;flex-shrink:0;">${medals[i]||'·'}</span>
+  // Criativos
+  const allTbodies = iDoc.querySelectorAll('table tbody');
+  let criativosBody = null;
+  allTbodies.forEach(tb => {
+    if ((tb.textContent.includes('Video') || tb.textContent.includes('Criativo')) && !criativosBody)
+      criativosBody = tb;
+  });
+  if (criativosBody) {
+    const medals = ['🥇','🥈','🥉','4º','5º','6º','7º','8º'];
+    let ch = '';
+    let maxGasto = 0;
+    const rowsArr = [...criativosBody.querySelectorAll('tr')].filter(r => r.querySelectorAll('td').length >= 9);
+    rowsArr.forEach(row => {
+      const g = parseFloat(row.querySelectorAll('td')[2].textContent.replace(/[^\d.]/g,'')) || 0;
+      if (g > maxGasto) maxGasto = g;
+    });
+    rowsArr.forEach((row, i) => {
+      const tds = row.querySelectorAll('td');
+      const nome    = tds[0].querySelector('p')?.textContent?.trim() || tds[0].textContent.trim().slice(0,40);
+      const gasto   = tds[2].textContent.trim();
+      const gastoN  = parseFloat(gasto.replace(/[^\d.]/g,'')) || 0;
+      const compras = tds[6].textContent.trim();
+      const roas    = tds[7].textContent.trim();
+      const cpa     = tds[8].textContent.trim();
+      const ativo   = tds[1].querySelector('span')?.textContent?.trim() === 'ACTIVE';
+      const rv      = parseFloat(roas);
+      const rc      = rv >= 1.5 ? 'var(--green)' : rv >= 1.2 ? 'var(--amber)' : 'var(--red)';
+      const pct     = maxGasto > 0 ? Math.round((gastoN / maxGasto) * 100) : 0;
+      ch += `
+        <div style="padding:12px 14px;border-bottom:1px solid var(--border);">
+          <div style="display:flex;align-items:center;gap:10px;margin-bottom:6px;">
+            <span style="font-size:15px;width:22px;flex-shrink:0;text-align:center;">${medals[i]||'·'}</span>
             <div style="flex:1;min-width:0;">
-              <div style="font-size:12px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${nome}</div>
-              <div style="display:flex;gap:8px;margin-top:4px;">
-                <span class="badge ${ativo ? 'badge-green' : 'badge-amber'}">${ativo ? '● Ativo' : '○ Pausado'}</span>
-                <span style="font-size:10px;color:var(--muted);font-family:var(--mono);">${compras} vendas · CPA ${cpa}</span>
-              </div>
+              <div style="font-size:13px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${nome}</div>
             </div>
             <div style="text-align:right;flex-shrink:0;">
-              <div style="font-family:var(--mono);font-size:13px;font-weight:700;color:${roasColor};">${roas}</div>
+              <div style="font-family:var(--mono);font-size:14px;font-weight:800;color:${rc};">${roas}</div>
               <div style="font-size:10px;color:var(--muted);font-family:var(--mono);">${gasto}</div>
             </div>
-          </div>`;
-      });
-      document.getElementById('criativos-list').innerHTML = cHtml || '<div style="padding:16px;text-align:center;color:var(--muted);">Sem dados</div>';
-    }
-
-    // Dia a dia
-    const dailyTbody = doc.getElementById('daily-tbody');
-    if (dailyTbody) {
-      const rows = dailyTbody.querySelectorAll('tr');
-      let dHtml = '';
-      rows.forEach(row => {
-        const tds = row.querySelectorAll('td');
-        if (tds.length < 7) return;
-        const dia = tds[0].textContent.trim();
-        const vendas = tds[1].textContent.trim();
-        const liq = tds[3].textContent.trim();
-        const meta = tds[4].textContent.trim();
-        const lucro = tds[5].textContent.trim();
-        const roas = tds[6].textContent.trim();
-        const lucroColor = lucro.startsWith('+') ? 'var(--green)' : 'var(--red)';
-        const roasVal = parseFloat(roas);
-        const roasColor = roasVal >= 1.5 ? 'var(--green)' : roasVal >= 1.2 ? 'var(--amber)' : 'var(--red)';
-        dHtml += `<tr>
-          <td style="padding:10px 14px;border-bottom:1px solid var(--border);font-family:var(--mono);font-size:12px;font-weight:700;">${dia}</td>
-          <td style="padding:10px 14px;border-bottom:1px solid var(--border);text-align:right;font-family:var(--mono);font-size:12px;">${vendas}</td>
-          <td style="padding:10px 14px;border-bottom:1px solid var(--border);text-align:right;font-family:var(--mono);font-size:12px;color:var(--green);">${liq}</td>
-          <td style="padding:10px 14px;border-bottom:1px solid var(--border);text-align:right;font-family:var(--mono);font-size:12px;color:var(--red);">${meta}</td>
-          <td style="padding:10px 14px;border-bottom:1px solid var(--border);text-align:right;font-family:var(--mono);font-size:12px;font-weight:700;color:${lucroColor};">${lucro}</td>
-          <td style="padding:10px 14px;border-bottom:1px solid var(--border);text-align:right;font-family:var(--mono);font-size:12px;font-weight:700;color:${roasColor};">${roas}</td>
-        </tr>`;
-      });
-      document.getElementById('diaadia-tbody').innerHTML = dHtml || '<tr><td colspan="6" style="padding:16px;text-align:center;color:var(--muted);">Sem dados</td></tr>';
-    }
-
-    // Timestamp
-    const updated = doc.querySelector('.text-blue-200')?.textContent?.trim() ||
-                    doc.querySelector('[class*="text-blue"]')?.textContent?.trim() || '';
-    document.getElementById('dash-update-txt').textContent = updated.includes('Atualizado') ? updated : 'dados ao vivo';
-
-  } catch(e) {
-    document.getElementById('dash-update-txt').textContent = '⚠ erro ao buscar dados';
-    console.error('Dashboard fetch error:', e);
+          </div>
+          <div style="display:flex;align-items:center;gap:10px;">
+            <div style="flex:1;height:4px;background:var(--border2);border-radius:2px;">
+              <div style="height:100%;width:${pct}%;background:${rc};border-radius:2px;transition:width .4s;"></div>
+            </div>
+            <span class="badge ${ativo ? 'badge-green' : 'badge-amber'}">${ativo ? '● Ativo' : '○ Pausado'}</span>
+            <span style="font-size:10px;color:var(--muted);font-family:var(--mono);">${compras}v · CPA ${cpa}</span>
+          </div>
+        </div>`;
+    });
+    document.getElementById('criativos-list').innerHTML = ch || '<div style="padding:20px;text-align:center;color:var(--muted);">Sem dados</div>';
   }
+
+  // Dia a dia
+  const dailyTbody = iDoc.getElementById('daily-tbody');
+  if (dailyTbody) {
+    let dh = '';
+    dailyTbody.querySelectorAll('tr').forEach(row => {
+      const tds = row.querySelectorAll('td');
+      if (tds.length < 7) return;
+      const dia    = tds[0].textContent.trim();
+      const vendas = tds[1].textContent.trim();
+      const liq    = tds[3].textContent.trim();
+      const meta   = tds[4].textContent.trim();
+      const lucro  = tds[5].textContent.trim();
+      const roas   = tds[6].textContent.trim();
+      const lc = lucro.startsWith('+') ? 'var(--green)' : 'var(--red)';
+      const rv = parseFloat(roas);
+      const rc = rv >= 1.5 ? 'var(--green)' : rv >= 1.2 ? 'var(--amber)' : 'var(--red)';
+      dh += `<tr>
+        <td style="padding:10px 14px;border-bottom:1px solid var(--border);font-family:var(--mono);font-size:12px;font-weight:700;">${dia}</td>
+        <td style="padding:10px 14px;border-bottom:1px solid var(--border);text-align:right;font-family:var(--mono);font-size:12px;">${vendas}</td>
+        <td style="padding:10px 14px;border-bottom:1px solid var(--border);text-align:right;font-family:var(--mono);font-size:12px;color:var(--green);">${liq}</td>
+        <td style="padding:10px 14px;border-bottom:1px solid var(--border);text-align:right;font-family:var(--mono);font-size:12px;color:var(--red);">${meta}</td>
+        <td style="padding:10px 14px;border-bottom:1px solid var(--border);text-align:right;font-family:var(--mono);font-size:12px;font-weight:700;color:${lc};">${lucro}</td>
+        <td style="padding:10px 14px;border-bottom:1px solid var(--border);text-align:right;font-family:var(--mono);font-size:12px;font-weight:700;color:${rc};">${roas}</td>
+      </tr>`;
+    });
+    document.getElementById('diaadia-tbody').innerHTML = dh || '<tr><td colspan="6" style="padding:16px;text-align:center;color:var(--muted);">Sem dados</td></tr>';
+  }
+
+  // Timestamp do original
+  const upd = iDoc.querySelector('.text-green-400')?.closest('div')?.textContent?.trim()
+           || iDoc.querySelector('[class*="green"]')?.textContent?.trim() || '';
+  document.getElementById('dash-update-txt').textContent = upd.includes('Atualizado') ? upd.replace(/\s+/g,' ') : 'dados ao vivo ✓';
 }
 
 function toggleDiaDia() {
@@ -1453,7 +1506,7 @@ function toggleDiaDia() {
   label.textContent = open ? '▲ recolher' : '▼ expandir';
 }
 
-carregarDashboard('2026-06');
+initDashIframe();
 </script>
 </body>
 </html>
