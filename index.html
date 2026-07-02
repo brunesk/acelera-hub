@@ -8,14 +8,14 @@
 <link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
 :root {
-  --bg:         #050508;
-  --surface:    #0b0c11;
-  --surface2:   #12131a;
-  --border:     #191b24;
-  --border2:    #242734;
-  --text:       #eef0f8;
-  --muted:      #4a5168;
-  --muted2:     #8590aa;
+  --bg:         #08090d;
+  --surface:    #10121a;
+  --surface2:   #181a24;
+  --border:     #232633;
+  --border2:    #303445;
+  --text:       #f4f6fc;
+  --muted:      #7b849e;
+  --muted2:     #a8b1c7;
   --amber:      #f5a623;
   --amber-dim:  rgba(245,166,35,.12);
   --amber-glow: rgba(245,166,35,.07);
@@ -45,7 +45,7 @@
 html, body { height: 100%; }
 body {
   font-family: var(--sans); background: var(--bg); color: var(--text);
-  font-size: 13.5px; display: flex; overflow: hidden;
+  font-size: 15px; display: flex; overflow: hidden;
   -webkit-font-smoothing: antialiased; text-rendering: optimizeLegibility;
 }
 ::selection { background: rgba(245,166,35,.28); color: #fff; }
@@ -88,18 +88,18 @@ body::after {
 @keyframes rise { from { opacity: 0; transform: translateY(14px) scale(.985); } }
 
 /* ── TABELAS (compartilhado) ─────────────────────────── */
-.tbl { width: 100%; border-collapse: collapse; font-size: 12px; }
+.tbl { width: 100%; border-collapse: collapse; font-size: 13.5px; }
 .tbl th {
-  text-align: right; padding: 10px 14px;
-  font-size: 10px; font-weight: 700; text-transform: uppercase;
+  text-align: right; padding: 11px 14px;
+  font-size: 11px; font-weight: 700; text-transform: uppercase;
   letter-spacing: .07em; color: var(--muted);
   border-bottom: 1px solid var(--border);
 }
 .tbl th:first-child { text-align: left; }
 .tbl td {
-  text-align: right; padding: 11px 14px;
+  text-align: right; padding: 12px 14px;
   border-bottom: 1px solid var(--border);
-  font-family: var(--mono); font-size: 12px;
+  font-family: var(--mono); font-size: 13.5px;
 }
 .tbl td:first-child { text-align: left; font-family: var(--sans); }
 .tbl tbody tr { transition: background .12s; }
@@ -111,7 +111,7 @@ body::after {
 .chart-wrap svg { display: block; width: 100%; height: auto; overflow: visible; }
 .chart-legend {
   display: flex; gap: 18px; flex-wrap: wrap;
-  padding: 0 20px 16px; font-size: 11px; color: var(--muted2);
+  padding: 0 20px 16px; font-size: 12.5px; color: var(--muted2);
   font-family: var(--mono);
 }
 .chart-legend .cl-item { display: flex; align-items: center; gap: 6px; }
@@ -175,11 +175,11 @@ body::after {
 .nav-section-label::after { content: ''; flex: 1; height: 1px; background: linear-gradient(90deg, var(--border), transparent); }
 .nav-item {
   display: flex; align-items: center; gap: 11px;
-  padding: 9px 12px;
+  padding: 10px 12px;
   border-radius: var(--radius-sm);
   cursor: pointer;
   color: var(--muted2);
-  font-size: 13px; font-weight: 500;
+  font-size: 14px; font-weight: 500;
   transition: background .18s, color .18s, border-color .18s;
   margin-bottom: 3px;
   border: 1px solid transparent;
@@ -260,11 +260,11 @@ body::after {
   opacity: .5;
 }
 .topbar-title {
-  font-size: 16px; font-weight: 700; letter-spacing: -.02em;
+  font-size: 18px; font-weight: 700; letter-spacing: -.02em;
   background: linear-gradient(180deg, #fff, #aeb6cc);
   -webkit-background-clip: text; background-clip: text; color: transparent;
 }
-.topbar-sub { font-size: 11px; color: var(--muted); margin-top: 2px; font-family: var(--mono); }
+.topbar-sub { font-size: 12px; color: var(--muted); margin-top: 2px; font-family: var(--mono); }
 .topbar-right { display: flex; align-items: center; gap: 12px; }
 .topbar-date {
   font-size: 11px; color: var(--muted2); font-family: var(--mono);
@@ -289,8 +289,8 @@ body::after {
 /* ── CONTAINERS ───────────────────────────────────────── */
 .container { padding: 28px; max-width: 1200px; }
 .section-header { margin-bottom: 24px; }
-.section-header h2 { font-size: 20px; font-weight: 800; margin-bottom: 4px; }
-.section-header p { font-size: 13px; color: var(--muted); }
+.section-header h2 { font-size: 24px; font-weight: 800; margin-bottom: 5px; }
+.section-header p { font-size: 14px; color: var(--muted); }
 
 /* ── CARDS GRID ───────────────────────────────────────── */
 .cards-grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-bottom: 24px; }
@@ -345,7 +345,7 @@ body::after {
 }
 
 .kpi-label {
-  font-size: 9.5px; font-weight: 600; letter-spacing: .14em;
+  font-size: 11px; font-weight: 600; letter-spacing: .12em;
   text-transform: uppercase; color: var(--muted); margin-bottom: 13px;
   display: flex; align-items: center; gap: 7px;
 }
@@ -354,7 +354,7 @@ body::after {
   background: var(--c); box-shadow: 0 0 8px rgba(var(--c-neon), .8);
 }
 .kpi-value {
-  font-family: var(--mono); font-size: 26px; font-weight: 600;
+  font-family: var(--mono); font-size: 30px; font-weight: 600;
   line-height: 1; margin-bottom: 9px; letter-spacing: -.03em;
   font-variant-numeric: tabular-nums;
   color: var(--c);
@@ -362,7 +362,7 @@ body::after {
 }
 .kpi-value.c-amber, .kpi-value.c-green, .kpi-value.c-red,
 .kpi-value.c-blue, .kpi-value.c-purple, .kpi-value.c-orange { color: var(--c); }
-.kpi-sub { font-size: 10.5px; color: var(--muted); font-family: var(--mono); }
+.kpi-sub { font-size: 12px; color: var(--muted); font-family: var(--mono); }
 .kpi-icon { position: absolute; top: 18px; right: 18px; font-size: 20px; opacity: .14; filter: grayscale(.4); }
 
 /* ── BLOCK ────────────────────────────────────────────── */
@@ -386,7 +386,7 @@ body::after {
   background: rgba(255,255,255,.012);
 }
 .block-head-title {
-  font-size: 12.5px; font-weight: 600; letter-spacing: .01em;
+  font-size: 14px; font-weight: 600; letter-spacing: .01em;
   display: flex; align-items: center; gap: 9px;
 }
 .bdot { width: 7px; height: 7px; border-radius: 50%; flex-shrink:0; }
@@ -395,8 +395,8 @@ body::after {
 /* ── BUTTONS ──────────────────────────────────────────── */
 .btn {
   display: inline-flex; align-items: center; gap: 6px;
-  padding: 9px 18px; border-radius: var(--radius-sm); border: none;
-  font-size: 12.5px; font-weight: 600; cursor: pointer;
+  padding: 10px 19px; border-radius: var(--radius-sm); border: none;
+  font-size: 13.5px; font-weight: 600; cursor: pointer;
   font-family: var(--sans); letter-spacing: .01em;
   transition: box-shadow .2s, transform .15s, border-color .2s;
   position: relative; overflow: hidden;
@@ -465,7 +465,7 @@ body::after {
 
 /* ── BADGES ───────────────────────────────────────────── */
 .badge {
-  font-size: 10px; font-weight: 700; padding: 3px 9px;
+  font-size: 11px; font-weight: 700; padding: 4px 10px;
   border-radius: 20px; letter-spacing: .05em;
   display: inline-block; text-transform: uppercase;
 }
@@ -478,7 +478,7 @@ body::after {
 /* ── MENTORIAS ────────────────────────────────────────── */
 .ment-tabs { display:flex; gap:4px; padding:0 20px 0; border-bottom:1px solid var(--border); }
 .ment-tab {
-  padding: 12px 16px; font-size: 12px; font-weight: 700;
+  padding: 13px 17px; font-size: 13.5px; font-weight: 700;
   color: var(--muted); cursor: pointer; border-bottom: 2px solid transparent;
   transition: color .15s, border-color .15s, text-shadow .15s;
 }
@@ -557,7 +557,7 @@ body::after {
   transition: border-color .2s, box-shadow .2s;
 }
 .dm-card:hover { border-color: var(--border2); box-shadow: 0 4px 20px rgba(0,0,0,.25); }
-.dm-label { font-size:10px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.08em;margin-bottom:6px; }
+.dm-label { font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.08em;margin-bottom:6px; }
 .dm-value { font-family:var(--mono);font-size:26px;font-weight:500;color:var(--amber); }
 .dm-value.green { color:var(--green); }
 .dm-value.blue  { color:var(--blue); }
@@ -620,9 +620,9 @@ body::after {
 .ret-val { font-family:var(--mono);font-size:22px;color:var(--amber);font-weight:500; }
 .ret-sub { font-size:11px;color:var(--muted);font-family:var(--mono); }
 
-.fin-row { display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-bottom:1px solid var(--border);font-family:var(--mono);font-size:13px; }
+.fin-row { display:flex;justify-content:space-between;align-items:center;padding:11px 0;border-bottom:1px solid var(--border);font-family:var(--mono);font-size:14px; }
 .fin-row:last-child { border-bottom:none; }
-.fin-row .lbl { color:var(--muted);font-size:12px; }
+.fin-row .lbl { color:var(--muted2);font-size:13.5px; }
 .fin-total { padding-top:12px;margin-top:4px; }
 .fin-total .lbl { color:var(--amber);font-size:14px;font-weight:500; }
 .fin-total .val { color:var(--amber);font-size:22px; }
@@ -720,8 +720,8 @@ input[type="month"]::-webkit-calendar-picker-indicator { filter:invert(.6);curso
       <!-- Header + atualização -->
       <div style="display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:24px;flex-wrap:wrap;gap:12px;">
         <div>
-          <h2 style="font-size:20px;font-weight:800;margin-bottom:4px;">Dashboard Cursos</h2>
-          <p style="font-size:12px;color:var(--muted);" id="dash-periodo">carregando...</p>
+          <h2 style="font-size:24px;font-weight:800;margin-bottom:5px;">Dashboard Cursos</h2>
+          <p style="font-size:13.5px;color:var(--muted);" id="dash-periodo">carregando...</p>
         </div>
         <div style="display:flex;align-items:center;gap:10px;">
           <select id="dash-mes" onchange="carregarDashboard(this.value)"
@@ -1554,8 +1554,9 @@ function calcFinanceiro() {
   set('fin-receita',   br(total));
   set('fin-meta',      br(metaGast));
   set('fin-meta-sub',  `${br(Math.round(metaGast/30))}/dia em média`);
-  set('fin-lucro',     '+'+br(lucro));
-  set('fin-lucro-sub', `margem ${margem}% · +${br(Math.round(lucro/30))}/dia`);
+  const sinal = v => (v >= 0 ? '+' : '−') + br(Math.abs(v));
+  set('fin-lucro',     sinal(lucro));
+  set('fin-lucro-sub', `margem ${margem}% · ${sinal(Math.round(lucro/30))}/dia`);
   set('fin-hm-val',    '+'+br(recHM));
   set('fin-assess-val','+'+br(assessVal));
   set('fin-ment-val',  '+'+br(mentVal));
@@ -1567,7 +1568,7 @@ function calcFinanceiro() {
   set('fin-res-assess','+'+br(assessVal));
   set('fin-res-ment',  '+'+br(mentVal));
   set('fin-res-meta',  '-'+br(metaGast));
-  set('fin-resultado', '+'+br(lucro));
+  set('fin-resultado', sinal(lucro));
   set('fin-margem',    margem+'%');
 }
 
@@ -1587,6 +1588,7 @@ const BASE_URL = 'https://brunesk.github.io/acelera-hub/';
 function brl(v) {
   return 'R$' + Number(v).toLocaleString('pt-BR', {minimumFractionDigits:0, maximumFractionDigits:0});
 }
+function brlS(v) { return (v >= 0 ? '+' : '−') + brl(Math.abs(v)); }
 function roas_fmt(v) { return Number(v).toFixed(2) + 'x'; }
 function rc(v) { return v >= 1.5 ? 'var(--green)' : v >= 1.2 ? 'var(--amber)' : 'var(--red)'; }
 function lc(v) { return v >= 0 ? 'var(--green)' : 'var(--red)'; }
@@ -1702,13 +1704,13 @@ function renderChartDias(dias) {
       tip: `<div class="tt-title">Dia ${d.dia}</div>` +
         `<span style="color:var(--green)">▮</span> Receita: <b>${brl(d.liq)}</b> · ${d.vendas} venda${d.vendas!==1?'s':''}<br>` +
         `<span style="color:var(--red)">▮</span> Gasto Meta: <b>${d.gasto_meta>0?brl(d.gasto_meta):'—'}</b><br>` +
-        `<span style="color:${lc(d.lucro)}">●</span> Lucro dia: <b style="color:${lc(d.lucro)}">${(d.lucro>=0?'+':'')+brl(d.lucro)}</b> · ROAS ${d.gasto_meta>0?roas_fmt(d.roas):'—'}<br>` +
-        `<span style="color:var(--amber)">━</span> Acumulado: <b style="color:${lc(acum)}">${(acum>=0?'+':'')+brl(acum)}</b>`
+        `<span style="color:${lc(d.lucro)}">●</span> Lucro dia: <b style="color:${lc(d.lucro)}">${brlS(d.lucro)}</b> · ROAS ${d.gasto_meta>0?roas_fmt(d.roas):'—'}<br>` +
+        `<span style="color:var(--amber)">━</span> Acumulado: <b style="color:${lc(acum)}">${brlS(acum)}</b>`
     };
   });
   renderComboChart('chart-dias', rows);
   const sub = document.getElementById('chart-dias-sub');
-  if (sub && rows.length) sub.textContent = `${rows.length} dias · lucro acumulado ${(acum>=0?'+':'')+brl(acum)}`;
+  if (sub && rows.length) sub.textContent = `${rows.length} dias · lucro acumulado ${brlS(acum)}`;
 }
 
 function renderChartMensal(historico) {
@@ -1717,7 +1719,7 @@ function renderChartMensal(historico) {
     tip: `<div class="tt-title">${h.mes}</div>` +
       `<span style="color:var(--green)">▮</span> Receita líq.: <b>${brl(h.liq)}</b> · ${h.vendas} vendas<br>` +
       `<span style="color:var(--red)">▮</span> Gasto Meta: <b>${h.gasto_meta>0?brl(h.gasto_meta):'—'}</b><br>` +
-      `<span style="color:var(--amber)">━</span> Lucro: <b style="color:${lc(h.lucro)}">${(h.lucro>=0?'+':'')+brl(h.lucro)}</b> · ROAS ${h.gasto_meta>0?roas_fmt(h.roas):'—'}` +
+      `<span style="color:var(--amber)">━</span> Lucro: <b style="color:${lc(h.lucro)}">${brlS(h.lucro)}</b> · ROAS ${h.gasto_meta>0?roas_fmt(h.roas):'—'}` +
       (h.fonte_externa ? `<br><span style="color:var(--amber)">◆</span> inclui ${brl(h.receita_externa)} via ${h.fonte_externa}` : '')
   }));
   renderComboChart('chart-mensal', rows);
@@ -1770,10 +1772,10 @@ async function carregarDashboard(mes) {
   countUp('d-vendas', k.vendas, v => Math.round(v));
   countUp('d-liq',    k.liq,    v => brl(v));
   countUp('d-meta',   k.gasto_meta, v => brl(v));
-  countUp('d-lucro',  k.lucro,  v => (k.lucro >= 0 ? '+' : '') + brl(v));
+  countUp('d-lucro',  k.lucro,  v => brlS(k.lucro >= 0 ? v : -Math.abs(v)));
   countUp('d-roas',   k.roas,   v => roas_fmt(v));
   countUp('d-ticket', k.ticket, v => brl(v));
-  document.getElementById('d-lucro-dia').textContent = brl(k.lucro / diasNoMes) + '/dia';
+  document.getElementById('d-lucro-dia').textContent = brlS(k.lucro / diasNoMes) + '/dia';
   ['d-vendas','d-liq','d-meta','d-lucro','d-roas','d-ticket'].forEach(id => {
     const el = document.getElementById(id);
     if (el) el.style.opacity = '1';
@@ -1824,7 +1826,7 @@ async function carregarDashboard(mes) {
           <div style="font-size:10px;color:var(--muted);font-family:var(--mono);">${s.periodo}</div>
         </td>
         <td>${s.vendas}</td>
-        <td style="font-weight:700;color:${lc(s.lucro)};">${(s.lucro >= 0 ? '+' : '') + brl(s.lucro)}</td>
+        <td style="font-weight:700;color:${lc(s.lucro)};">${brlS(s.lucro)}</td>
         <td style="font-weight:700;color:${rc(s.roas)};">${roas_fmt(s.roas)}</td>
       </tr>`).join('');
   }
@@ -1840,7 +1842,7 @@ async function carregarDashboard(mes) {
         <td>${dia.vendas}</td>
         <td style="color:var(--green);">${brl(dia.liq)}</td>
         <td style="color:var(--red);">${dia.gasto_meta > 0 ? brl(dia.gasto_meta) : '—'}</td>
-        <td style="font-weight:700;color:${lc(dia.lucro)};">${(dia.lucro >= 0 ? '+' : '') + brl(dia.lucro)}</td>
+        <td style="font-weight:700;color:${lc(dia.lucro)};">${brlS(dia.lucro)}</td>
         <td style="font-weight:700;color:${rc(dia.roas)};">${dia.gasto_meta > 0 ? roas_fmt(dia.roas) : '—'}</td>
       </tr>`).join('');
   }
@@ -1918,7 +1920,7 @@ async function carregarDashboard(mes) {
                 <td>${h.vendas}</td>
                 <td style="color:var(--green);">${brl(h.liq)}</td>
                 <td style="color:var(--red);">${h.gasto_meta > 0 ? brl(h.gasto_meta) : '—'}</td>
-                <td style="font-weight:700;color:${lc(h.lucro)};">${(h.lucro >= 0 ? '+' : '') + brl(h.lucro)}</td>
+                <td style="font-weight:700;color:${lc(h.lucro)};">${brlS(h.lucro)}</td>
                 <td style="font-weight:700;color:${rc(h.roas)};">${h.gasto_meta > 0 ? roas_fmt(h.roas) : '—'}</td>
               </tr>`).join('')}
             </tbody>
