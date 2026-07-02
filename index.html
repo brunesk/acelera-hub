@@ -441,9 +441,108 @@ input[type="month"]::-webkit-calendar-picker-indicator { filter:invert(.6);curso
     </div>
   </div>
 
-  <!-- ── PÁGINA: DASHBOARD (iframe) ── -->
-  <div class="page-iframe active" id="page-dashboard">
-    <iframe src="https://brunesk.github.io/dashboard-acelera/" title="Dashboard Cursos Acelera Shopee" allow="same-origin"></iframe>
+  <!-- ── PÁGINA: DASHBOARD ── -->
+  <div class="page active" id="page-dashboard">
+    <div class="container" style="max-width:1100px;">
+
+      <!-- Header + atualização -->
+      <div style="display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:24px;flex-wrap:wrap;gap:12px;">
+        <div>
+          <h2 style="font-size:20px;font-weight:800;margin-bottom:4px;">Dashboard Cursos</h2>
+          <p style="font-size:12px;color:var(--muted);" id="dash-periodo">carregando...</p>
+        </div>
+        <div style="display:flex;align-items:center;gap:10px;">
+          <select id="dash-mes" onchange="carregarDashboard(this.value)"
+            style="background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:7px 12px;color:var(--text);font-family:var(--sans);font-size:12px;font-weight:700;outline:none;cursor:pointer;">
+            <option value="2026-06">Jun/2026 ← Atual</option>
+            <option value="2026-05">Mai/2026</option>
+            <option value="2026-04">Abr/2026</option>
+            <option value="2026-03">Mar/2026</option>
+          </select>
+          <div id="dash-update-badge" style="display:flex;align-items:center;gap:6px;padding:6px 12px;background:var(--surface2);border:1px solid var(--border);border-radius:20px;font-size:11px;color:var(--muted);font-family:var(--mono);">
+            <span style="width:6px;height:6px;border-radius:50%;background:var(--green);display:inline-block;animation:pulse 2s infinite;"></span>
+            <span id="dash-update-txt">atualizando...</span>
+          </div>
+          <a href="https://brunesk.github.io/dashboard-acelera/" target="_blank"
+            style="display:flex;align-items:center;gap:6px;padding:7px 14px;background:var(--surface2);border:1px solid var(--border);border-radius:9px;font-size:12px;font-weight:700;color:var(--muted2);text-decoration:none;">
+            ↗ Ver original
+          </a>
+        </div>
+      </div>
+
+      <!-- KPIs -->
+      <div class="cards-grid-4" id="dash-kpis" style="grid-template-columns:repeat(6,1fr);margin-bottom:20px;">
+        <div class="kpi-card c-amber"><div class="kpi-label">Vendas</div><div class="kpi-value c-amber" id="d-vendas">—</div><div class="kpi-sub">mês selecionado</div></div>
+        <div class="kpi-card c-green"><div class="kpi-label">Rec. Líquida</div><div class="kpi-value c-green" style="font-size:20px;" id="d-liq">—</div><div class="kpi-sub">após taxa Hotmart</div></div>
+        <div class="kpi-card c-red"><div class="kpi-label">Gasto Meta</div><div class="kpi-value c-red" style="font-size:20px;" id="d-meta">—</div><div class="kpi-sub">investido</div></div>
+        <div class="kpi-card c-green" style="border:1px solid rgba(39,201,122,.25);"><div class="kpi-label">Lucro Real</div><div class="kpi-value c-green" style="font-size:20px;" id="d-lucro">—</div><div class="kpi-sub" id="d-lucro-dia">por dia</div></div>
+        <div class="kpi-card c-blue"><div class="kpi-label">ROAS Real</div><div class="kpi-value c-blue" id="d-roas">—</div><div class="kpi-sub">líq/gasto</div></div>
+        <div class="kpi-card c-purple"><div class="kpi-label">Ticket Médio</div><div class="kpi-value c-purple" style="font-size:20px;" id="d-ticket">—</div><div class="kpi-sub">por venda</div></div>
+      </div>
+
+      <!-- Criativos + Semanas -->
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px;">
+
+        <!-- Criativos -->
+        <div class="block">
+          <div class="block-head">
+            <div class="block-head-title"><span class="bdot" style="background:var(--amber)"></span>Criativos</div>
+            <span style="font-size:11px;color:var(--muted);">por investimento</span>
+          </div>
+          <div id="criativos-list" style="padding:8px 0;">
+            <div style="padding:20px;text-align:center;color:var(--muted);font-size:12px;">Carregando...</div>
+          </div>
+        </div>
+
+        <!-- Semanas -->
+        <div class="block">
+          <div class="block-head">
+            <div class="block-head-title"><span class="bdot" style="background:var(--blue)"></span>Por Semana</div>
+          </div>
+          <div style="overflow-x:auto;">
+            <table style="width:100%;border-collapse:collapse;font-size:12px;" id="semanas-table">
+              <thead>
+                <tr>
+                  <th style="text-align:left;padding:10px 14px;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--muted);border-bottom:1px solid var(--border);">Semana</th>
+                  <th style="text-align:right;padding:10px 14px;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--muted);border-bottom:1px solid var(--border);">Vendas</th>
+                  <th style="text-align:right;padding:10px 14px;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--muted);border-bottom:1px solid var(--border);">Lucro</th>
+                  <th style="text-align:right;padding:10px 14px;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--muted);border-bottom:1px solid var(--border);">ROAS</th>
+                </tr>
+              </thead>
+              <tbody id="semanas-tbody">
+                <tr><td colspan="4" style="padding:20px;text-align:center;color:var(--muted);font-size:12px;">Carregando...</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- Dia a Dia -->
+      <div class="block">
+        <div class="block-head" style="cursor:pointer;" onclick="toggleDiaDia()">
+          <div class="block-head-title"><span class="bdot" style="background:var(--purple)"></span>Dia a Dia</div>
+          <span id="diadiatoggle" style="font-size:11px;color:var(--muted);">▼ expandir</span>
+        </div>
+        <div id="diadiabody" style="display:none;overflow-x:auto;">
+          <table style="width:100%;border-collapse:collapse;font-size:12px;" id="diaadia-table">
+            <thead>
+              <tr>
+                <th style="text-align:left;padding:10px 14px;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--muted);border-bottom:1px solid var(--border);">Dia</th>
+                <th style="text-align:right;padding:10px 14px;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--muted);border-bottom:1px solid var(--border);">Vendas</th>
+                <th style="text-align:right;padding:10px 14px;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--muted);border-bottom:1px solid var(--border);">Líq. HM</th>
+                <th style="text-align:right;padding:10px 14px;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--muted);border-bottom:1px solid var(--border);">Gasto Meta</th>
+                <th style="text-align:right;padding:10px 14px;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--muted);border-bottom:1px solid var(--border);">Lucro</th>
+                <th style="text-align:right;padding:10px 14px;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--muted);border-bottom:1px solid var(--border);">ROAS</th>
+              </tr>
+            </thead>
+            <tbody id="diaadia-tbody">
+              <tr><td colspan="6" style="padding:20px;text-align:center;color:var(--muted);font-size:12px;">Expanda para ver</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+    </div>
   </div>
 
   <!-- ── PÁGINA: MENTORIAS ── -->
@@ -1195,6 +1294,166 @@ carregarConfig();
 carregarSlots();
 setInterval(carregarSlots, 15000);
 renderAssessorias();
+
+// ══════════════════════════════════════════════════════════════
+// DASHBOARD CURSOS — fetch do GitHub Pages + render dark theme
+// ══════════════════════════════════════════════════════════════
+let dashDiario = [], dashSemanas = [], dashCriativos = [];
+
+async function carregarDashboard(mes) {
+  document.getElementById('dash-update-txt').textContent = 'buscando dados...';
+  try {
+    const url = 'https://brunesk.github.io/dashboard-acelera/';
+    const r = await fetch(url, {cache:'no-store'});
+    const html = await r.text();
+    const doc = new DOMParser().parseFromString(html, 'text/html');
+
+    // KPIs
+    const get = id => doc.getElementById(id)?.textContent?.trim() || '—';
+    document.getElementById('d-vendas').textContent  = get('kpi-vendas');
+    document.getElementById('d-liq').textContent     = get('kpi-liq');
+    document.getElementById('d-meta').textContent    = get('kpi-meta');
+    document.getElementById('d-lucro').textContent   = get('kpi-lucro');
+    document.getElementById('d-lucro-dia').textContent = get('kpi-lucro-dia') || 'por dia';
+    document.getElementById('d-roas').textContent    = get('kpi-roas');
+    document.getElementById('d-ticket').textContent  = get('kpi-ticket');
+
+    // Período
+    const per = doc.getElementById('periodo-header')?.textContent?.trim();
+    if (per) document.getElementById('dash-periodo').textContent = 'Meta Ads + Hotmart · ' + per;
+
+    // Criativos
+    const cRows = doc.querySelectorAll('#weekly-tbody')?.length
+      ? [...doc.querySelectorAll('table tbody tr')]
+      : [];
+
+    // Parse weekly tbody
+    const weeklyTbody = doc.getElementById('weekly-tbody');
+    if (weeklyTbody) {
+      const rows = weeklyTbody.querySelectorAll('tr');
+      let html2 = '';
+      rows.forEach(row => {
+        const tds = row.querySelectorAll('td');
+        if (tds.length < 8) return;
+        const semana = tds[0].textContent.trim();
+        const periodo = tds[1].textContent.trim();
+        const vendas = tds[2].textContent.trim();
+        const lucro = tds[6].textContent.trim();
+        const roas = tds[7].textContent.trim();
+        const roasVal = parseFloat(roas);
+        const roasColor = roasVal >= 1.5 ? 'var(--green)' : roasVal >= 1.2 ? 'var(--amber)' : 'var(--red)';
+        const lucroColor = lucro.startsWith('+') ? 'var(--green)' : 'var(--red)';
+        const isCurrent = semana.includes('atual') || row.className.includes('blue');
+        html2 += `<tr style="${isCurrent ? 'background:var(--amber-glow)' : ''}">
+          <td style="padding:12px 14px;border-bottom:1px solid var(--border);">
+            <div style="font-size:13px;font-weight:700;">${semana.replace(/\s*atual\s*/gi,'')}</div>
+            <div style="font-size:10px;color:var(--muted);font-family:var(--mono);">${periodo}</div>
+          </td>
+          <td style="padding:12px 14px;border-bottom:1px solid var(--border);text-align:right;font-family:var(--mono);font-size:13px;">${vendas}</td>
+          <td style="padding:12px 14px;border-bottom:1px solid var(--border);text-align:right;font-family:var(--mono);font-size:13px;font-weight:700;color:${lucroColor};">${lucro}</td>
+          <td style="padding:12px 14px;border-bottom:1px solid var(--border);text-align:right;font-family:var(--mono);font-size:13px;font-weight:700;color:${roasColor};">${roas}</td>
+        </tr>`;
+      });
+      document.getElementById('semanas-tbody').innerHTML = html2 || '<tr><td colspan="4" style="padding:16px;text-align:center;color:var(--muted);">Sem dados</td></tr>';
+    }
+
+    // Criativos — busca a tabela de criativos (a que tem Criativo/Gasto/ROAS/CPA)
+    const allTbodies = doc.querySelectorAll('table tbody');
+    let criativosBody = null;
+    allTbodies.forEach(tb => {
+      const text = tb.textContent;
+      if (text.includes('Video') || text.includes('Criativo')) criativosBody = tb;
+    });
+
+    if (criativosBody) {
+      const rows = criativosBody.querySelectorAll('tr');
+      const medals = ['🥇','🥈','🥉','4º','5º','6º','7º','8º'];
+      let cHtml = '';
+      rows.forEach((row, i) => {
+        const tds = row.querySelectorAll('td');
+        if (tds.length < 9) return;
+        // td[0]=criativo, td[2]=gasto, td[6]=compras, td[7]=ROAS, td[8]=CPA
+        const nome = tds[0].querySelector('p')?.textContent?.trim() || tds[0].textContent.trim().substring(0,30);
+        const gasto = tds[2].textContent.trim();
+        const compras = tds[6].textContent.trim();
+        const roas = tds[7].textContent.trim();
+        const cpa = tds[8].textContent.trim();
+        const statusEl = tds[1].querySelector('span');
+        const status = statusEl?.textContent?.trim() || '';
+        const ativo = status === 'ACTIVE';
+        const roasVal = parseFloat(roas);
+        const roasColor = roasVal >= 1.5 ? 'var(--green)' : roasVal >= 1.2 ? 'var(--amber)' : 'var(--red)';
+
+        // barra de gasto relativa
+        const gastoNum = parseFloat(gasto.replace(/[^\d.]/g,'')) || 0;
+        cHtml += `
+          <div style="display:flex;align-items:center;gap:12px;padding:10px 14px;border-bottom:1px solid var(--border);">
+            <span style="font-size:14px;width:24px;flex-shrink:0;">${medals[i]||'·'}</span>
+            <div style="flex:1;min-width:0;">
+              <div style="font-size:12px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${nome}</div>
+              <div style="display:flex;gap:8px;margin-top:4px;">
+                <span class="badge ${ativo ? 'badge-green' : 'badge-amber'}">${ativo ? '● Ativo' : '○ Pausado'}</span>
+                <span style="font-size:10px;color:var(--muted);font-family:var(--mono);">${compras} vendas · CPA ${cpa}</span>
+              </div>
+            </div>
+            <div style="text-align:right;flex-shrink:0;">
+              <div style="font-family:var(--mono);font-size:13px;font-weight:700;color:${roasColor};">${roas}</div>
+              <div style="font-size:10px;color:var(--muted);font-family:var(--mono);">${gasto}</div>
+            </div>
+          </div>`;
+      });
+      document.getElementById('criativos-list').innerHTML = cHtml || '<div style="padding:16px;text-align:center;color:var(--muted);">Sem dados</div>';
+    }
+
+    // Dia a dia
+    const dailyTbody = doc.getElementById('daily-tbody');
+    if (dailyTbody) {
+      const rows = dailyTbody.querySelectorAll('tr');
+      let dHtml = '';
+      rows.forEach(row => {
+        const tds = row.querySelectorAll('td');
+        if (tds.length < 7) return;
+        const dia = tds[0].textContent.trim();
+        const vendas = tds[1].textContent.trim();
+        const liq = tds[3].textContent.trim();
+        const meta = tds[4].textContent.trim();
+        const lucro = tds[5].textContent.trim();
+        const roas = tds[6].textContent.trim();
+        const lucroColor = lucro.startsWith('+') ? 'var(--green)' : 'var(--red)';
+        const roasVal = parseFloat(roas);
+        const roasColor = roasVal >= 1.5 ? 'var(--green)' : roasVal >= 1.2 ? 'var(--amber)' : 'var(--red)';
+        dHtml += `<tr>
+          <td style="padding:10px 14px;border-bottom:1px solid var(--border);font-family:var(--mono);font-size:12px;font-weight:700;">${dia}</td>
+          <td style="padding:10px 14px;border-bottom:1px solid var(--border);text-align:right;font-family:var(--mono);font-size:12px;">${vendas}</td>
+          <td style="padding:10px 14px;border-bottom:1px solid var(--border);text-align:right;font-family:var(--mono);font-size:12px;color:var(--green);">${liq}</td>
+          <td style="padding:10px 14px;border-bottom:1px solid var(--border);text-align:right;font-family:var(--mono);font-size:12px;color:var(--red);">${meta}</td>
+          <td style="padding:10px 14px;border-bottom:1px solid var(--border);text-align:right;font-family:var(--mono);font-size:12px;font-weight:700;color:${lucroColor};">${lucro}</td>
+          <td style="padding:10px 14px;border-bottom:1px solid var(--border);text-align:right;font-family:var(--mono);font-size:12px;font-weight:700;color:${roasColor};">${roas}</td>
+        </tr>`;
+      });
+      document.getElementById('diaadia-tbody').innerHTML = dHtml || '<tr><td colspan="6" style="padding:16px;text-align:center;color:var(--muted);">Sem dados</td></tr>';
+    }
+
+    // Timestamp
+    const updated = doc.querySelector('.text-blue-200')?.textContent?.trim() ||
+                    doc.querySelector('[class*="text-blue"]')?.textContent?.trim() || '';
+    document.getElementById('dash-update-txt').textContent = updated.includes('Atualizado') ? updated : 'dados ao vivo';
+
+  } catch(e) {
+    document.getElementById('dash-update-txt').textContent = '⚠ erro ao buscar dados';
+    console.error('Dashboard fetch error:', e);
+  }
+}
+
+function toggleDiaDia() {
+  const body = document.getElementById('diadiabody');
+  const label = document.getElementById('diadiatoggle');
+  const open = body.style.display === 'none';
+  body.style.display = open ? 'block' : 'none';
+  label.textContent = open ? '▲ recolher' : '▼ expandir';
+}
+
+carregarDashboard('2026-06');
 </script>
 </body>
 </html>
