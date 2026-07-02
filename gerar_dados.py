@@ -143,9 +143,9 @@ for item in hm_all:
     hm_dia[dk]['bruto'] += price
     hm_dia[dk]['liq']   += liq
 
-# Meta: histórico completo em uma chamada só (paginada)
-print('📊 Buscando Meta (Jan/2025 → ontem)...')
-until_str = yesterday.strftime('%Y-%m-%d')
+# Meta: histórico completo em uma chamada só (paginada), incluindo hoje (parcial)
+print('📊 Buscando Meta (Jan/2025 → hoje)...')
+until_str = today.strftime('%Y-%m-%d')
 meta_raw = meta_daily(meta_token, '2025-01-01', until_str)
 print(f'  Meta: {len(meta_raw)} dias')
 
@@ -247,7 +247,7 @@ def build_month(mk):
     is_curr = mk == curr_key
     yr, mo = int(mk[:4]), int(mk[5:7])
     if is_curr:
-        periodo = f'{m_start.strftime("%d/%m")} – {yesterday.strftime("%d/%m/%Y")}'
+        periodo = f'{m_start.strftime("%d/%m")} – {today.strftime("%d/%m/%Y")}'
     else:
         periodo = f'01/{mo:02d} – {calendar.monthrange(yr, mo)[1]:02d}/{mo:02d}/{yr}'
 
