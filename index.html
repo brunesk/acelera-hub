@@ -44,6 +44,61 @@
 html, body { height: 100%; }
 body { font-family: var(--sans); background: var(--bg); color: var(--text); font-size: 14px; display: flex; overflow: hidden; }
 
+/* Atmosfera — glow ambiente fixo atrás de tudo */
+body::before {
+  content: ''; position: fixed; inset: 0; pointer-events: none; z-index: 0;
+  background:
+    radial-gradient(ellipse 800px 500px at 85% -10%, rgba(245,166,35,.045), transparent 60%),
+    radial-gradient(ellipse 700px 500px at 10% 110%, rgba(74,158,255,.035), transparent 60%);
+}
+.sidebar, .main { position: relative; z-index: 1; }
+
+/* ── TABELAS (compartilhado) ─────────────────────────── */
+.tbl { width: 100%; border-collapse: collapse; font-size: 12px; }
+.tbl th {
+  text-align: right; padding: 10px 14px;
+  font-size: 10px; font-weight: 700; text-transform: uppercase;
+  letter-spacing: .07em; color: var(--muted);
+  border-bottom: 1px solid var(--border);
+}
+.tbl th:first-child { text-align: left; }
+.tbl td {
+  text-align: right; padding: 11px 14px;
+  border-bottom: 1px solid var(--border);
+  font-family: var(--mono); font-size: 12px;
+}
+.tbl td:first-child { text-align: left; font-family: var(--sans); }
+.tbl tbody tr { transition: background .12s; }
+.tbl tbody tr:hover { background: rgba(255,255,255,.015); }
+.tbl tbody tr:last-child td { border-bottom: none; }
+
+/* ── GRÁFICOS ─────────────────────────────────────────── */
+.chart-wrap { position: relative; padding: 18px 20px 12px; }
+.chart-wrap svg { display: block; width: 100%; height: auto; overflow: visible; }
+.chart-legend {
+  display: flex; gap: 18px; flex-wrap: wrap;
+  padding: 0 20px 16px; font-size: 11px; color: var(--muted2);
+  font-family: var(--mono);
+}
+.chart-legend .cl-item { display: flex; align-items: center; gap: 6px; }
+.cl-swatch { width: 10px; height: 10px; border-radius: 3px; flex-shrink: 0; }
+.cl-line { width: 14px; height: 2px; border-radius: 2px; flex-shrink: 0; }
+.chart-tip {
+  position: fixed; z-index: 500; pointer-events: none;
+  background: rgba(10,11,15,.96); border: 1px solid var(--border2);
+  border-radius: 10px; padding: 10px 13px;
+  font-family: var(--mono); font-size: 11px; line-height: 1.7;
+  box-shadow: 0 8px 32px rgba(0,0,0,.6), 0 0 0 1px rgba(255,255,255,.02);
+  opacity: 0; transition: opacity .12s; white-space: nowrap;
+  backdrop-filter: blur(8px);
+}
+.chart-tip.show { opacity: 1; }
+.chart-tip .tt-title { color: var(--text); font-weight: 600; font-family: var(--sans); font-size: 12px; margin-bottom: 3px; }
+.bar-hit { cursor: crosshair; }
+.bar-hit:hover .bar-liq { filter: brightness(1.35); }
+.bar-anim { animation: barGrow .6s cubic-bezier(.22,1,.36,1) backwards; transform-origin: bottom; transform-box: fill-box; }
+@keyframes barGrow { from { transform: scaleY(0); } }
+
 /* ── SIDEBAR ──────────────────────────────────────────── */
 .sidebar {
   width: var(--sidebar-w);
@@ -548,10 +603,7 @@ input[type="month"]::-webkit-calendar-picker-indicator { filter:invert(.6);curso
             <span style="width:6px;height:6px;border-radius:50%;background:var(--green);display:inline-block;animation:pulse 2s infinite;"></span>
             <span id="dash-update-txt">atualizando...</span>
           </div>
-          <button onclick="atualizarDashboard()"
-            style="display:flex;align-items:center;gap:6px;padding:7px 14px;background:var(--surface2);border:1px solid var(--border);border-radius:9px;font-size:12px;font-weight:700;color:var(--amber);cursor:pointer;font-family:var(--sans);">
-            ↻ Atualizar agora
-          </button>
+          <button class="btn btn-amber btn-sm" onclick="atualizarDashboard()">↻ Atualizar agora</button>
         </div>
       </div>
 
@@ -563,6 +615,22 @@ input[type="month"]::-webkit-calendar-picker-indicator { filter:invert(.6);curso
         <div class="kpi-card c-green" style="border:1px solid rgba(39,201,122,.25);"><div class="kpi-label">Lucro Real</div><div class="kpi-value c-green" style="font-size:20px;" id="d-lucro">—</div><div class="kpi-sub" id="d-lucro-dia">por dia</div></div>
         <div class="kpi-card c-blue"><div class="kpi-label">ROAS Real</div><div class="kpi-value c-blue" id="d-roas">—</div><div class="kpi-sub">líq/gasto</div></div>
         <div class="kpi-card c-purple"><div class="kpi-label">Ticket Médio</div><div class="kpi-value c-purple" style="font-size:20px;" id="d-ticket">—</div><div class="kpi-sub">por venda</div></div>
+      </div>
+
+      <!-- Gráfico Diário -->
+      <div class="block" id="bloco-chart-dias">
+        <div class="block-head">
+          <div class="block-head-title"><span class="bdot" style="background:var(--green)"></span>Evolução Diária</div>
+          <span style="font-size:11px;color:var(--muted);font-family:var(--mono);" id="chart-dias-sub">receita × gasto · dia a dia</span>
+        </div>
+        <div class="chart-wrap" id="chart-dias">
+          <div style="padding:30px;text-align:center;color:var(--muted);font-size:12px;">Carregando gráfico...</div>
+        </div>
+        <div class="chart-legend">
+          <div class="cl-item"><span class="cl-swatch" style="background:var(--green)"></span>Receita líquida</div>
+          <div class="cl-item"><span class="cl-swatch" style="background:var(--red);opacity:.75"></span>Gasto Meta</div>
+          <div class="cl-item"><span class="cl-line" style="background:var(--amber);box-shadow:0 0 6px rgba(245,166,35,.6)"></span>Lucro acumulado</div>
+        </div>
       </div>
 
       <!-- Criativos + Semanas -->
@@ -585,14 +653,9 @@ input[type="month"]::-webkit-calendar-picker-indicator { filter:invert(.6);curso
             <div class="block-head-title"><span class="bdot" style="background:var(--blue)"></span>Por Semana</div>
           </div>
           <div style="overflow-x:auto;">
-            <table style="width:100%;border-collapse:collapse;font-size:12px;" id="semanas-table">
+            <table class="tbl" id="semanas-table">
               <thead>
-                <tr>
-                  <th style="text-align:left;padding:10px 14px;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--muted);border-bottom:1px solid var(--border);">Semana</th>
-                  <th style="text-align:right;padding:10px 14px;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--muted);border-bottom:1px solid var(--border);">Vendas</th>
-                  <th style="text-align:right;padding:10px 14px;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--muted);border-bottom:1px solid var(--border);">Lucro</th>
-                  <th style="text-align:right;padding:10px 14px;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--muted);border-bottom:1px solid var(--border);">ROAS</th>
-                </tr>
+                <tr><th>Semana</th><th>Vendas</th><th>Lucro</th><th>ROAS</th></tr>
               </thead>
               <tbody id="semanas-tbody">
                 <tr><td colspan="4" style="padding:20px;text-align:center;color:var(--muted);font-size:12px;">Carregando...</td></tr>
@@ -609,16 +672,9 @@ input[type="month"]::-webkit-calendar-picker-indicator { filter:invert(.6);curso
           <span id="diadiatoggle" style="font-size:11px;color:var(--muted);">▼ expandir</span>
         </div>
         <div id="diadiabody" style="display:none;overflow-x:auto;">
-          <table style="width:100%;border-collapse:collapse;font-size:12px;" id="diaadia-table">
+          <table class="tbl" id="diaadia-table">
             <thead>
-              <tr>
-                <th style="text-align:left;padding:10px 14px;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--muted);border-bottom:1px solid var(--border);">Dia</th>
-                <th style="text-align:right;padding:10px 14px;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--muted);border-bottom:1px solid var(--border);">Vendas</th>
-                <th style="text-align:right;padding:10px 14px;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--muted);border-bottom:1px solid var(--border);">Líq. HM</th>
-                <th style="text-align:right;padding:10px 14px;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--muted);border-bottom:1px solid var(--border);">Gasto Meta</th>
-                <th style="text-align:right;padding:10px 14px;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--muted);border-bottom:1px solid var(--border);">Lucro</th>
-                <th style="text-align:right;padding:10px 14px;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--muted);border-bottom:1px solid var(--border);">ROAS</th>
-              </tr>
+              <tr><th>Dia</th><th>Vendas</th><th>Líq. HM</th><th>Gasto Meta</th><th>Lucro</th><th>ROAS</th></tr>
             </thead>
             <tbody id="diaadia-tbody">
               <tr><td colspan="6" style="padding:20px;text-align:center;color:var(--muted);font-size:12px;">Expanda para ver</td></tr>
@@ -727,13 +783,13 @@ input[type="month"]::-webkit-calendar-picker-indicator { filter:invert(.6);curso
     <div class="container">
       <div class="section-header">
         <h2>Visão Financeira</h2>
-        <p>Consolidado de todas as fontes de receita — Junho 2026</p>
+        <p id="fin-sub-mes">Consolidado de todas as fontes de receita</p>
       </div>
 
       <!-- KPIs -->
       <div class="cards-grid-4">
         <div class="kpi-card c-green"><div class="kpi-icon">💰</div><div class="kpi-label">Receita Total</div><div class="kpi-value c-green" id="fin-receita">—</div><div class="kpi-sub" id="fin-receita-sub">3 fontes</div></div>
-        <div class="kpi-card c-red"><div class="kpi-icon">📣</div><div class="kpi-label">Gasto Meta</div><div class="kpi-value c-red">R$10.557</div><div class="kpi-sub">R$352/dia em média</div></div>
+        <div class="kpi-card c-red"><div class="kpi-icon">📣</div><div class="kpi-label">Gasto Meta</div><div class="kpi-value c-red" id="fin-meta">—</div><div class="kpi-sub" id="fin-meta-sub">último mês fechado</div></div>
         <div class="kpi-card c-blue"><div class="kpi-icon">🔧</div><div class="kpi-label">Custos Fixos</div><div class="kpi-value c-blue">R$311</div><div class="kpi-sub">AppSell + Verif + Make</div></div>
         <div class="kpi-card c-amber"><div class="kpi-icon">✦</div><div class="kpi-label">Lucro Líquido</div><div class="kpi-value c-amber" id="fin-lucro">—</div><div class="kpi-sub" id="fin-lucro-sub">calculando...</div></div>
       </div>
@@ -758,10 +814,10 @@ input[type="month"]::-webkit-calendar-picker-indicator { filter:invert(.6);curso
             <div class="block-head-title"><span class="bdot" style="background:var(--green)"></span>Receitas por Fonte</div>
           </div>
           <div class="block-body">
-            <div class="fin-row"><span class="lbl">🎓 Cursos — Hotmart</span><span style="color:var(--green);font-family:var(--mono);">+R$16.091</span></div>
+            <div class="fin-row"><span class="lbl">🎓 Cursos — Hotmart</span><span style="color:var(--green);font-family:var(--mono);" id="fin-hm-val">—</span></div>
             <div class="fin-row"><span class="lbl">🏪 Assessorias de Loja</span><span style="color:var(--purple);font-family:var(--mono);" id="fin-assess-val">+R$0</span></div>
             <div class="fin-row"><span class="lbl">🤝 Mentorias</span><span style="color:var(--blue);font-family:var(--mono);" id="fin-ment-val">+R$0</span></div>
-            <div class="fin-row fin-total"><span class="lbl">Total Receitas</span><span style="color:var(--green);font-family:var(--mono);font-size:18px;" id="fin-total-rec">R$16.091</span></div>
+            <div class="fin-row fin-total"><span class="lbl">Total Receitas</span><span style="color:var(--green);font-family:var(--mono);font-size:18px;" id="fin-total-rec">—</span></div>
           </div>
         </div>
 
@@ -770,11 +826,11 @@ input[type="month"]::-webkit-calendar-picker-indicator { filter:invert(.6);curso
             <div class="block-head-title"><span class="bdot" style="background:var(--red)"></span>Custos</div>
           </div>
           <div class="block-body">
-            <div class="fin-row"><span class="lbl">📣 Meta Ads</span><span style="color:var(--red);font-family:var(--mono);">-R$10.557</span></div>
+            <div class="fin-row"><span class="lbl">📣 Meta Ads</span><span style="color:var(--red);font-family:var(--mono);" id="fin-c-meta">—</span></div>
             <div class="fin-row"><span class="lbl">AppSell</span><span style="color:var(--red);font-family:var(--mono);">-R$97</span></div>
             <div class="fin-row"><span class="lbl">Verificado Meta</span><span style="color:var(--red);font-family:var(--mono);">-R$87</span></div>
             <div class="fin-row"><span class="lbl">Make Funnels</span><span style="color:var(--red);font-family:var(--mono);">-R$127</span></div>
-            <div class="fin-row fin-total"><span class="lbl">Total Custos</span><span style="color:var(--red);font-family:var(--mono);font-size:18px;">-R$10.868</span></div>
+            <div class="fin-row fin-total"><span class="lbl">Total Custos</span><span style="color:var(--red);font-family:var(--mono);font-size:18px;" id="fin-c-total">—</span></div>
           </div>
         </div>
       </div>
@@ -782,14 +838,14 @@ input[type="month"]::-webkit-calendar-picker-indicator { filter:invert(.6);curso
       <!-- Resultado -->
       <div class="block">
         <div class="block-head">
-          <div class="block-head-title"><span class="bdot" style="background:var(--amber)"></span>Resultado Junho 2026</div>
+          <div class="block-head-title"><span class="bdot" style="background:var(--amber)"></span><span id="fin-res-titulo">Resultado</span></div>
         </div>
         <div class="block-body" style="display:grid;grid-template-columns:1fr auto;gap:20px;align-items:center;">
           <div>
-            <div class="fin-row"><span class="lbl">Receita Líquida HM</span><span style="color:var(--green);font-family:var(--mono);">+R$16.091</span></div>
+            <div class="fin-row"><span class="lbl">Receita Líquida HM</span><span style="color:var(--green);font-family:var(--mono);" id="fin-res-hm">—</span></div>
             <div class="fin-row"><span class="lbl">Assessorias</span><span style="color:var(--purple);font-family:var(--mono);" id="fin-res-assess">+R$0</span></div>
             <div class="fin-row"><span class="lbl">Mentorias</span><span style="color:var(--blue);font-family:var(--mono);" id="fin-res-ment">+R$0</span></div>
-            <div class="fin-row"><span class="lbl">Meta Ads</span><span style="color:var(--red);font-family:var(--mono);">-R$10.557</span></div>
+            <div class="fin-row"><span class="lbl">Meta Ads</span><span style="color:var(--red);font-family:var(--mono);" id="fin-res-meta">—</span></div>
             <div class="fin-row"><span class="lbl">Ferramentas</span><span style="color:var(--red);font-family:var(--mono);">-R$311</span></div>
             <div class="fin-row fin-total" style="border-top:1px solid var(--border2);margin-top:8px;padding-top:16px;">
               <span class="lbl" style="font-size:15px;">✦ Lucro Líquido</span>
@@ -910,6 +966,7 @@ let mesCalendario = `${new Date().getFullYear()}-${String(new Date().getMonth()+
 let mesDashboard  = `${new Date().getFullYear()}-${String(new Date().getMonth()+1).padStart(2,'0')}`;
 let assessEditId  = null;
 let assessFiltro  = '';
+let dadosCursos   = null;   // último JSON carregado do dashboard (alimenta o Financeiro)
 
 // ══════════════════════════════════════════════════════════════
 // NAV
@@ -1352,24 +1409,37 @@ function calcFinanceiro() {
   const [ano, mes] = [new Date().getFullYear(), String(new Date().getMonth()+1).padStart(2,'0')];
   const mentVal = slots.filter(s => { const [a,m] = s.data.split('-'); return a===String(ano)&&m===mes&&!s.disponivel; }).length * preco;
 
-  const recHM    = 16091;
-  const metaGast = 10557;
+  // Último mês fechado vem dos dados do dashboard (Meta+Hotmart via GitHub Actions)
+  const ult = (dadosCursos && dadosCursos.historico && dadosCursos.historico[0]) || null;
+  const recHM    = ult ? Math.round(ult.liq) : 0;
+  const metaGast = ult ? Math.round(ult.gasto_meta) : 0;
+  const mesRef   = ult ? ult.mes : '—';
   const fixos    = 311;
   const total    = recHM + assessVal + mentVal;
   const lucro    = total - metaGast - fixos;
   const margem   = total > 0 ? Math.round(lucro / total * 100) : 0;
 
   const br = v => 'R$'+v.toLocaleString('pt-BR',{minimumFractionDigits:0});
-  document.getElementById('fin-receita').textContent   = br(total);
-  document.getElementById('fin-lucro').textContent     = '+'+br(lucro);
-  document.getElementById('fin-lucro-sub').textContent = `margem ${margem}% · +${br(Math.round(lucro/30))}/dia`;
-  document.getElementById('fin-assess-val').textContent  = '+'+br(assessVal);
-  document.getElementById('fin-ment-val').textContent    = '+'+br(mentVal);
-  document.getElementById('fin-total-rec').textContent   = br(total);
-  document.getElementById('fin-res-assess').textContent  = '+'+br(assessVal);
-  document.getElementById('fin-res-ment').textContent    = '+'+br(mentVal);
-  document.getElementById('fin-resultado').textContent   = '+'+br(lucro);
-  document.getElementById('fin-margem').textContent      = margem+'%';
+  const set = (id, txt) => { const el = document.getElementById(id); if (el) el.textContent = txt; };
+  set('fin-sub-mes',   `Consolidado de todas as fontes de receita — ${mesRef} (último mês fechado)`);
+  set('fin-receita',   br(total));
+  set('fin-meta',      br(metaGast));
+  set('fin-meta-sub',  `${br(Math.round(metaGast/30))}/dia em média`);
+  set('fin-lucro',     '+'+br(lucro));
+  set('fin-lucro-sub', `margem ${margem}% · +${br(Math.round(lucro/30))}/dia`);
+  set('fin-hm-val',    '+'+br(recHM));
+  set('fin-assess-val','+'+br(assessVal));
+  set('fin-ment-val',  '+'+br(mentVal));
+  set('fin-total-rec', br(total));
+  set('fin-c-meta',    '-'+br(metaGast));
+  set('fin-c-total',   '-'+br(metaGast + fixos));
+  set('fin-res-titulo',`Resultado ${mesRef}`);
+  set('fin-res-hm',    '+'+br(recHM));
+  set('fin-res-assess','+'+br(assessVal));
+  set('fin-res-ment',  '+'+br(mentVal));
+  set('fin-res-meta',  '-'+br(metaGast));
+  set('fin-resultado', '+'+br(lucro));
+  set('fin-margem',    margem+'%');
 }
 
 // ══════════════════════════════════════════════════════════════
@@ -1391,6 +1461,123 @@ function brl(v) {
 function roas_fmt(v) { return Number(v).toFixed(2) + 'x'; }
 function rc(v) { return v >= 1.5 ? 'var(--green)' : v >= 1.2 ? 'var(--amber)' : 'var(--red)'; }
 function lc(v) { return v >= 0 ? 'var(--green)' : 'var(--red)'; }
+
+// ══════════════════════════════════════════════════════════════
+// GRÁFICOS SVG — barras receita × gasto + linha de lucro
+// ══════════════════════════════════════════════════════════════
+const chartTip = document.createElement('div');
+chartTip.className = 'chart-tip';
+document.body.appendChild(chartTip);
+function tipShow(e, html) { chartTip.innerHTML = html; chartTip.classList.add('show'); tipMove(e); }
+function tipMove(e) {
+  const x = Math.min(e.clientX + 14, window.innerWidth - chartTip.offsetWidth - 12);
+  chartTip.style.left = x + 'px';
+  chartTip.style.top  = Math.max(8, e.clientY - chartTip.offsetHeight - 14) + 'px';
+}
+function tipHide() { chartTip.classList.remove('show'); }
+
+function kfmt(v) {
+  const a = Math.abs(v);
+  if (a >= 1000) return (v/1000).toLocaleString('pt-BR', {maximumFractionDigits: 1}) + 'k';
+  return Math.round(v).toString();
+}
+
+// rows: [{label, liq, gasto, lucro, linha, tip}] — linha em escala própria (direita)
+function renderComboChart(elId, rows, opts) {
+  const el = document.getElementById(elId);
+  if (!el || !rows.length) { if (el) el.innerHTML = '<div style="padding:30px;text-align:center;color:var(--muted);font-size:12px;">Sem dados para este período</div>'; return; }
+  const W = 1000, H = 250, mL = 48, mR = 52, mT = 14, mB = 26;
+  const pw = W - mL - mR, ph = H - mT - mB;
+  const n = rows.length;
+
+  const maxBar = Math.max(...rows.map(r => Math.max(r.liq, r.gasto)), 1) * 1.08;
+  const lv = rows.map(r => r.linha);
+  let lMin = Math.min(...lv, 0), lMax = Math.max(...lv, 0);
+  if (lMax === lMin) lMax = lMin + 1;
+  const pad = (lMax - lMin) * .1; lMin -= pad; lMax += pad;
+
+  const yBar  = v => mT + ph - (v / maxBar) * ph;
+  const yLine = v => mT + ph - ((v - lMin) / (lMax - lMin)) * ph;
+  const gw = pw / n;
+  const bw = Math.min(gw * .3, 26);
+  const cx = i => mL + gw * i + gw / 2;
+
+  // grid + eixos
+  let g = '';
+  for (let i = 0; i <= 4; i++) {
+    const y = mT + ph * i / 4, vb = maxBar * (4 - i) / 4, vl = lMax - (lMax - lMin) * i / 4;
+    g += `<line x1="${mL}" y1="${y}" x2="${W-mR}" y2="${y}" stroke="var(--border)" stroke-dasharray="3 5" stroke-width="1"/>`;
+    g += `<text x="${mL-8}" y="${y+3.5}" text-anchor="end" font-size="9.5" fill="var(--muted)" font-family="var(--mono)">${kfmt(vb)}</text>`;
+    g += `<text x="${W-mR+8}" y="${y+3.5}" text-anchor="start" font-size="9.5" fill="rgba(245,166,35,.55)" font-family="var(--mono)">${kfmt(vl)}</text>`;
+  }
+  // linha do zero da escala da linha (se cruza negativo)
+  if (lMin < 0 && lMax > 0) {
+    const y0 = yLine(0);
+    g += `<line x1="${mL}" y1="${y0}" x2="${W-mR}" y2="${y0}" stroke="rgba(245,166,35,.25)" stroke-dasharray="2 4" stroke-width="1"/>`;
+  }
+
+  // barras
+  let bars = '', hits = '', labels = '';
+  const labelStep = Math.ceil(n / 16);
+  rows.forEach((r, i) => {
+    const c = cx(i), dly = (i * .018).toFixed(3);
+    if (r.liq > 0)   bars += `<rect class="bar-anim bar-liq" style="animation-delay:${dly}s" x="${c-bw-1.5}" y="${yBar(r.liq)}" width="${bw}" height="${Math.max(ph+mT-yBar(r.liq),1.5)}" rx="2.5" fill="url(#gradLiq)"/>`;
+    if (r.gasto > 0) bars += `<rect class="bar-anim" style="animation-delay:${dly}s" x="${c+1.5}" y="${yBar(r.gasto)}" width="${bw}" height="${Math.max(ph+mT-yBar(r.gasto),1.5)}" rx="2.5" fill="url(#gradGasto)" opacity=".8"/>`;
+    if (i % labelStep === 0) labels += `<text x="${c}" y="${H-8}" text-anchor="middle" font-size="9.5" fill="var(--muted)" font-family="var(--mono)">${r.label}</text>`;
+    hits += `<rect class="bar-hit" x="${mL+gw*i}" y="${mT}" width="${gw}" height="${ph}" fill="transparent"
+      onmousemove='tipShow(event, ${JSON.stringify(r.tip).replace(/'/g,"&#39;")})' onmouseleave="tipHide()"/>`;
+  });
+
+  // linha
+  const pts = rows.map((r, i) => `${cx(i)},${yLine(r.linha).toFixed(1)}`).join(' ');
+  const dots = n <= 40 ? rows.map((r, i) =>
+    `<circle cx="${cx(i)}" cy="${yLine(r.linha).toFixed(1)}" r="2.6" fill="var(--bg)" stroke="var(--amber)" stroke-width="1.6"/>`).join('') : '';
+
+  el.innerHTML = `<svg viewBox="0 0 ${W} ${H}" preserveAspectRatio="xMidYMid meet">
+    <defs>
+      <linearGradient id="gradLiq" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0%" stop-color="#00e87a"/><stop offset="100%" stop-color="rgba(0,232,122,.25)"/>
+      </linearGradient>
+      <linearGradient id="gradGasto" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0%" stop-color="#ff4757"/><stop offset="100%" stop-color="rgba(255,71,87,.22)"/>
+      </linearGradient>
+    </defs>
+    ${g}${bars}
+    <polyline points="${pts}" fill="none" stroke="rgba(245,166,35,.22)" stroke-width="6" stroke-linejoin="round" stroke-linecap="round"/>
+    <polyline points="${pts}" fill="none" stroke="var(--amber)" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>
+    ${dots}${labels}${hits}
+  </svg>`;
+}
+
+function renderChartDias(dias) {
+  let acum = 0;
+  const rows = (dias || []).map(d => {
+    acum += d.lucro;
+    return {
+      label: d.dia, liq: d.liq, gasto: d.gasto_meta, linha: acum,
+      tip: `<div class="tt-title">Dia ${d.dia}</div>` +
+        `<span style="color:var(--green)">▮</span> Receita: <b>${brl(d.liq)}</b> · ${d.vendas} venda${d.vendas!==1?'s':''}<br>` +
+        `<span style="color:var(--red)">▮</span> Gasto Meta: <b>${d.gasto_meta>0?brl(d.gasto_meta):'—'}</b><br>` +
+        `<span style="color:${lc(d.lucro)}">●</span> Lucro dia: <b style="color:${lc(d.lucro)}">${(d.lucro>=0?'+':'')+brl(d.lucro)}</b> · ROAS ${d.gasto_meta>0?roas_fmt(d.roas):'—'}<br>` +
+        `<span style="color:var(--amber)">━</span> Acumulado: <b style="color:${lc(acum)}">${(acum>=0?'+':'')+brl(acum)}</b>`
+    };
+  });
+  renderComboChart('chart-dias', rows);
+  const sub = document.getElementById('chart-dias-sub');
+  if (sub && rows.length) sub.textContent = `${rows.length} dias · lucro acumulado ${(acum>=0?'+':'')+brl(acum)}`;
+}
+
+function renderChartMensal(historico) {
+  const rows = [...(historico || [])].reverse().map(h => ({
+    label: h.mes.replace('/20', '/'), liq: h.liq, gasto: h.gasto_meta, linha: h.lucro,
+    tip: `<div class="tt-title">${h.mes}</div>` +
+      `<span style="color:var(--green)">▮</span> Receita líq.: <b>${brl(h.liq)}</b> · ${h.vendas} vendas<br>` +
+      `<span style="color:var(--red)">▮</span> Gasto Meta: <b>${h.gasto_meta>0?brl(h.gasto_meta):'—'}</b><br>` +
+      `<span style="color:var(--amber)">━</span> Lucro: <b style="color:${lc(h.lucro)}">${(h.lucro>=0?'+':'')+brl(h.lucro)}</b> · ROAS ${h.gasto_meta>0?roas_fmt(h.roas):'—'}` +
+      (h.fonte_externa ? `<br><span style="color:var(--amber)">◆</span> inclui ${brl(h.receita_externa)} via ${h.fonte_externa}` : '')
+  }));
+  renderComboChart('chart-mensal', rows);
+}
 
 async function carregarDashboard(mes) {
   document.getElementById('dash-update-txt').textContent = 'carregando...';
@@ -1415,6 +1602,9 @@ async function carregarDashboard(mes) {
     });
     return;
   }
+
+  dadosCursos = d;
+  calcFinanceiro();
 
   // Popula select com meses do histórico
   const sel = document.getElementById('dash-mes');
@@ -1485,31 +1675,36 @@ async function carregarDashboard(mes) {
   if (d.semanas && d.semanas.length) {
     document.getElementById('semanas-tbody').innerHTML = d.semanas.map(s => `
       <tr style="${s.atual ? 'background:rgba(245,166,35,.06)' : ''}">
-        <td style="padding:12px 14px;border-bottom:1px solid var(--border);">
+        <td>
           <div style="font-size:13px;font-weight:700;">${s.semana}${s.atual ? ' <span style="font-size:10px;color:var(--amber);">atual</span>' : ''}</div>
           <div style="font-size:10px;color:var(--muted);font-family:var(--mono);">${s.periodo}</div>
         </td>
-        <td style="padding:12px 14px;border-bottom:1px solid var(--border);text-align:right;font-family:var(--mono);font-size:13px;">${s.vendas}</td>
-        <td style="padding:12px 14px;border-bottom:1px solid var(--border);text-align:right;font-family:var(--mono);font-size:13px;font-weight:700;color:${lc(s.lucro)};">${(s.lucro >= 0 ? '+' : '') + brl(s.lucro)}</td>
-        <td style="padding:12px 14px;border-bottom:1px solid var(--border);text-align:right;font-family:var(--mono);font-size:13px;font-weight:700;color:${rc(s.roas)};">${roas_fmt(s.roas)}</td>
+        <td>${s.vendas}</td>
+        <td style="font-weight:700;color:${lc(s.lucro)};">${(s.lucro >= 0 ? '+' : '') + brl(s.lucro)}</td>
+        <td style="font-weight:700;color:${rc(s.roas)};">${roas_fmt(s.roas)}</td>
       </tr>`).join('');
   }
+
+  // Gráfico diário
+  renderChartDias(d.dias || []);
 
   // Dia a dia
   if (d.dias && d.dias.length) {
     document.getElementById('diaadia-tbody').innerHTML = d.dias.map(dia => `
       <tr>
-        <td style="padding:10px 14px;border-bottom:1px solid var(--border);font-family:var(--mono);font-size:12px;font-weight:700;">${dia.dia}</td>
-        <td style="padding:10px 14px;border-bottom:1px solid var(--border);text-align:right;font-family:var(--mono);font-size:12px;">${dia.vendas}</td>
-        <td style="padding:10px 14px;border-bottom:1px solid var(--border);text-align:right;font-family:var(--mono);font-size:12px;color:var(--green);">${brl(dia.liq)}</td>
-        <td style="padding:10px 14px;border-bottom:1px solid var(--border);text-align:right;font-family:var(--mono);font-size:12px;color:var(--red);">${dia.gasto_meta > 0 ? brl(dia.gasto_meta) : '—'}</td>
-        <td style="padding:10px 14px;border-bottom:1px solid var(--border);text-align:right;font-family:var(--mono);font-size:12px;font-weight:700;color:${lc(dia.lucro)};">${(dia.lucro >= 0 ? '+' : '') + brl(dia.lucro)}</td>
-        <td style="padding:10px 14px;border-bottom:1px solid var(--border);text-align:right;font-family:var(--mono);font-size:12px;font-weight:700;color:${rc(dia.roas)};">${dia.gasto_meta > 0 ? roas_fmt(dia.roas) : '—'}</td>
+        <td style="font-family:var(--mono);font-weight:700;">${dia.dia}</td>
+        <td>${dia.vendas}</td>
+        <td style="color:var(--green);">${brl(dia.liq)}</td>
+        <td style="color:var(--red);">${dia.gasto_meta > 0 ? brl(dia.gasto_meta) : '—'}</td>
+        <td style="font-weight:700;color:${lc(dia.lucro)};">${(dia.lucro >= 0 ? '+' : '') + brl(dia.lucro)}</td>
+        <td style="font-weight:700;color:${rc(dia.roas)};">${dia.gasto_meta > 0 ? roas_fmt(dia.roas) : '—'}</td>
       </tr>`).join('');
   }
 
-  // Histórico mensal — adiciona bloco se existir
-  if (d.historico && d.historico.length && !document.getElementById('bloco-historico')) {
+  // Histórico mensal — re-renderiza a cada carga
+  const blocoAntigo = document.getElementById('bloco-historico');
+  if (blocoAntigo) blocoAntigo.remove();
+  if (d.historico && d.historico.length) {
     const mesesValidos = d.historico.filter(h => h.gasto_meta > 0);
     const nMeses = mesesValidos.length || 1;
     const totalDias = mesesValidos.reduce((s, h) => {
@@ -1532,21 +1727,33 @@ async function carregarDashboard(mes) {
       <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:16px;">
         <div class="kpi-card" style="border:1px solid var(--border2);">
           <div class="kpi-label">Média Mensal</div>
-          <div style="font-size:22px;font-weight:800;color:var(--amber);font-family:var(--mono);margin:6px 0;">${brl(mediaLiqMensal)}</div>
+          <div style="font-size:clamp(15px,1.6vw,22px);font-weight:800;color:var(--amber);font-family:var(--mono);margin:6px 0;">${brl(mediaLiqMensal)}</div>
           <div class="kpi-sub">receita líq. · ${nMeses} meses</div>
           <div style="margin-top:6px;font-size:11px;color:var(--muted);font-family:var(--mono);">lucro médio ${brl(mediaLucroMensal)}/mês</div>
         </div>
         <div class="kpi-card" style="border:1px solid var(--border2);">
           <div class="kpi-label">Média Diária</div>
-          <div style="font-size:22px;font-weight:800;color:var(--blue);font-family:var(--mono);margin:6px 0;">${brl(mediaLiqDiaria)}</div>
+          <div style="font-size:clamp(15px,1.6vw,22px);font-weight:800;color:var(--blue);font-family:var(--mono);margin:6px 0;">${brl(mediaLiqDiaria)}</div>
           <div class="kpi-sub">receita líq. por dia · ${totalDias} dias</div>
           <div style="margin-top:6px;font-size:11px;color:var(--muted);font-family:var(--mono);">lucro médio ${brl(mediaLucroDiaria)}/dia</div>
         </div>
         <div class="kpi-card" style="border:1px solid var(--border2);">
           <div class="kpi-label">ROAS Médio Geral</div>
-          <div style="font-size:22px;font-weight:800;color:${rc(mediaRoas)};font-family:var(--mono);margin:6px 0;">${roas_fmt(mediaRoas)}</div>
+          <div style="font-size:clamp(15px,1.6vw,22px);font-weight:800;color:${rc(mediaRoas)};font-family:var(--mono);margin:6px 0;">${roas_fmt(mediaRoas)}</div>
           <div class="kpi-sub">média dos ${nMeses} meses</div>
           <div style="margin-top:6px;font-size:11px;color:var(--muted);font-family:var(--mono);">meta: ≥1.5x para lucro saudável</div>
+        </div>
+      </div>
+      <div class="block">
+        <div class="block-head">
+          <div class="block-head-title"><span class="bdot" style="background:var(--amber)"></span>Evolução Mensal</div>
+          <span style="font-size:11px;color:var(--muted);font-family:var(--mono);">receita × gasto · lucro por mês</span>
+        </div>
+        <div class="chart-wrap" id="chart-mensal"></div>
+        <div class="chart-legend">
+          <div class="cl-item"><span class="cl-swatch" style="background:var(--green)"></span>Receita líquida</div>
+          <div class="cl-item"><span class="cl-swatch" style="background:var(--red);opacity:.75"></span>Gasto Meta</div>
+          <div class="cl-item"><span class="cl-line" style="background:var(--amber);box-shadow:0 0 6px rgba(245,166,35,.6)"></span>Lucro mensal</div>
         </div>
       </div>
       <div class="block">
@@ -1554,32 +1761,28 @@ async function carregarDashboard(mes) {
           <div class="block-head-title"><span class="bdot" style="background:var(--muted2)"></span>Fechamento Mensal</div>
         </div>
         <div style="overflow-x:auto;">
-          <table style="width:100%;border-collapse:collapse;font-size:12px;">
+          <table class="tbl">
             <thead><tr>
-              <th style="text-align:left;padding:10px 14px;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--muted);border-bottom:1px solid var(--border);">Mês</th>
-              <th style="text-align:right;padding:10px 14px;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--muted);border-bottom:1px solid var(--border);">Vendas</th>
-              <th style="text-align:right;padding:10px 14px;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--muted);border-bottom:1px solid var(--border);">Receita Líq.</th>
-              <th style="text-align:right;padding:10px 14px;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--muted);border-bottom:1px solid var(--border);">Gasto Meta</th>
-              <th style="text-align:right;padding:10px 14px;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--muted);border-bottom:1px solid var(--border);">Lucro</th>
-              <th style="text-align:right;padding:10px 14px;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--muted);border-bottom:1px solid var(--border);">ROAS</th>
+              <th>Mês</th><th>Vendas</th><th>Receita Líq.</th><th>Gasto Meta</th><th>Lucro</th><th>ROAS</th>
             </tr></thead>
             <tbody>${d.historico.map(h => `
               <tr>
-                <td style="padding:10px 14px;border-bottom:1px solid var(--border);">
+                <td>
                   <div style="font-weight:700;">${h.mes}</div>
                   ${h.fonte_externa ? `<div style="font-size:10px;color:var(--muted);margin-top:2px;">+${brl(h.receita_externa)} <span style="background:rgba(245,166,35,.15);color:var(--amber);padding:1px 5px;border-radius:4px;font-size:9px;font-weight:700;">${h.fonte_externa}</span></div>` : ''}
                 </td>
-                <td style="padding:10px 14px;border-bottom:1px solid var(--border);text-align:right;font-family:var(--mono);">${h.vendas}</td>
-                <td style="padding:10px 14px;border-bottom:1px solid var(--border);text-align:right;font-family:var(--mono);color:var(--green);">${brl(h.liq)}</td>
-                <td style="padding:10px 14px;border-bottom:1px solid var(--border);text-align:right;font-family:var(--mono);color:var(--red);">${h.gasto_meta > 0 ? brl(h.gasto_meta) : '—'}</td>
-                <td style="padding:10px 14px;border-bottom:1px solid var(--border);text-align:right;font-family:var(--mono);font-weight:700;color:${lc(h.lucro)};">${(h.lucro >= 0 ? '+' : '') + brl(h.lucro)}</td>
-                <td style="padding:10px 14px;border-bottom:1px solid var(--border);text-align:right;font-family:var(--mono);font-weight:700;color:${rc(h.roas)};">${h.gasto_meta > 0 ? roas_fmt(h.roas) : '—'}</td>
+                <td>${h.vendas}</td>
+                <td style="color:var(--green);">${brl(h.liq)}</td>
+                <td style="color:var(--red);">${h.gasto_meta > 0 ? brl(h.gasto_meta) : '—'}</td>
+                <td style="font-weight:700;color:${lc(h.lucro)};">${(h.lucro >= 0 ? '+' : '') + brl(h.lucro)}</td>
+                <td style="font-weight:700;color:${rc(h.roas)};">${h.gasto_meta > 0 ? roas_fmt(h.roas) : '—'}</td>
               </tr>`).join('')}
             </tbody>
           </table>
         </div>
       </div>`;
     document.getElementById('page-dashboard').querySelector('.container').appendChild(bloco);
+    renderChartMensal(d.historico);
   }
 }
 

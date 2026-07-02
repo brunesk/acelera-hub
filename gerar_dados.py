@@ -1,6 +1,6 @@
 """
-Gera data/latest.json e data/YYYY-MM.json com dados do Meta + Hotmart.
-Roda via GitHub Actions (workflow_dispatch ou cron).
+Gera data/latest.json e data/YYYY-MM.json (um por mês, desde Jan/2025)
+com dados do Meta + Hotmart. Roda via GitHub Actions (workflow_dispatch ou cron).
 """
 import urllib.request, urllib.parse, json, os, calendar, sys
 from datetime import datetime, timezone, timedelta
@@ -115,9 +115,8 @@ hm_token = hotmart_token(hotmart_basic)
 
 # Busca desde Jan/2025 até agora para ter histórico completo
 hist_start = datetime(2025, 1, 1, tzinfo=BRT)
-hist_end   = now
 hist_start_ms = int(hist_start.timestamp() * 1000)
-hist_end_ms   = int(hist_end.timestamp() * 1000)
+hist_end_ms   = int(now.timestamp() * 1000)
 
 print(f'📦 Buscando vendas Hotmart ({hist_start.strftime("%d/%m/%Y")} → hoje)...')
 hm_all = hotmart_all(hm_token, hist_start_ms, hist_end_ms)
@@ -144,54 +143,24 @@ for item in hm_all:
     hm_dia[dk]['bruto'] += price
     hm_dia[dk]['liq']   += liq
 
-print('📊 Buscando Meta (mês vigente)...')
-since_str = m_start.strftime('%Y-%m-%d')
+# Meta: histórico completo em uma chamada só (paginada)
+print('📊 Buscando Meta (Jan/2025 → ontem)...')
 until_str = yesterday.strftime('%Y-%m-%d')
+meta_raw = meta_daily(meta_token, '2025-01-01', until_str)
+print(f'  Meta: {len(meta_raw)} dias')
 
-meta_raw = meta_daily(meta_token, since_str, until_str)
 meta_dia = {}
+meta_mes = defaultdict(lambda: {'gasto': 0.0, 'compras_pixel': 0})
 for d in meta_raw:
+    dk = d['date_start']
     spend = float(d.get('spend', 0))
     purchases = next((int(a['value']) for a in d.get('actions', []) if a['action_type'] == 'purchase'), 0)
-    meta_dia[d['date_start']] = {'gasto': spend, 'compras_pixel': purchases}
+    meta_dia[dk] = {'gasto': spend, 'compras_pixel': purchases}
+    meta_mes[dk[:7]]['gasto'] += spend
+    meta_mes[dk[:7]]['compras_pixel'] += purchases
 
-print('🎨 Buscando criativos...')
-criativos = meta_ads(meta_token, since_str, until_str)
-
-# Busca histórico Meta (todos os meses anteriores ao atual)
-all_months = sorted(hm_mes.keys())
-prev_months = [m for m in all_months if m < curr_key]
-meta_mes = {}
-if prev_months:
-    print('📅 Buscando histórico Meta...')
-    # Sempre começa do primeiro mês que temos no Hotmart ou Jan/2025
-    hist_since = min(f'{prev_months[0]}-01', '2025-01-01')
-    last_prev  = prev_months[-1]
-    yr, mo     = int(last_prev[:4]), int(last_prev[5:7])
-    hist_until = f'{last_prev}-{calendar.monthrange(yr, mo)[1]:02d}'
-    raw = meta_daily(meta_token, hist_since, hist_until)
-    print(f'  Meta histórico: {len(raw)} dias')
-    for d in raw:
-        mk = d['date_start'][:7]
-        if mk not in meta_mes: meta_mes[mk] = {'gasto': 0.0, 'compras_pixel': 0}
-        meta_mes[mk]['gasto'] += float(d.get('spend', 0))
-        meta_mes[mk]['compras_pixel'] += next((int(a['value']) for a in d.get('actions', []) if a['action_type'] == 'purchase'), 0)
-    # Adiciona meses que podem estar no Meta mas não no Hotmart
-    for mk in list(meta_mes.keys()):
-        if mk < curr_key and mk not in prev_months:
-            prev_months = sorted(prev_months + [mk])
-
-# KPIs mês vigente
-all_days = sorted(set(list(hm_dia.keys()) + list(meta_dia.keys())))
-curr_days = [d for d in all_days if d.startswith(curr_key)]
-
-tv = sum(hm_dia[d]['v']     for d in curr_days)
-tb = sum(hm_dia[d]['bruto'] for d in curr_days)
-tl = sum(hm_dia[d]['liq']   for d in curr_days)
-ts = sum(meta_dia.get(d, {}).get('gasto', 0) for d in curr_days)
-tlr = tl - ts
-roas = tl / ts if ts > 0 else 0
-ticket = tb / tv if tv > 0 else 0
+print('🎨 Buscando criativos (mês vigente)...')
+criativos = meta_ads(meta_token, m_start.strftime('%Y-%m-%d'), until_str)
 
 MESES = {1:'Jan',2:'Fev',3:'Mar',4:'Abr',5:'Mai',6:'Jun',7:'Jul',8:'Ago',9:'Set',10:'Out',11:'Nov',12:'Dez'}
 
@@ -199,11 +168,13 @@ def fmt_mes(mk):
     yr, mo = int(mk[:4]), int(mk[5:7])
     return f'{MESES[mo]}/{yr}'
 
-# Semanas do mês vigente
+# Todos os meses com atividade (Hotmart ou Meta ou receita externa)
+all_months = sorted(set(list(hm_mes.keys()) + list(meta_mes.keys()) + list(RECEITA_EXTERNA.keys())))
+prev_months = [m for m in all_months if m < curr_key]
+
+# Semanas de um conjunto de dias
 def semanas(days, hm, meta):
-    result = []
-    chunks = []
-    chunk = []
+    result, chunks, chunk = [], [], []
     for d in days:
         chunk.append(d)
         if len(chunk) == 7:
@@ -214,32 +185,17 @@ def semanas(days, hm, meta):
         sb = sum(hm.get(d, {}).get('bruto', 0) for d in ch)
         sl = sum(hm.get(d, {}).get('liq', 0)   for d in ch)
         ss = sum(meta.get(d, {}).get('gasto', 0) for d in ch)
-        slr = sl - ss
         result.append({
             'semana': f'Semana {i+1}',
             'periodo': f'{datetime.strptime(ch[0],"%Y-%m-%d").strftime("%d/%m")} – {datetime.strptime(ch[-1],"%Y-%m-%d").strftime("%d/%m")}',
             'vendas': sv, 'bruto': round(sb, 2), 'liq': round(sl, 2),
-            'gasto_meta': round(ss, 2), 'lucro': round(slr, 2),
+            'gasto_meta': round(ss, 2), 'lucro': round(sl - ss, 2),
             'roas': round(sl / ss, 2) if ss > 0 else 0,
             'atual': i == len(chunks) - 1
         })
     return result
 
-# Dias formatados
-dias_out = []
-for d in curr_days:
-    h = hm_dia.get(d, {}); m = meta_dia.get(d, {})
-    liq = h.get('liq', 0); bruto = h.get('bruto', 0); gasto = m.get('gasto', 0)
-    lucro = liq - gasto
-    roas_d = liq / gasto if gasto > 0 else 0
-    dias_out.append({
-        'dia': datetime.strptime(d, '%Y-%m-%d').strftime('%d/%m'),
-        'vendas': h.get('v', 0), 'bruto': round(bruto, 2),
-        'liq': round(liq, 2), 'gasto_meta': round(gasto, 2),
-        'lucro': round(lucro, 2), 'roas': round(roas_d, 2)
-    })
-
-# Histórico mensal
+# Histórico mensal (meses fechados, mais recente primeiro)
 historico = []
 for mk in reversed(prev_months):
     hm_m  = hm_mes.get(mk, {})
@@ -249,13 +205,12 @@ for mk in reversed(prev_months):
     tb_m  = hm_m.get('bruto', 0)
     tl_m  = hm_m.get('liq', 0) + ext.get('liq', 0)   # soma receita externa
     ts_m  = mt_m.get('gasto', 0)
-    tlr_m = tl_m - ts_m
 
     entry = {
         'mes': fmt_mes(mk), 'mes_key': mk,
         'vendas': hm_m.get('v', 0), 'bruto': round(tb_m, 2),
         'liq': round(tl_m, 2), 'gasto_meta': round(ts_m, 2),
-        'lucro': round(tlr_m, 2),
+        'lucro': round(tl_m - ts_m, 2),
         'roas': round(tl_m / ts_m, 2) if ts_m > 0 else 0
     }
     if ext:
@@ -263,27 +218,69 @@ for mk in reversed(prev_months):
         entry['fonte_externa']   = ext['fonte']
     historico.append(entry)
 
-# Monta JSON
-data = {
-    'gerado_em': now.strftime('%d/%m/%Y às %H:%M (BRT)'),
-    'periodo': f'{m_start.strftime("%d/%m")} – {yesterday.strftime("%d/%m/%Y")}',
-    'mes_key': curr_key,
-    'kpis': {
-        'vendas': tv, 'bruto': round(tb, 2), 'liq': round(tl, 2),
-        'gasto_meta': round(ts, 2), 'lucro': round(tlr, 2),
-        'roas': round(roas, 2), 'ticket': round(ticket, 2)
-    },
-    'dias': dias_out,
-    'semanas': semanas(curr_days, hm_dia, meta_dia),
-    'criativos': criativos,
-    'historico': historico
-}
+# Monta o JSON de um mês (kpis + dias + semanas; criativos só no vigente)
+def build_month(mk):
+    days = sorted(set(
+        [d for d in hm_dia if d.startswith(mk)] +
+        [d for d in meta_dia if d.startswith(mk)]
+    ))
+    ext = RECEITA_EXTERNA.get(mk, {})
 
+    tv = sum(hm_dia[d]['v']     for d in days)
+    tb = sum(hm_dia[d]['bruto'] for d in days)
+    tl = sum(hm_dia[d]['liq']   for d in days) + ext.get('liq', 0)
+    ts = sum(meta_dia.get(d, {}).get('gasto', 0) for d in days)
+    tlr = tl - ts
+
+    dias_out = []
+    for d in days:
+        h = hm_dia.get(d, {}); m = meta_dia.get(d, {})
+        liq = h.get('liq', 0); gasto = m.get('gasto', 0)
+        dias_out.append({
+            'dia': datetime.strptime(d, '%Y-%m-%d').strftime('%d/%m'),
+            'vendas': h.get('v', 0), 'bruto': round(h.get('bruto', 0), 2),
+            'liq': round(liq, 2), 'gasto_meta': round(gasto, 2),
+            'lucro': round(liq - gasto, 2),
+            'roas': round(liq / gasto, 2) if gasto > 0 else 0
+        })
+
+    is_curr = mk == curr_key
+    yr, mo = int(mk[:4]), int(mk[5:7])
+    if is_curr:
+        periodo = f'{m_start.strftime("%d/%m")} – {yesterday.strftime("%d/%m/%Y")}'
+    else:
+        periodo = f'01/{mo:02d} – {calendar.monthrange(yr, mo)[1]:02d}/{mo:02d}/{yr}'
+
+    data = {
+        'gerado_em': now.strftime('%d/%m/%Y às %H:%M (BRT)'),
+        'periodo': periodo,
+        'mes_key': mk,
+        'kpis': {
+            'vendas': tv, 'bruto': round(tb, 2), 'liq': round(tl, 2),
+            'gasto_meta': round(ts, 2), 'lucro': round(tlr, 2),
+            'roas': round(tl / ts, 2) if ts > 0 else 0,
+            'ticket': round(tb / tv, 2) if tv > 0 else 0
+        },
+        'dias': dias_out,
+        'semanas': semanas(days, hm_dia, meta_dia),
+        'criativos': criativos if is_curr else [],
+        'historico': historico
+    }
+    if ext:
+        data['kpis']['receita_externa'] = round(ext['liq'], 2)
+        data['kpis']['fonte_externa']   = ext['fonte']
+    return data
+
+# Grava um JSON por mês + latest
 os.makedirs('data', exist_ok=True)
-with open('data/latest.json', 'w', encoding='utf-8') as f:
-    json.dump(data, f, ensure_ascii=False, indent=2)
-with open(f'data/{curr_key}.json', 'w', encoding='utf-8') as f:
-    json.dump(data, f, ensure_ascii=False, indent=2)
+for mk in prev_months + [curr_key]:
+    with open(f'data/{mk}.json', 'w', encoding='utf-8') as f:
+        json.dump(build_month(mk), f, ensure_ascii=False, indent=2)
 
-print(f'✅ Dados salvos: data/latest.json + data/{curr_key}.json')
-print(f'   {tv} vendas · R${tl:.0f} líq HM · R${ts:.0f} Meta · Lucro R${tlr:.0f} · ROAS {roas:.2f}x')
+data_curr = build_month(curr_key)
+with open('data/latest.json', 'w', encoding='utf-8') as f:
+    json.dump(data_curr, f, ensure_ascii=False, indent=2)
+
+k = data_curr['kpis']
+print(f'✅ Dados salvos: data/latest.json + {len(prev_months)+1} arquivos mensais')
+print(f"   {k['vendas']} vendas · R${k['liq']:.0f} líq · R${k['gasto_meta']:.0f} Meta · Lucro R${k['lucro']:.0f} · ROAS {k['roas']:.2f}x")

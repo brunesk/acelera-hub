@@ -1,0 +1,461 @@
+{
+  "gerado_em": "02/07/2026 às 10:39 (BRT)",
+  "periodo": "01/03 – 31/03/2026",
+  "mes_key": "2026-03",
+  "kpis": {
+    "vendas": 287,
+    "bruto": 19750.87,
+    "liq": 17534.74,
+    "gasto_meta": 13260.06,
+    "lucro": 4274.68,
+    "roas": 1.32,
+    "ticket": 68.82
+  },
+  "dias": [
+    {
+      "dia": "01/03",
+      "vendas": 10,
+      "bruto": 670.0,
+      "liq": 593.68,
+      "gasto_meta": 762.06,
+      "lucro": -168.38,
+      "roas": 0.78
+    },
+    {
+      "dia": "02/03",
+      "vendas": 19,
+      "bruto": 1186.92,
+      "liq": 1053.0,
+      "gasto_meta": 663.54,
+      "lucro": 389.46,
+      "roas": 1.59
+    },
+    {
+      "dia": "03/03",
+      "vendas": 15,
+      "bruto": 1090.92,
+      "liq": 970.5,
+      "gasto_meta": 679.18,
+      "lucro": 291.32,
+      "roas": 1.43
+    },
+    {
+      "dia": "04/03",
+      "vendas": 16,
+      "bruto": 1022.45,
+      "liq": 906.08,
+      "gasto_meta": 644.68,
+      "lucro": 261.4,
+      "roas": 1.41
+    },
+    {
+      "dia": "05/03",
+      "vendas": 8,
+      "bruto": 514.92,
+      "liq": 457.23,
+      "gasto_meta": 547.47,
+      "lucro": -90.24,
+      "roas": 0.84
+    },
+    {
+      "dia": "06/03",
+      "vendas": 7,
+      "bruto": 553.0,
+      "liq": 491.26,
+      "gasto_meta": 588.45,
+      "lucro": -97.19,
+      "roas": 0.83
+    },
+    {
+      "dia": "07/03",
+      "vendas": 12,
+      "bruto": 805.47,
+      "liq": 715.47,
+      "gasto_meta": 586.4,
+      "lucro": 129.07,
+      "roas": 1.22
+    },
+    {
+      "dia": "08/03",
+      "vendas": 12,
+      "bruto": 788.0,
+      "liq": 698.0,
+      "gasto_meta": 624.57,
+      "lucro": 73.43,
+      "roas": 1.12
+    },
+    {
+      "dia": "09/03",
+      "vendas": 7,
+      "bruto": 480.0,
+      "liq": 426.18,
+      "gasto_meta": 739.04,
+      "lucro": -312.86,
+      "roas": 0.58
+    },
+    {
+      "dia": "10/03",
+      "vendas": 8,
+      "bruto": 609.47,
+      "liq": 542.87,
+      "gasto_meta": 709.9,
+      "lucro": -167.03,
+      "roas": 0.76
+    },
+    {
+      "dia": "11/03",
+      "vendas": 4,
+      "bruto": 186.0,
+      "liq": 163.59,
+      "gasto_meta": 0.0,
+      "lucro": 163.59,
+      "roas": 0
+    },
+    {
+      "dia": "12/03",
+      "vendas": 4,
+      "bruto": 321.57,
+      "liq": 286.29,
+      "gasto_meta": 0.0,
+      "lucro": 286.29,
+      "roas": 0
+    },
+    {
+      "dia": "13/03",
+      "vendas": 1,
+      "bruto": 79.0,
+      "liq": 70.18,
+      "gasto_meta": 0,
+      "lucro": 70.18,
+      "roas": 0
+    },
+    {
+      "dia": "14/03",
+      "vendas": 6,
+      "bruto": 402.45,
+      "liq": 357.45,
+      "gasto_meta": 92.38,
+      "lucro": 265.07,
+      "roas": 3.87
+    },
+    {
+      "dia": "15/03",
+      "vendas": 10,
+      "bruto": 774.35,
+      "liq": 690.11,
+      "gasto_meta": 528.21,
+      "lucro": 161.9,
+      "roas": 1.31
+    },
+    {
+      "dia": "16/03",
+      "vendas": 14,
+      "bruto": 1042.73,
+      "liq": 927.17,
+      "gasto_meta": 453.8,
+      "lucro": 473.37,
+      "roas": 2.04
+    },
+    {
+      "dia": "17/03",
+      "vendas": 15,
+      "bruto": 962.47,
+      "liq": 853.93,
+      "gasto_meta": 393.27,
+      "lucro": 460.66,
+      "roas": 2.17
+    },
+    {
+      "dia": "18/03",
+      "vendas": 5,
+      "bruto": 317.06,
+      "liq": 280.88,
+      "gasto_meta": 379.41,
+      "lucro": -98.53,
+      "roas": 0.74
+    },
+    {
+      "dia": "19/03",
+      "vendas": 7,
+      "bruto": 473.0,
+      "liq": 419.18,
+      "gasto_meta": 350.5,
+      "lucro": 68.68,
+      "roas": 1.2
+    },
+    {
+      "dia": "20/03",
+      "vendas": 5,
+      "bruto": 320.57,
+      "liq": 284.39,
+      "gasto_meta": 357.09,
+      "lucro": -72.7,
+      "roas": 0.8
+    },
+    {
+      "dia": "21/03",
+      "vendas": 18,
+      "bruto": 1055.48,
+      "liq": 933.35,
+      "gasto_meta": 329.08,
+      "lucro": 604.27,
+      "roas": 2.84
+    },
+    {
+      "dia": "22/03",
+      "vendas": 9,
+      "bruto": 671.0,
+      "liq": 595.58,
+      "gasto_meta": 474.73,
+      "lucro": 120.85,
+      "roas": 1.25
+    },
+    {
+      "dia": "23/03",
+      "vendas": 10,
+      "bruto": 771.63,
+      "liq": 687.39,
+      "gasto_meta": 394.1,
+      "lucro": 293.29,
+      "roas": 1.74
+    },
+    {
+      "dia": "24/03",
+      "vendas": 14,
+      "bruto": 1017.49,
+      "liq": 904.3,
+      "gasto_meta": 408.14,
+      "lucro": 496.16,
+      "roas": 2.22
+    },
+    {
+      "dia": "25/03",
+      "vendas": 11,
+      "bruto": 779.0,
+      "liq": 690.89,
+      "gasto_meta": 428.13,
+      "lucro": 262.76,
+      "roas": 1.61
+    },
+    {
+      "dia": "26/03",
+      "vendas": 7,
+      "bruto": 578.92,
+      "liq": 517.18,
+      "gasto_meta": 401.42,
+      "lucro": 115.76,
+      "roas": 1.29
+    },
+    {
+      "dia": "27/03",
+      "vendas": 8,
+      "bruto": 552.0,
+      "liq": 489.36,
+      "gasto_meta": 348.73,
+      "lucro": 140.63,
+      "roas": 1.4
+    },
+    {
+      "dia": "28/03",
+      "vendas": 4,
+      "bruto": 316.0,
+      "liq": 280.72,
+      "gasto_meta": 170.34,
+      "lucro": 110.38,
+      "roas": 1.65
+    },
+    {
+      "dia": "29/03",
+      "vendas": 5,
+      "bruto": 395.0,
+      "liq": 350.9,
+      "gasto_meta": 306.68,
+      "lucro": 44.22,
+      "roas": 1.14
+    },
+    {
+      "dia": "30/03",
+      "vendas": 7,
+      "bruto": 473.0,
+      "liq": 419.18,
+      "gasto_meta": 452.26,
+      "lucro": -33.08,
+      "roas": 0.93
+    },
+    {
+      "dia": "31/03",
+      "vendas": 9,
+      "bruto": 541.0,
+      "liq": 478.45,
+      "gasto_meta": 446.5,
+      "lucro": 31.95,
+      "roas": 1.07
+    }
+  ],
+  "semanas": [
+    {
+      "semana": "Semana 1",
+      "periodo": "01/03 – 07/03",
+      "vendas": 87,
+      "bruto": 5843.68,
+      "liq": 5187.22,
+      "gasto_meta": 4471.78,
+      "lucro": 715.44,
+      "roas": 1.16,
+      "atual": false
+    },
+    {
+      "semana": "Semana 2",
+      "periodo": "08/03 – 14/03",
+      "vendas": 42,
+      "bruto": 2866.49,
+      "liq": 2544.56,
+      "gasto_meta": 2165.89,
+      "lucro": 378.67,
+      "roas": 1.17,
+      "atual": false
+    },
+    {
+      "semana": "Semana 3",
+      "periodo": "15/03 – 21/03",
+      "vendas": 74,
+      "bruto": 4945.66,
+      "liq": 4389.01,
+      "gasto_meta": 2791.36,
+      "lucro": 1597.65,
+      "roas": 1.57,
+      "atual": false
+    },
+    {
+      "semana": "Semana 4",
+      "periodo": "22/03 – 28/03",
+      "vendas": 63,
+      "bruto": 4686.04,
+      "liq": 4165.42,
+      "gasto_meta": 2625.59,
+      "lucro": 1539.83,
+      "roas": 1.59,
+      "atual": false
+    },
+    {
+      "semana": "Semana 5",
+      "periodo": "29/03 – 31/03",
+      "vendas": 21,
+      "bruto": 1409.0,
+      "liq": 1248.53,
+      "gasto_meta": 1205.44,
+      "lucro": 43.09,
+      "roas": 1.04,
+      "atual": true
+    }
+  ],
+  "criativos": [],
+  "historico": [
+    {
+      "mes": "Jun/2026",
+      "mes_key": "2026-06",
+      "vendas": 259,
+      "bruto": 18019.03,
+      "liq": 16006.9,
+      "gasto_meta": 10557.48,
+      "lucro": 5449.42,
+      "roas": 1.52
+    },
+    {
+      "mes": "Mai/2026",
+      "mes_key": "2026-05",
+      "vendas": 208,
+      "bruto": 15189.6,
+      "liq": 13504.47,
+      "gasto_meta": 10075.41,
+      "lucro": 3429.06,
+      "roas": 1.34
+    },
+    {
+      "mes": "Abr/2026",
+      "mes_key": "2026-04",
+      "vendas": 298,
+      "bruto": 20232.34,
+      "liq": 17966.27,
+      "gasto_meta": 11327.18,
+      "lucro": 6639.09,
+      "roas": 1.59
+    },
+    {
+      "mes": "Mar/2026",
+      "mes_key": "2026-03",
+      "vendas": 287,
+      "bruto": 19750.87,
+      "liq": 17534.74,
+      "gasto_meta": 13260.06,
+      "lucro": 4274.68,
+      "roas": 1.32
+    },
+    {
+      "mes": "Fev/2026",
+      "mes_key": "2026-02",
+      "vendas": 437,
+      "bruto": 28719.0,
+      "liq": 25488.91,
+      "gasto_meta": 19217.13,
+      "lucro": 6271.78,
+      "roas": 1.33
+    },
+    {
+      "mes": "Jan/2026",
+      "mes_key": "2026-01",
+      "vendas": 374,
+      "bruto": 19040.8,
+      "liq": 16799.14,
+      "gasto_meta": 11241.86,
+      "lucro": 5557.28,
+      "roas": 1.49
+    },
+    {
+      "mes": "Dez/2025",
+      "mes_key": "2025-12",
+      "vendas": 166,
+      "bruto": 8309.61,
+      "liq": 7328.51,
+      "gasto_meta": 5189.7,
+      "lucro": 2138.81,
+      "roas": 1.41
+    },
+    {
+      "mes": "Nov/2025",
+      "mes_key": "2025-11",
+      "vendas": 130,
+      "bruto": 6548.52,
+      "liq": 7062.82,
+      "gasto_meta": 4409.85,
+      "lucro": 2652.97,
+      "roas": 1.6,
+      "receita_externa": 1283.3,
+      "fonte_externa": "Green"
+    },
+    {
+      "mes": "Out/2025",
+      "mes_key": "2025-10",
+      "vendas": 0,
+      "bruto": 0,
+      "liq": 7834.0,
+      "gasto_meta": 4816.68,
+      "lucro": 3017.32,
+      "roas": 1.63,
+      "receita_externa": 7834.0,
+      "fonte_externa": "Green"
+    },
+    {
+      "mes": "Set/2025",
+      "mes_key": "2025-09",
+      "vendas": 0,
+      "bruto": 0,
+      "liq": 1030.49,
+      "gasto_meta": 1386.14,
+      "lucro": -355.65,
+      "roas": 0.74,
+      "receita_externa": 1030.49,
+      "fonte_externa": "Green"
+    }
+  ]
+}
