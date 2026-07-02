@@ -1422,38 +1422,74 @@ async function carregarDashboard(mes) {
 
   // Histórico mensal — adiciona bloco se existir
   if (d.historico && d.historico.length && !document.getElementById('bloco-historico')) {
+    const mesesValidos = d.historico.filter(h => h.gasto_meta > 0);
+    const nMeses = mesesValidos.length || 1;
+    const totalDias = mesesValidos.reduce((s, h) => {
+      const [yr, mo] = (h.mes_key || '2026-01').split('-').map(Number);
+      return s + new Date(yr, mo, 0).getDate();
+    }, 0);
+    const somaLiq   = mesesValidos.reduce((s, h) => s + h.liq, 0);
+    const somaLucro = mesesValidos.reduce((s, h) => s + h.lucro, 0);
+    const somaRoas  = mesesValidos.reduce((s, h) => s + h.roas, 0);
+    const mediaLiqMensal   = somaLiq / nMeses;
+    const mediaLucroMensal = somaLucro / nMeses;
+    const mediaLiqDiaria   = somaLiq / (totalDias || 1);
+    const mediaLucroDiaria = somaLucro / (totalDias || 1);
+    const mediaRoas        = somaRoas / nMeses;
+
     const bloco = document.createElement('div');
     bloco.id = 'bloco-historico';
-    bloco.className = 'block';
     bloco.style.marginTop = '16px';
     bloco.innerHTML = `
-      <div class="block-head">
-        <div class="block-head-title"><span class="bdot" style="background:var(--muted2)"></span>Fechamento Mensal</div>
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:16px;">
+        <div class="kpi-card" style="border:1px solid var(--border2);">
+          <div class="kpi-label">Média Mensal</div>
+          <div style="font-size:22px;font-weight:800;color:var(--amber);font-family:var(--mono);margin:6px 0;">${brl(mediaLiqMensal)}</div>
+          <div class="kpi-sub">receita líq. · ${nMeses} meses</div>
+          <div style="margin-top:6px;font-size:11px;color:var(--muted);font-family:var(--mono);">lucro médio ${brl(mediaLucroMensal)}/mês</div>
+        </div>
+        <div class="kpi-card" style="border:1px solid var(--border2);">
+          <div class="kpi-label">Média Diária</div>
+          <div style="font-size:22px;font-weight:800;color:var(--blue);font-family:var(--mono);margin:6px 0;">${brl(mediaLiqDiaria)}</div>
+          <div class="kpi-sub">receita líq. por dia · ${totalDias} dias</div>
+          <div style="margin-top:6px;font-size:11px;color:var(--muted);font-family:var(--mono);">lucro médio ${brl(mediaLucroDiaria)}/dia</div>
+        </div>
+        <div class="kpi-card" style="border:1px solid var(--border2);">
+          <div class="kpi-label">ROAS Médio Geral</div>
+          <div style="font-size:22px;font-weight:800;color:${rc(mediaRoas)};font-family:var(--mono);margin:6px 0;">${roas_fmt(mediaRoas)}</div>
+          <div class="kpi-sub">média dos ${nMeses} meses</div>
+          <div style="margin-top:6px;font-size:11px;color:var(--muted);font-family:var(--mono);">meta: ≥1.5x para lucro saudável</div>
+        </div>
       </div>
-      <div style="overflow-x:auto;">
-        <table style="width:100%;border-collapse:collapse;font-size:12px;">
-          <thead><tr>
-            <th style="text-align:left;padding:10px 14px;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--muted);border-bottom:1px solid var(--border);">Mês</th>
-            <th style="text-align:right;padding:10px 14px;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--muted);border-bottom:1px solid var(--border);">Vendas</th>
-            <th style="text-align:right;padding:10px 14px;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--muted);border-bottom:1px solid var(--border);">Receita Líq.</th>
-            <th style="text-align:right;padding:10px 14px;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--muted);border-bottom:1px solid var(--border);">Gasto Meta</th>
-            <th style="text-align:right;padding:10px 14px;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--muted);border-bottom:1px solid var(--border);">Lucro</th>
-            <th style="text-align:right;padding:10px 14px;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--muted);border-bottom:1px solid var(--border);">ROAS</th>
-          </tr></thead>
-          <tbody>${d.historico.map(h => `
-            <tr>
-              <td style="padding:10px 14px;border-bottom:1px solid var(--border);">
-                <div style="font-weight:700;">${h.mes}</div>
-                ${h.fonte_externa ? `<div style="font-size:10px;color:var(--muted);margin-top:2px;">+${brl(h.receita_externa)} <span style="background:rgba(245,166,35,.15);color:var(--amber);padding:1px 5px;border-radius:4px;font-size:9px;font-weight:700;">${h.fonte_externa}</span></div>` : ''}
-              </td>
-              <td style="padding:10px 14px;border-bottom:1px solid var(--border);text-align:right;font-family:var(--mono);">${h.vendas}${h.fonte_externa ? ' <span style="color:var(--muted);font-size:10px;">+ext</span>' : ''}</td>
-              <td style="padding:10px 14px;border-bottom:1px solid var(--border);text-align:right;font-family:var(--mono);color:var(--green);">${brl(h.liq)}</td>
-              <td style="padding:10px 14px;border-bottom:1px solid var(--border);text-align:right;font-family:var(--mono);color:var(--red);">${h.gasto_meta > 0 ? brl(h.gasto_meta) : '—'}</td>
-              <td style="padding:10px 14px;border-bottom:1px solid var(--border);text-align:right;font-family:var(--mono);font-weight:700;color:${lc(h.lucro)};">${(h.lucro >= 0 ? '+' : '') + brl(h.lucro)}</td>
-              <td style="padding:10px 14px;border-bottom:1px solid var(--border);text-align:right;font-family:var(--mono);font-weight:700;color:${rc(h.roas)};">${h.gasto_meta > 0 ? roas_fmt(h.roas) : '—'}</td>
-            </tr>`).join('')}
-          </tbody>
-        </table>
+      <div class="block">
+        <div class="block-head">
+          <div class="block-head-title"><span class="bdot" style="background:var(--muted2)"></span>Fechamento Mensal</div>
+        </div>
+        <div style="overflow-x:auto;">
+          <table style="width:100%;border-collapse:collapse;font-size:12px;">
+            <thead><tr>
+              <th style="text-align:left;padding:10px 14px;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--muted);border-bottom:1px solid var(--border);">Mês</th>
+              <th style="text-align:right;padding:10px 14px;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--muted);border-bottom:1px solid var(--border);">Vendas</th>
+              <th style="text-align:right;padding:10px 14px;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--muted);border-bottom:1px solid var(--border);">Receita Líq.</th>
+              <th style="text-align:right;padding:10px 14px;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--muted);border-bottom:1px solid var(--border);">Gasto Meta</th>
+              <th style="text-align:right;padding:10px 14px;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--muted);border-bottom:1px solid var(--border);">Lucro</th>
+              <th style="text-align:right;padding:10px 14px;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--muted);border-bottom:1px solid var(--border);">ROAS</th>
+            </tr></thead>
+            <tbody>${d.historico.map(h => `
+              <tr>
+                <td style="padding:10px 14px;border-bottom:1px solid var(--border);">
+                  <div style="font-weight:700;">${h.mes}</div>
+                  ${h.fonte_externa ? `<div style="font-size:10px;color:var(--muted);margin-top:2px;">+${brl(h.receita_externa)} <span style="background:rgba(245,166,35,.15);color:var(--amber);padding:1px 5px;border-radius:4px;font-size:9px;font-weight:700;">${h.fonte_externa}</span></div>` : ''}
+                </td>
+                <td style="padding:10px 14px;border-bottom:1px solid var(--border);text-align:right;font-family:var(--mono);">${h.vendas}</td>
+                <td style="padding:10px 14px;border-bottom:1px solid var(--border);text-align:right;font-family:var(--mono);color:var(--green);">${brl(h.liq)}</td>
+                <td style="padding:10px 14px;border-bottom:1px solid var(--border);text-align:right;font-family:var(--mono);color:var(--red);">${h.gasto_meta > 0 ? brl(h.gasto_meta) : '—'}</td>
+                <td style="padding:10px 14px;border-bottom:1px solid var(--border);text-align:right;font-family:var(--mono);font-weight:700;color:${lc(h.lucro)};">${(h.lucro >= 0 ? '+' : '') + brl(h.lucro)}</td>
+                <td style="padding:10px 14px;border-bottom:1px solid var(--border);text-align:right;font-family:var(--mono);font-weight:700;color:${rc(h.roas)};">${h.gasto_meta > 0 ? roas_fmt(h.roas) : '—'}</td>
+              </tr>`).join('')}
+            </tbody>
+          </table>
+        </div>
       </div>`;
     document.getElementById('page-dashboard').querySelector('.container').appendChild(bloco);
   }
