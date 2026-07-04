@@ -1981,15 +1981,23 @@ async function carregarDashboard(mes) {
   }
 }
 
+const DASH_WEBHOOK = 'https://hook.us2.make.com/xec8oo29t9nftow0p3qnkcr4aslfnhhr';
+
 async function atualizarDashboard(btn) {
   if (!btn) return;
-  btn.textContent = '⏳ Atualizando...';
+  btn.textContent = '⏳ Iniciando...';
   btn.disabled = true;
   try {
-    await carregarDashboard(document.getElementById('dash-mes').value);
-  } finally {
-    btn.textContent = '↻ Atualizar agora';
-    btn.disabled = false;
+    await fetch(DASH_WEBHOOK, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ trigger: 'dashboard' }) });
+    btn.textContent = '✓ Iniciado! Buscando em ~1 min';
+    setTimeout(async () => {
+      await carregarDashboard(document.getElementById('dash-mes').value);
+      btn.textContent = '↻ Atualizar agora';
+      btn.disabled = false;
+    }, 75000);
+  } catch (e) {
+    btn.textContent = '✗ Erro de conexão';
+    setTimeout(() => { btn.textContent = '↻ Atualizar agora'; btn.disabled = false; }, 4000);
   }
 }
 
