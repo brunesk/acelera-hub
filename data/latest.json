@@ -1,13 +1,13 @@
 {
-  "gerado_em": "06/07/2026 às 11:29 (BRT)",
+  "gerado_em": "06/07/2026 às 12:00 (BRT)",
   "periodo": "01/07 – 06/07/2026",
   "mes_key": "2026-07",
   "kpis": {
     "vendas": 44,
     "bruto": 3071.94,
     "liq": 2729.4,
-    "gasto_meta": 2343.23,
-    "lucro": 386.17,
+    "gasto_meta": 2350.47,
+    "lucro": 378.93,
     "roas": 1.16,
     "ticket": 69.82
   },
@@ -62,9 +62,9 @@
       "vendas": 4,
       "bruto": 276.0,
       "liq": 244.68,
-      "gasto_meta": 99.96,
-      "lucro": 144.72,
-      "roas": 2.45
+      "gasto_meta": 107.2,
+      "lucro": 137.48,
+      "roas": 2.28
     }
   ],
   "semanas": [
@@ -74,8 +74,8 @@
       "vendas": 44,
       "bruto": 3071.94,
       "liq": 2729.4,
-      "gasto_meta": 2343.23,
-      "lucro": 386.17,
+      "gasto_meta": 2350.47,
+      "lucro": 378.93,
       "roas": 1.16,
       "atual": true
     }
@@ -84,14 +84,14 @@
     {
       "nome": "Video 01 — Cópia",
       "status": "ACTIVE",
-      "gasto": 1850.42,
-      "impressoes": 63063,
+      "gasto": 1856.58,
+      "impressoes": 63287,
       "ctr": 2.39,
       "cpm": 29.34,
       "compras": 34,
       "receita_meta": 2133.84,
       "roas": 1.15,
-      "cpa": 54.42
+      "cpa": 54.61
     },
     {
       "nome": "Video 05 — Cópia",
@@ -108,22 +108,22 @@
     {
       "nome": "Criativo 03 — Cópia",
       "status": "ACTIVE",
-      "gasto": 84.92,
-      "impressoes": 2571,
-      "ctr": 2.14,
+      "gasto": 85.75,
+      "impressoes": 2596,
+      "ctr": 2.12,
       "cpm": 33.03,
       "compras": 1,
       "receita_meta": 70.18,
-      "roas": 0.83,
-      "cpa": 84.92
+      "roas": 0.82,
+      "cpa": 85.75
     },
     {
       "nome": "Video 04 — Cópia",
       "status": "ACTIVE",
-      "gasto": 37.33,
-      "impressoes": 1756,
-      "ctr": 1.82,
-      "cpm": 21.26,
+      "gasto": 37.58,
+      "impressoes": 1779,
+      "ctr": 1.85,
+      "cpm": 21.12,
       "compras": 0,
       "receita_meta": 0,
       "roas": 0.0,
@@ -146,12 +146,12 @@
     {
       "mes": "Jun/2026",
       "mes_key": "2026-06",
-      "vendas": 259,
-      "bruto": 18019.03,
-      "liq": 16006.9,
+      "vendas": 258,
+      "bruto": 17940.03,
+      "liq": 15936.72,
       "gasto_meta": 10557.48,
-      "lucro": 5449.42,
-      "roas": 1.52
+      "lucro": 5379.24,
+      "roas": 1.51
     },
     {
       "mes": "Mai/2026",
