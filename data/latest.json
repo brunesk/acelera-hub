@@ -1,15 +1,15 @@
 {
-  "gerado_em": "07/07/2026 às 01:18 (BRT)",
+  "gerado_em": "07/07/2026 às 03:36 (BRT)",
   "periodo": "01/07 – 07/07/2026",
   "mes_key": "2026-07",
   "kpis": {
-    "vendas": 53,
-    "bruto": 3751.26,
-    "liq": 3333.3,
-    "gasto_meta": 2659.65,
-    "lucro": 673.65,
-    "roas": 1.25,
-    "ticket": 70.78
+    "vendas": 54,
+    "bruto": 3830.26,
+    "liq": 3403.48,
+    "gasto_meta": 2664.73,
+    "lucro": 738.75,
+    "roas": 1.28,
+    "ticket": 70.93
   },
   "dias": [
     {
@@ -62,30 +62,30 @@
       "vendas": 13,
       "bruto": 955.32,
       "liq": 848.58,
-      "gasto_meta": 407.71,
-      "lucro": 440.87,
+      "gasto_meta": 407.94,
+      "lucro": 440.64,
       "roas": 2.08
     },
     {
       "dia": "07/07",
-      "vendas": 0,
-      "bruto": 0.0,
-      "liq": 0.0,
-      "gasto_meta": 8.45,
-      "lucro": -8.45,
-      "roas": 0.0
+      "vendas": 1,
+      "bruto": 79.0,
+      "liq": 70.18,
+      "gasto_meta": 13.3,
+      "lucro": 56.88,
+      "roas": 5.28
     }
   ],
   "semanas": [
     {
       "semana": "Semana 1",
       "periodo": "01/07 – 07/07",
-      "vendas": 53,
-      "bruto": 3751.26,
-      "liq": 3333.3,
-      "gasto_meta": 2659.65,
-      "lucro": 673.65,
-      "roas": 1.25,
+      "vendas": 54,
+      "bruto": 3830.26,
+      "liq": 3403.48,
+      "gasto_meta": 2664.73,
+      "lucro": 738.75,
+      "roas": 1.28,
       "atual": true
     }
   ],
@@ -93,20 +93,20 @@
     {
       "nome": "Video 01 — Cópia",
       "status": "ACTIVE",
-      "gasto": 2094.34,
-      "impressoes": 71999,
+      "gasto": 2099.38,
+      "impressoes": 72180,
       "ctr": 2.41,
       "cpm": 29.09,
       "compras": 42,
       "receita_meta": 2659.24,
       "roas": 1.27,
-      "cpa": 49.87
+      "cpa": 49.99
     },
     {
       "nome": "Video 05 — Cópia",
       "status": "ACTIVE",
-      "gasto": 390.21,
-      "impressoes": 16693,
+      "gasto": 390.25,
+      "impressoes": 16694,
       "ctr": 2.22,
       "cpm": 23.38,
       "compras": 9,
