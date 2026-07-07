@@ -1392,10 +1392,18 @@ async function deletarSlot(id) {
 function fmt(d) { const [a,m,dia] = d.split('-'); return `${dia}/${m}/${a}`; }
 
 // ══════════════════════════════════════════════════════════════
-// ASSESSORIAS — localStorage
+// ASSESSORIAS — Firebase (mesmo banco das Mentorias)
 // ══════════════════════════════════════════════════════════════
-function getAssessorias() { return JSON.parse(localStorage.getItem('acelera_assessorias') || '[]'); }
-function saveAssessorias(data) { localStorage.setItem('acelera_assessorias', JSON.stringify(data)); }
+let todosAssessorias = {};
+function getAssessorias() { return Object.values(todosAssessorias); }
+
+async function carregarAssessorias() {
+  try {
+    const r = await fetch(`${DB}/assessorias.json`);
+    todosAssessorias = (await r.json()) || {};
+  } catch(e) { todosAssessorias = {}; }
+  renderAssessorias();
+}
 
 function abrirModalAssess(id) {
   assessEditId = id || null;
@@ -1422,14 +1430,13 @@ function abrirModalAssess(id) {
 }
 function fecharModalAssess() { document.getElementById('modal-assess').classList.remove('open'); assessEditId = null; }
 
-function salvarAssess() {
+async function salvarAssess() {
   const nome  = document.getElementById('a-nome').value.trim();
   const loja  = document.getElementById('a-loja').value.trim();
   if (!nome || !loja) { alert('Preencha nome e loja!'); return; }
-  const assess = getAssessorias();
+  const id = assessEditId || Date.now().toString();
   const dados = {
-    id: assessEditId || Date.now().toString(),
-    nome, loja,
+    id, nome, loja,
     url:   document.getElementById('a-url').value.trim(),
     login: document.getElementById('a-login').value.trim(),
     senha: document.getElementById('a-senha').value.trim(),
@@ -1439,32 +1446,27 @@ function salvarAssess() {
     obs:   document.getElementById('a-obs').value.trim(),
     atualizadoEm: Date.now()
   };
-  if (assessEditId) {
-    const idx = assess.findIndex(a => a.id === assessEditId);
-    if (idx > -1) assess[idx] = dados;
-  } else {
-    assess.push(dados);
-  }
-  saveAssessorias(assess);
+  await fetch(`${DB}/assessorias/${id}.json`, { method:'PUT', headers:{'Content-Type':'application/json'}, body: JSON.stringify(dados) });
+  todosAssessorias[id] = dados;
   fecharModalAssess();
   renderAssessorias();
   calcFinanceiro();
 }
 
-function deletarAssess(id) {
+async function deletarAssess(id) {
   if (!confirm('Remover esta assessoria?')) return;
-  saveAssessorias(getAssessorias().filter(a => a.id !== id));
+  await fetch(`${DB}/assessorias/${id}.json`, { method:'DELETE' });
+  delete todosAssessorias[id];
   renderAssessorias();
   calcFinanceiro();
 }
 
-function togglePag(id) {
-  const assess = getAssessorias();
-  const item = assess.find(a => a.id === id);
+async function togglePag(id) {
+  const item = todosAssessorias[id];
   if (!item) return;
   const order = ['pago','pendente','atrasado'];
   item.pag = order[(order.indexOf(item.pag) + 1) % 3];
-  saveAssessorias(assess);
+  await fetch(`${DB}/assessorias/${id}.json`, { method:'PATCH', headers:{'Content-Type':'application/json'}, body: JSON.stringify({ pag: item.pag }) });
   renderAssessorias();
   calcFinanceiro();
 }
@@ -1627,7 +1629,8 @@ function calcFinanceiro() {
 carregarConfig();
 carregarSlots();
 setInterval(carregarSlots, 15000);
-renderAssessorias();
+carregarAssessorias();
+setInterval(carregarAssessorias, 15000);
 
 // ══════════════════════════════════════════════════════════════
 // DASHBOARD CURSOS — lê data/latest.json (gerado pelo GitHub Actions)
