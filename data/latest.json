@@ -1,15 +1,15 @@
 {
-  "gerado_em": "07/07/2026 às 21:53 (BRT)",
-  "periodo": "01/07 – 07/07/2026",
+  "gerado_em": "08/07/2026 às 19:22 (BRT)",
+  "periodo": "01/07 – 08/07/2026",
   "mes_key": "2026-07",
   "kpis": {
-    "vendas": 65,
-    "bruto": 4619.26,
-    "liq": 4103.38,
-    "gasto_meta": 3000.0,
-    "lucro": 1103.38,
-    "roas": 1.37,
-    "ticket": 71.07
+    "vendas": 70,
+    "bruto": 4913.79,
+    "liq": 4362.72,
+    "gasto_meta": 3537.41,
+    "lucro": 825.31,
+    "roas": 1.23,
+    "ticket": 70.2
   },
   "dias": [
     {
@@ -23,12 +23,12 @@
     },
     {
       "dia": "02/07",
-      "vendas": 7,
-      "bruto": 360.47,
-      "liq": 319.52,
+      "vendas": 6,
+      "bruto": 264.0,
+      "liq": 231.87,
       "gasto_meta": 590.97,
-      "lucro": -271.45,
-      "roas": 0.54
+      "lucro": -359.1,
+      "roas": 0.39
     },
     {
       "dia": "03/07",
@@ -59,33 +59,53 @@
     },
     {
       "dia": "06/07",
-      "vendas": 13,
-      "bruto": 955.32,
-      "liq": 848.58,
-      "gasto_meta": 409.36,
-      "lucro": 439.22,
-      "roas": 2.07
+      "vendas": 12,
+      "bruto": 876.32,
+      "liq": 778.4,
+      "gasto_meta": 409.5,
+      "lucro": 368.9,
+      "roas": 1.9
     },
     {
       "dia": "07/07",
       "vendas": 12,
       "bruto": 868.0,
       "liq": 770.08,
-      "gasto_meta": 347.13,
-      "lucro": 422.95,
-      "roas": 2.22
+      "gasto_meta": 426.61,
+      "lucro": 343.47,
+      "roas": 1.81
+    },
+    {
+      "dia": "08/07",
+      "vendas": 7,
+      "bruto": 470.0,
+      "liq": 417.17,
+      "gasto_meta": 457.79,
+      "lucro": -40.62,
+      "roas": 0.91
     }
   ],
   "semanas": [
     {
       "semana": "Semana 1",
       "periodo": "01/07 – 07/07",
-      "vendas": 65,
-      "bruto": 4619.26,
-      "liq": 4103.38,
-      "gasto_meta": 3000.0,
-      "lucro": 1103.38,
-      "roas": 1.37,
+      "vendas": 63,
+      "bruto": 4443.79,
+      "liq": 3945.55,
+      "gasto_meta": 3079.62,
+      "lucro": 865.93,
+      "roas": 1.28,
+      "atual": false
+    },
+    {
+      "semana": "Semana 2",
+      "periodo": "08/07 – 08/07",
+      "vendas": 7,
+      "bruto": 470.0,
+      "liq": 417.17,
+      "gasto_meta": 457.79,
+      "lucro": -40.62,
+      "roas": 0.91,
       "atual": true
     }
   ],
@@ -93,45 +113,45 @@
     {
       "nome": "Video 01 — Cópia",
       "status": "ACTIVE",
-      "gasto": 2430.27,
-      "impressoes": 84352,
-      "ctr": 2.37,
-      "cpm": 28.81,
-      "compras": 48,
-      "receita_meta": 3008.24,
-      "roas": 1.24,
-      "cpa": 50.63
+      "gasto": 2935.04,
+      "impressoes": 102060,
+      "ctr": 2.38,
+      "cpm": 28.76,
+      "compras": 53,
+      "receita_meta": 3323.1,
+      "roas": 1.13,
+      "cpa": 55.38
     },
     {
       "nome": "Video 05 — Cópia",
       "status": "ACTIVE",
-      "gasto": 393.78,
-      "impressoes": 16871,
-      "ctr": 2.23,
-      "cpm": 23.34,
+      "gasto": 409.69,
+      "impressoes": 17670,
+      "ctr": 2.2,
+      "cpm": 23.19,
       "compras": 9,
       "receita_meta": 487.46,
-      "roas": 1.24,
-      "cpa": 43.75
+      "roas": 1.19,
+      "cpa": 45.52
     },
     {
       "nome": "Criativo 03 — Cópia",
       "status": "ACTIVE",
-      "gasto": 107.72,
-      "impressoes": 3307,
-      "ctr": 2.3,
-      "cpm": 32.57,
+      "gasto": 109.5,
+      "impressoes": 3351,
+      "ctr": 2.27,
+      "cpm": 32.68,
       "compras": 2,
       "receita_meta": 140.36,
-      "roas": 1.3,
-      "cpa": 53.86
+      "roas": 1.28,
+      "cpa": 54.75
     },
     {
       "nome": "Video 04 — Cópia",
       "status": "ACTIVE",
-      "gasto": 51.6,
-      "impressoes": 2398,
-      "ctr": 1.96,
+      "gasto": 51.94,
+      "impressoes": 2414,
+      "ctr": 1.95,
       "cpm": 21.52,
       "compras": 0,
       "receita_meta": 0,
@@ -141,10 +161,10 @@
     {
       "nome": "Video 02 — Cópia",
       "status": "ACTIVE",
-      "gasto": 16.63,
-      "impressoes": 539,
+      "gasto": 31.24,
+      "impressoes": 953,
       "ctr": 3.15,
-      "cpm": 30.85,
+      "cpm": 32.78,
       "compras": 0,
       "receita_meta": 0,
       "roas": 0.0,
