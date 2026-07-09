@@ -1,15 +1,15 @@
 {
-  "gerado_em": "09/07/2026 às 13:21 (BRT)",
+  "gerado_em": "09/07/2026 às 15:16 (BRT)",
   "periodo": "01/07 – 09/07/2026",
   "mes_key": "2026-07",
   "kpis": {
-    "vendas": 78,
-    "bruto": 5389.99,
-    "liq": 4784.2,
-    "gasto_meta": 3811.65,
-    "lucro": 972.55,
-    "roas": 1.26,
-    "ticket": 69.1
+    "vendas": 79,
+    "bruto": 5428.99,
+    "liq": 4818.34,
+    "gasto_meta": 3872.03,
+    "lucro": 946.31,
+    "roas": 1.24,
+    "ticket": 68.72
   },
   "dias": [
     {
@@ -80,18 +80,18 @@
       "vendas": 11,
       "bruto": 746.0,
       "liq": 661.85,
-      "gasto_meta": 641.84,
-      "lucro": 20.01,
+      "gasto_meta": 641.85,
+      "lucro": 20.0,
       "roas": 1.03
     },
     {
       "dia": "09/07",
-      "vendas": 4,
-      "bruto": 200.2,
-      "liq": 176.8,
-      "gasto_meta": 89.6,
-      "lucro": 87.2,
-      "roas": 1.97
+      "vendas": 5,
+      "bruto": 239.2,
+      "liq": 210.94,
+      "gasto_meta": 149.97,
+      "lucro": 60.97,
+      "roas": 1.41
     }
   ],
   "semanas": [
@@ -109,12 +109,12 @@
     {
       "semana": "Semana 2",
       "periodo": "08/07 – 09/07",
-      "vendas": 15,
-      "bruto": 946.2,
-      "liq": 838.65,
-      "gasto_meta": 731.44,
-      "lucro": 107.21,
-      "roas": 1.15,
+      "vendas": 16,
+      "bruto": 985.2,
+      "liq": 872.79,
+      "gasto_meta": 791.82,
+      "lucro": 80.97,
+      "roas": 1.1,
       "atual": true
     }
   ],
@@ -122,20 +122,20 @@
     {
       "nome": "Video 01 — Cópia",
       "status": "ACTIVE",
-      "gasto": 3160.23,
-      "impressoes": 110273,
+      "gasto": 3220.6,
+      "impressoes": 112467,
       "ctr": 2.38,
-      "cpm": 28.66,
-      "compras": 59,
-      "receita_meta": 3636.06,
+      "cpm": 28.64,
+      "compras": 61,
+      "receita_meta": 3704.34,
       "roas": 1.15,
-      "cpa": 53.56
+      "cpa": 52.8
     },
     {
       "nome": "Video 05 — Cópia",
       "status": "ACTIVE",
-      "gasto": 455.48,
-      "impressoes": 19536,
+      "gasto": 455.49,
+      "impressoes": 19537,
       "ctr": 2.23,
       "cpm": 23.31,
       "compras": 9,
