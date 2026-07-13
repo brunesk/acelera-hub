@@ -1114,21 +1114,31 @@ input[type="month"]::-webkit-calendar-picker-indicator { filter:invert(.6);curso
       </div>
       <div class="field-row">
         <div class="field"><label>Valor mensal (R$)</label><input type="number" id="a-valor" placeholder="500"></div>
-        <div class="field"><label>Data de renovação</label><input type="date" id="a-renov"></div>
-      </div>
-      <div class="field">
-        <label>Status do pagamento</label>
-        <select id="a-pag">
-          <option value="pago">✅ Pago</option>
-          <option value="pendente">⚠️ Pendente</option>
-          <option value="atrasado">🚨 Atrasado</option>
-        </select>
+        <div class="field"><label>Dia da renovação (todo mês)</label><input type="number" id="a-renov-dia" min="1" max="31" placeholder="Ex: 10"></div>
       </div>
       <div class="field"><label>Observações</label><textarea id="a-obs" rows="2" placeholder="Notas sobre o cliente..."></textarea></div>
     </div>
     <div class="modal-actions">
       <button class="btn btn-ghost" onclick="fecharModalAssess()">Cancelar</button>
       <button class="btn btn-amber" onclick="salvarAssess()" id="btn-salvar-assess">Salvar</button>
+    </div>
+  </div>
+</div>
+
+<!-- ══ MODAL: REGISTRAR PAGAMENTO ══════════════════════════════ -->
+<div class="modal-overlay" id="modal-pagamento" onclick="if(event.target===this)fecharModalPagamento()">
+  <div class="modal-box">
+    <div class="modal-title">💳 Registrar pagamento</div>
+    <div class="form-grid">
+      <div class="field"><label>Cliente</label><input type="text" id="pg-cliente" disabled></div>
+      <div class="field-row">
+        <div class="field"><label>Data do pagamento</label><input type="date" id="pg-data"></div>
+        <div class="field"><label>Valor pago (R$)</label><input type="number" id="pg-valor"></div>
+      </div>
+    </div>
+    <div class="modal-actions">
+      <button class="btn btn-ghost" onclick="fecharModalPagamento()">Cancelar</button>
+      <button class="btn btn-amber" onclick="salvarPagamento()">Registrar pagamento</button>
     </div>
   </div>
 </div>
@@ -1444,6 +1454,22 @@ async function carregarAssessorias() {
   renderAssessorias();
 }
 
+function mesKeyAtual() {
+  const d = new Date();
+  return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}`;
+}
+
+// status do cliente para um mes especifico: 'pago' se ha pagamento registrado
+// naquele mes; senao 'atrasado' se o dia de renovacao daquele mes ja passou,
+// ou 'pendente' se ainda nao chegou.
+function statusAssessMes(a, mesKey) {
+  if (a.pagamentos && a.pagamentos[mesKey]) return 'pago';
+  const hoje = new Date(); hoje.setHours(0,0,0,0);
+  const [ano, mes] = mesKey.split('-').map(Number);
+  const dataRenov = new Date(ano, mes-1, a.renovDia || 1);
+  return dataRenov < hoje ? 'atrasado' : 'pendente';
+}
+
 function abrirModalAssess(id) {
   assessEditId = id || null;
   const modal = document.getElementById('modal-assess');
@@ -1451,19 +1477,17 @@ function abrirModalAssess(id) {
   if (id) {
     const assess = getAssessorias().find(a => a.id === id);
     if (assess) {
-      document.getElementById('a-nome').value  = assess.nome || '';
-      document.getElementById('a-loja').value  = assess.loja || '';
-      document.getElementById('a-url').value   = assess.url || '';
-      document.getElementById('a-login').value = assess.login || '';
-      document.getElementById('a-senha').value = assess.senha || '';
-      document.getElementById('a-valor').value = assess.valor || '';
-      document.getElementById('a-renov').value = assess.renov || '';
-      document.getElementById('a-pag').value   = assess.pag || 'pago';
-      document.getElementById('a-obs').value   = assess.obs || '';
+      document.getElementById('a-nome').value      = assess.nome || '';
+      document.getElementById('a-loja').value      = assess.loja || '';
+      document.getElementById('a-url').value       = assess.url || '';
+      document.getElementById('a-login').value     = assess.login || '';
+      document.getElementById('a-senha').value     = assess.senha || '';
+      document.getElementById('a-valor').value     = assess.valor || '';
+      document.getElementById('a-renov-dia').value = assess.renovDia || '';
+      document.getElementById('a-obs').value       = assess.obs || '';
     }
   } else {
-    ['a-nome','a-loja','a-url','a-login','a-senha','a-valor','a-renov','a-obs'].forEach(id => document.getElementById(id).value = '');
-    document.getElementById('a-pag').value = 'pago';
+    ['a-nome','a-loja','a-url','a-login','a-senha','a-valor','a-renov-dia','a-obs'].forEach(id => document.getElementById(id).value = '');
   }
   modal.classList.add('open');
 }
@@ -1472,21 +1496,24 @@ function fecharModalAssess() { document.getElementById('modal-assess').classList
 async function salvarAssess() {
   const nome  = document.getElementById('a-nome').value.trim();
   const loja  = document.getElementById('a-loja').value.trim();
+  const renovDia = parseInt(document.getElementById('a-renov-dia').value) || null;
   if (!nome || !loja) { alert('Preencha nome e loja!'); return; }
+  if (!renovDia || renovDia < 1 || renovDia > 31) { alert('Informe um dia de renovação válido (1-31)!'); return; }
   const id = assessEditId || Date.now().toString();
   const dados = {
     id, nome, loja,
-    url:   document.getElementById('a-url').value.trim(),
-    login: document.getElementById('a-login').value.trim(),
-    senha: document.getElementById('a-senha').value.trim(),
-    valor: parseFloat(document.getElementById('a-valor').value) || 0,
-    renov: document.getElementById('a-renov').value,
-    pag:   document.getElementById('a-pag').value,
-    obs:   document.getElementById('a-obs').value.trim(),
+    url:      document.getElementById('a-url').value.trim(),
+    login:    document.getElementById('a-login').value.trim(),
+    senha:    document.getElementById('a-senha').value.trim(),
+    valor:    parseFloat(document.getElementById('a-valor').value) || 0,
+    renovDia,
+    obs:      document.getElementById('a-obs').value.trim(),
     atualizadoEm: Date.now()
   };
-  await fetch(`${DB}/assessorias/${id}.json`, { method:'PUT', headers:{'Content-Type':'application/json'}, body: JSON.stringify(dados) });
-  todosAssessorias[id] = dados;
+  // PATCH em vez de PUT: preserva o historico de pagamentos ja registrado,
+  // que nao faz parte do formulario de edicao do cliente.
+  await fetch(`${DB}/assessorias/${id}.json`, { method:'PATCH', headers:{'Content-Type':'application/json'}, body: JSON.stringify(dados) });
+  todosAssessorias[id] = { ...(todosAssessorias[id]||{}), ...dados };
   fecharModalAssess();
   renderAssessorias();
   calcFinanceiro();
@@ -1500,12 +1527,30 @@ async function deletarAssess(id) {
   calcFinanceiro();
 }
 
-async function togglePag(id) {
-  const item = todosAssessorias[id];
-  if (!item) return;
-  const order = ['pago','pendente','atrasado'];
-  item.pag = order[(order.indexOf(item.pag) + 1) % 3];
-  await fetch(`${DB}/assessorias/${id}.json`, { method:'PATCH', headers:{'Content-Type':'application/json'}, body: JSON.stringify({ pag: item.pag }) });
+let pagamentoClienteId = null;
+function abrirModalPagamento(id) {
+  const a = todosAssessorias[id];
+  if (!a) return;
+  pagamentoClienteId = id;
+  document.getElementById('pg-cliente').value = `${a.nome} — ${a.loja}`;
+  document.getElementById('pg-data').value = new Date().toISOString().slice(0,10);
+  document.getElementById('pg-valor').value = a.valor || '';
+  document.getElementById('modal-pagamento').classList.add('open');
+}
+function fecharModalPagamento() { document.getElementById('modal-pagamento').classList.remove('open'); pagamentoClienteId = null; }
+
+async function salvarPagamento() {
+  const id = pagamentoClienteId;
+  if (!id) return;
+  const data  = document.getElementById('pg-data').value;
+  const valor = parseFloat(document.getElementById('pg-valor').value) || 0;
+  if (!data || valor <= 0) { alert('Preencha a data e o valor pago!'); return; }
+  const mesKey = data.slice(0,7);
+  const pagamento = { data, valor };
+  await fetch(`${DB}/assessorias/${id}/pagamentos/${mesKey}.json`, { method:'PUT', headers:{'Content-Type':'application/json'}, body: JSON.stringify(pagamento) });
+  if (!todosAssessorias[id].pagamentos) todosAssessorias[id].pagamentos = {};
+  todosAssessorias[id].pagamentos[mesKey] = pagamento;
+  fecharModalPagamento();
   renderAssessorias();
   calcFinanceiro();
 }
@@ -1514,22 +1559,26 @@ function filtrarAssess(v) { assessFiltro = v.toLowerCase(); renderAssessorias();
 
 function renderAssessorias() {
   const todos = getAssessorias();
-  const hoje = new Date(); hoje.setHours(0,0,0,0);
+  const mesAtual = mesKeyAtual();
   const lista = todos.filter(a => !assessFiltro || a.nome.toLowerCase().includes(assessFiltro) || a.loja.toLowerCase().includes(assessFiltro));
 
-  // KPIs
+  // KPIs (status do mês corrente)
+  const statusTodos = todos.map(a => statusAssessMes(a, mesAtual));
   document.getElementById('ak-total').textContent = todos.length;
-  document.getElementById('ak-pago').textContent  = todos.filter(a => a.pag === 'pago').length;
-  document.getElementById('ak-pend').textContent  = todos.filter(a => a.pag === 'pendente' || a.pag === 'atrasado').length;
+  document.getElementById('ak-pago').textContent  = statusTodos.filter(s => s === 'pago').length;
+  document.getElementById('ak-pend').textContent  = statusTodos.filter(s => s === 'pendente' || s === 'atrasado').length;
   const nb = document.getElementById('nb-assess');
-  const pend = todos.filter(a => a.pag !== 'pago').length;
+  const pend = statusTodos.filter(s => s !== 'pago').length;
   if (pend > 0) { nb.textContent = pend; nb.style.display = ''; } else nb.style.display = 'none';
 
-  // Renovando em breve (≤7 dias)
+  // Renovando em breve (≤7 dias, ainda não pago este mês)
+  const hoje = new Date(); hoje.setHours(0,0,0,0);
+  const [anoAtual, mAtual] = mesAtual.split('-').map(Number);
   let renovBreve = 0;
   todos.forEach(a => {
-    if (!a.renov) return;
-    const diff = Math.ceil((new Date(a.renov+'T00:00:00') - hoje) / 86400000);
+    if (statusAssessMes(a, mesAtual) === 'pago') return;
+    const dataRenov = new Date(anoAtual, mAtual-1, a.renovDia || 1);
+    const diff = Math.ceil((dataRenov - hoje) / 86400000);
     if (diff >= 0 && diff <= 7) renovBreve++;
   });
   document.getElementById('ak-renov').textContent = renovBreve;
@@ -1540,18 +1589,18 @@ function renderAssessorias() {
   }
 
   document.getElementById('assess-tbody').innerHTML = lista.map(a => {
-    let renovClass = '', renovText = '';
-    if (a.renov) {
-      const diff = Math.ceil((new Date(a.renov+'T00:00:00') - hoje) / 86400000);
-      renovText = a.renov.split('-').reverse().join('/');
-      if (a.pag !== 'pago') {
-        if (diff < 0)      renovClass = 'renov-overdue';
-        else if (diff <= 7) renovClass = 'renov-near';
-        renovText += diff < 0 ? ` <span class="badge badge-red">vencido</span>` : diff <= 7 ? ` <span class="badge badge-amber">${diff}d</span>` : '';
-      }
+    const status = statusAssessMes(a, mesAtual);
+    let renovClass = '', renovBadge = '';
+    if (status !== 'pago') {
+      const dataRenov = new Date(anoAtual, mAtual-1, a.renovDia || 1);
+      const diff = Math.ceil((dataRenov - hoje) / 86400000);
+      if (diff < 0)       { renovClass = 'renov-overdue'; renovBadge = ` <span class="badge badge-red">vencido</span>`; }
+      else if (diff <= 7) { renovClass = 'renov-near';    renovBadge = ` <span class="badge badge-amber">${diff}d</span>`; }
     }
-    const pagBadge = a.pag === 'pago' ? `<span class="badge badge-green">✅ Pago</span>` :
-                     a.pag === 'atrasado' ? `<span class="badge badge-red">🚨 Atrasado</span>` :
+    const renovText = `Todo dia ${a.renovDia || '—'}${renovBadge}`;
+    const pg = a.pagamentos && a.pagamentos[mesAtual];
+    const pagBadge = status === 'pago' ? `<span class="badge badge-green">✅ Pago${pg ? ` (${pg.data.split('-').reverse().join('/')})` : ''}</span>` :
+                     status === 'atrasado' ? `<span class="badge badge-red">🚨 Atrasado</span>` :
                      `<span class="badge badge-amber">⚠️ Pendente</span>`;
     return `<tr>
       <td>
@@ -1565,10 +1614,11 @@ function renderAssessorias() {
           <button class="pwd-toggle" onclick="togglePwd('${a.id}','${(a.senha||'').replace(/'/g,"\\'")}')">👁</button>
         </div>
       </td>
-      <td class="${renovClass}" style="font-family:var(--mono);font-size:12px;">${renovText || '—'}</td>
-      <td><span onclick="togglePag('${a.id}')" style="cursor:pointer;" title="Clique para alternar">${pagBadge}</span></td>
+      <td class="${renovClass}" style="font-family:var(--mono);font-size:12px;">${renovText}</td>
+      <td><span onclick="abrirModalPagamento('${a.id}')" style="cursor:pointer;" title="Clique para registrar pagamento">${pagBadge}</span></td>
       <td>
         <div class="action-btns">
+          <button class="btn btn-green btn-sm" onclick="abrirModalPagamento('${a.id}')" title="Registrar pagamento">💳</button>
           <button class="btn btn-ghost btn-sm" onclick="abrirModalAssess('${a.id}')">✏️</button>
           <button class="btn btn-red btn-sm" onclick="deletarAssess('${a.id}')">🗑</button>
         </div>
@@ -1613,15 +1663,12 @@ function calcFinanceiro() {
   const m = meses.find(x => x.mes_key === mesKeySel) || meses[0] || null;
 
   const assess = getAssessorias();
-  const assessValAtual = assess.reduce((s, a) => s + (a.pag === 'pago' ? (a.valor || 0) : 0), 0);
+  // Soma só os pagamentos registrados no mês selecionado (histórico real por mês).
+  const assessVal = assess.reduce((s, a) => s + ((a.pagamentos && a.pagamentos[mesKeySel]) ? (a.pagamentos[mesKeySel].valor || 0) : 0), 0);
+  const assessValTotal = assess.reduce((s, a) => s + Object.values(a.pagamentos || {}).reduce((s2, p) => s2 + (p.valor || 0), 0), 0);
   const preco = parseFloat(configAtual.preco) || 0;
   const slots = Object.values(todosSlots);
   const [anoSelM, mesSelM] = mesKeySel ? mesKeySel.split('-') : [String(new Date().getFullYear()), String(new Date().getMonth()+1).padStart(2,'0')];
-  const hojeD = new Date();
-  const mesAtualKey = `${hojeD.getFullYear()}-${String(hojeD.getMonth()+1).padStart(2,'0')}`;
-  // Assessorias não têm histórico por mês — o status "pago" é o estado atual,
-  // então só entra na conta quando o mês selecionado é o mês corrente.
-  const assessVal = mesKeySel === mesAtualKey ? assessValAtual : 0;
   const mentVal = slots.filter(s => { const [a,mm] = s.data.split('-'); return a===anoSelM && mm===mesSelM && !s.disponivel; }).length * preco;
 
   const recHM    = m ? Math.round(m.liq) : 0;
@@ -1656,16 +1703,16 @@ function calcFinanceiro() {
   set('fin-resultado', sinal(lucro));
   set('fin-margem',    margem+'%');
 
-  // Faturamento geral acumulado — soma de todos os meses de cursos + assessorias ativas + mentorias já realizadas
+  // Faturamento geral acumulado — soma de todos os meses de cursos + todo o histórico de pagamentos de assessorias + mentorias já realizadas
   const somaCursos = meses.reduce((s, x) => s + (x.liq || 0), 0);
   const somaMeta    = meses.reduce((s, x) => s + (x.gasto_meta || 0), 0);
   const mentoriasRealizadas = slots.filter(s => !s.disponivel).length * preco;
-  const geralTotal = somaCursos + assessValAtual + mentoriasRealizadas;
+  const geralTotal = somaCursos + assessValTotal + mentoriasRealizadas;
   const geralLucro = geralTotal - somaMeta - (fixos * meses.length);
   set('fin-geral-total', br(Math.round(geralTotal)));
   set('fin-geral-meta',  br(Math.round(somaMeta)));
   set('fin-geral-lucro', sinal(Math.round(geralLucro)));
-  set('fin-geral-sub',   `${meses.length} meses de cursos · assessorias ativas · ${slots.filter(s=>!s.disponivel).length} mentorias realizadas`);
+  set('fin-geral-sub',   `${meses.length} meses de cursos · histórico de assessorias · ${slots.filter(s=>!s.disponivel).length} mentorias realizadas`);
 }
 
 // ══════════════════════════════════════════════════════════════
