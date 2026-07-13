@@ -1543,11 +1543,12 @@ function renderAssessorias() {
     let renovClass = '', renovText = '';
     if (a.renov) {
       const diff = Math.ceil((new Date(a.renov+'T00:00:00') - hoje) / 86400000);
-      renovText = fmt(a.renov.replace(/-/g,'‑').split('‑').reverse().join('/'));
       renovText = a.renov.split('-').reverse().join('/');
-      if (diff < 0)      renovClass = 'renov-overdue';
-      else if (diff <= 7) renovClass = 'renov-near';
-      renovText += diff < 0 ? ` <span class="badge badge-red">vencido</span>` : diff <= 7 ? ` <span class="badge badge-amber">${diff}d</span>` : '';
+      if (a.pag !== 'pago') {
+        if (diff < 0)      renovClass = 'renov-overdue';
+        else if (diff <= 7) renovClass = 'renov-near';
+        renovText += diff < 0 ? ` <span class="badge badge-red">vencido</span>` : diff <= 7 ? ` <span class="badge badge-amber">${diff}d</span>` : '';
+      }
     }
     const pagBadge = a.pag === 'pago' ? `<span class="badge badge-green">✅ Pago</span>` :
                      a.pag === 'atrasado' ? `<span class="badge badge-red">🚨 Atrasado</span>` :
@@ -1612,10 +1613,15 @@ function calcFinanceiro() {
   const m = meses.find(x => x.mes_key === mesKeySel) || meses[0] || null;
 
   const assess = getAssessorias();
-  const assessVal = assess.reduce((s, a) => s + (a.pag === 'pago' ? (a.valor || 0) : 0), 0);
+  const assessValAtual = assess.reduce((s, a) => s + (a.pag === 'pago' ? (a.valor || 0) : 0), 0);
   const preco = parseFloat(configAtual.preco) || 0;
   const slots = Object.values(todosSlots);
   const [anoSelM, mesSelM] = mesKeySel ? mesKeySel.split('-') : [String(new Date().getFullYear()), String(new Date().getMonth()+1).padStart(2,'0')];
+  const hojeD = new Date();
+  const mesAtualKey = `${hojeD.getFullYear()}-${String(hojeD.getMonth()+1).padStart(2,'0')}`;
+  // Assessorias não têm histórico por mês — o status "pago" é o estado atual,
+  // então só entra na conta quando o mês selecionado é o mês corrente.
+  const assessVal = mesKeySel === mesAtualKey ? assessValAtual : 0;
   const mentVal = slots.filter(s => { const [a,mm] = s.data.split('-'); return a===anoSelM && mm===mesSelM && !s.disponivel; }).length * preco;
 
   const recHM    = m ? Math.round(m.liq) : 0;
@@ -1654,7 +1660,7 @@ function calcFinanceiro() {
   const somaCursos = meses.reduce((s, x) => s + (x.liq || 0), 0);
   const somaMeta    = meses.reduce((s, x) => s + (x.gasto_meta || 0), 0);
   const mentoriasRealizadas = slots.filter(s => !s.disponivel).length * preco;
-  const geralTotal = somaCursos + assessVal + mentoriasRealizadas;
+  const geralTotal = somaCursos + assessValAtual + mentoriasRealizadas;
   const geralLucro = geralTotal - somaMeta - (fixos * meses.length);
   set('fin-geral-total', br(Math.round(geralTotal)));
   set('fin-geral-meta',  br(Math.round(somaMeta)));
