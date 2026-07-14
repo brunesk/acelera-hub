@@ -1,14 +1,14 @@
 {
-  "gerado_em": "14/07/2026 às 19:46 (BRT)",
+  "gerado_em": "14/07/2026 às 20:41 (BRT)",
   "periodo": "01/07 – 14/07/2026",
   "mes_key": "2026-07",
   "kpis": {
     "vendas": 142,
     "bruto": 9672.58,
     "liq": 8587.29,
-    "gasto_meta": 6777.89,
-    "lucro": 1809.4,
-    "roas": 1.27,
+    "gasto_meta": 6805.25,
+    "lucro": 1782.04,
+    "roas": 1.26,
     "ticket": 68.12
   },
   "dias": [
@@ -134,9 +134,9 @@
       "vendas": 8,
       "bruto": 439.47,
       "liq": 389.7,
-      "gasto_meta": 342.27,
-      "lucro": 47.43,
-      "roas": 1.14
+      "gasto_meta": 369.63,
+      "lucro": 20.07,
+      "roas": 1.05
     }
   ],
   "semanas": [
@@ -157,9 +157,9 @@
       "vendas": 79,
       "bruto": 5228.79,
       "liq": 4641.74,
-      "gasto_meta": 3697.68,
-      "lucro": 944.06,
-      "roas": 1.26,
+      "gasto_meta": 3725.04,
+      "lucro": 916.7,
+      "roas": 1.25,
       "atual": true
     }
   ],
@@ -167,8 +167,8 @@
     {
       "nome": "Video 01 — Cópia",
       "status": "ACTIVE",
-      "gasto": 4836.95,
-      "impressoes": 165209,
+      "gasto": 4837.08,
+      "impressoes": 165211,
       "ctr": 2.45,
       "cpm": 29.28,
       "compras": 100,
@@ -191,26 +191,26 @@
     {
       "nome": "Video 04 — Cópia",
       "status": "ACTIVE",
-      "gasto": 564.26,
-      "impressoes": 20770,
-      "ctr": 2.27,
-      "cpm": 27.17,
+      "gasto": 583.55,
+      "impressoes": 21525,
+      "ctr": 2.25,
+      "cpm": 27.11,
       "compras": 8,
       "receita_meta": 453.32,
-      "roas": 0.8,
-      "cpa": 70.53
+      "roas": 0.78,
+      "cpa": 72.94
     },
     {
       "nome": "Criativo 03 — Cópia",
       "status": "ACTIVE",
-      "gasto": 556.23,
-      "impressoes": 15235,
-      "ctr": 2.69,
-      "cpm": 36.51,
+      "gasto": 564.17,
+      "impressoes": 15559,
+      "ctr": 2.67,
+      "cpm": 36.26,
       "compras": 11,
       "receita_meta": 699.9,
-      "roas": 1.26,
-      "cpa": 50.57
+      "roas": 1.24,
+      "cpa": 51.29
     },
     {
       "nome": "Video 02 — Cópia",
