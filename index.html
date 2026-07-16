@@ -722,6 +722,10 @@ input[type="month"]::-webkit-calendar-picker-indicator { filter:invert(.6);curso
       <span>Assessorias de Loja</span>
       <span class="nav-badge" id="nb-assess" style="display:none;background:var(--red);color:#fff">0</span>
     </div>
+    <div class="nav-item" onclick="showPage('saas')" id="nav-saas">
+      <span class="nav-icon">💻</span>
+      <span>SaaS Gestão</span>
+    </div>
 
     <div class="nav-section-label" style="margin-top:8px">Financeiro</div>
     <div class="nav-item" onclick="showPage('financeiro')" id="nav-financeiro">
@@ -946,6 +950,54 @@ input[type="month"]::-webkit-calendar-picker-indicator { filter:invert(.6);curso
     </div>
   </div>
 
+  <!-- ── PÁGINA: SAAS GESTÃO ── -->
+  <div class="page" id="page-saas">
+    <div class="container">
+      <div class="section-header" style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;">
+        <div>
+          <h2>SaaS Gestão</h2>
+          <p>Assinantes do Acelera Shopee Gestão Financeira · Mercado Pago</p>
+        </div>
+        <div id="saas-auth-area">
+          <button class="btn btn-amber" onclick="saasLogin()" id="btn-saas-login">🔐 Entrar com Google</button>
+        </div>
+      </div>
+
+      <div id="saas-locked" class="block">
+        <div class="empty-state">
+          <div class="icon">🔒</div>
+          <p>Área restrita ao administrador.<br>Entre com sua conta Google (brunoferrack@gmail.com) para ver os assinantes.</p>
+        </div>
+      </div>
+
+      <div id="saas-content" style="display:none;">
+        <div class="cards-grid-4">
+          <div class="kpi-card c-green"><div class="kpi-icon">✅</div><div class="kpi-label">Assinantes ativos</div><div class="kpi-value c-green" id="sk-ativos">0</div><div class="kpi-sub">licenças válidas</div></div>
+          <div class="kpi-card c-amber"><div class="kpi-icon">💰</div><div class="kpi-label">Receita acumulada</div><div class="kpi-value c-amber" style="font-size:22px;" id="sk-receita">R$0</div><div class="kpi-sub">todos os pagamentos</div></div>
+          <div class="kpi-card c-blue"><div class="kpi-icon">⏳</div><div class="kpi-label">Expirando em 30d</div><div class="kpi-value c-blue" id="sk-expirando">0</div><div class="kpi-sub">renovações próximas</div></div>
+          <div class="kpi-card c-red"><div class="kpi-icon">🚫</div><div class="kpi-label">Canceladas</div><div class="kpi-value c-red" id="sk-cancel">0</div><div class="kpi-sub">reembolso / chargeback</div></div>
+        </div>
+
+        <div class="block">
+          <div class="block-head">
+            <div class="block-head-title"><span class="bdot" style="background:var(--blue)"></span>Assinantes</div>
+            <button class="btn btn-ghost btn-sm" onclick="carregarSaas()">↻ Recarregar</button>
+          </div>
+          <div style="overflow-x:auto;">
+            <table class="assess-table">
+              <thead>
+                <tr><th>Email</th><th>Status</th><th>Valor</th><th>Pago em</th><th>Expira em</th></tr>
+              </thead>
+              <tbody id="saas-tbody">
+                <tr><td colspan="5" class="empty-state" style="padding:40px;"><div class="icon">💻</div><p>Carregando assinantes...</p></td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <!-- ── PÁGINA: FINANCEIRO ── -->
   <div class="page" id="page-financeiro">
     <div class="container">
@@ -982,7 +1034,7 @@ input[type="month"]::-webkit-calendar-picker-indicator { filter:invert(.6);curso
 
       <!-- KPIs do mês selecionado -->
       <div class="cards-grid-4">
-        <div class="kpi-card c-green"><div class="kpi-icon">💰</div><div class="kpi-label">Receita Total</div><div class="kpi-value c-green" id="fin-receita">—</div><div class="kpi-sub" id="fin-receita-sub">3 fontes</div></div>
+        <div class="kpi-card c-green"><div class="kpi-icon">💰</div><div class="kpi-label">Receita Total</div><div class="kpi-value c-green" id="fin-receita">—</div><div class="kpi-sub" id="fin-receita-sub">4 fontes</div></div>
         <div class="kpi-card c-red"><div class="kpi-icon">📣</div><div class="kpi-label">Gasto Meta</div><div class="kpi-value c-red" id="fin-meta">—</div><div class="kpi-sub" id="fin-meta-sub">mês selecionado</div></div>
         <div class="kpi-card c-blue"><div class="kpi-icon">🔧</div><div class="kpi-label">Custos Fixos</div><div class="kpi-value c-blue">R$311</div><div class="kpi-sub">AppSell + Verif + Make</div></div>
         <div class="kpi-card c-amber"><div class="kpi-icon">✦</div><div class="kpi-label">Lucro Líquido</div><div class="kpi-value c-amber" id="fin-lucro">—</div><div class="kpi-sub" id="fin-lucro-sub">calculando...</div></div>
@@ -998,6 +1050,7 @@ input[type="month"]::-webkit-calendar-picker-indicator { filter:invert(.6);curso
             <div class="fin-row"><span class="lbl">🎓 Cursos — Hotmart</span><span style="color:var(--green);font-family:var(--mono);" id="fin-hm-val">—</span></div>
             <div class="fin-row"><span class="lbl">🏪 Assessorias de Loja</span><span style="color:var(--purple);font-family:var(--mono);" id="fin-assess-val">+R$0</span></div>
             <div class="fin-row"><span class="lbl">🤝 Mentorias</span><span style="color:var(--blue);font-family:var(--mono);" id="fin-ment-val">+R$0</span></div>
+            <div class="fin-row"><span class="lbl">💻 SaaS Gestão</span><span style="color:var(--orange);font-family:var(--mono);" id="fin-saas-val">+R$0</span></div>
             <div class="fin-row fin-total"><span class="lbl">Total Receitas</span><span style="color:var(--green);font-family:var(--mono);font-size:18px;" id="fin-total-rec">—</span></div>
           </div>
         </div>
@@ -1026,6 +1079,7 @@ input[type="month"]::-webkit-calendar-picker-indicator { filter:invert(.6);curso
             <div class="fin-row"><span class="lbl">Receita Líquida HM</span><span style="color:var(--green);font-family:var(--mono);" id="fin-res-hm">—</span></div>
             <div class="fin-row"><span class="lbl">Assessorias</span><span style="color:var(--purple);font-family:var(--mono);" id="fin-res-assess">+R$0</span></div>
             <div class="fin-row"><span class="lbl">Mentorias</span><span style="color:var(--blue);font-family:var(--mono);" id="fin-res-ment">+R$0</span></div>
+            <div class="fin-row"><span class="lbl">SaaS Gestão</span><span style="color:var(--orange);font-family:var(--mono);" id="fin-res-saas">+R$0</span></div>
             <div class="fin-row"><span class="lbl">Meta Ads</span><span style="color:var(--red);font-family:var(--mono);" id="fin-res-meta">—</span></div>
             <div class="fin-row"><span class="lbl">Ferramentas</span><span style="color:var(--red);font-family:var(--mono);">-R$311</span></div>
             <div class="fin-row fin-total" style="border-top:1px solid var(--border2);margin-top:8px;padding-top:16px;">
@@ -1143,6 +1197,11 @@ input[type="month"]::-webkit-calendar-picker-indicator { filter:invert(.6);curso
   </div>
 </div>
 
+<!-- Firebase (Firestore do SaaS shopee-relatorio — licenças/assinantes) -->
+<script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+
 <script>
 // ══════════════════════════════════════════════════════════════
 // GLOBALS
@@ -1166,6 +1225,7 @@ const pageTitles = {
   dashboard:    ['Dashboard Cursos', 'Meta Ads + Hotmart · atualização automática via GitHub Actions'],
   mentorias:    ['Agenda de Mentorias', 'Gestão de slots e agendamentos · Firebase Realtime DB'],
   assessorias:  ['Assessorias de Loja', 'Clientes recorrentes · login, renovação e pagamentos'],
+  saas:         ['SaaS Gestão', 'Assinantes do Acelera Shopee Gestão Financeira · Mercado Pago'],
   financeiro:   ['Visão Financeira', 'Consolidado de receitas e custos do ecossistema'],
 };
 
@@ -1633,6 +1693,100 @@ function togglePwd(id, senha) {
 }
 
 // ══════════════════════════════════════════════════════════════
+// SAAS GESTÃO — Firestore do shopee-relatorio (licenças via webhook MP)
+// ══════════════════════════════════════════════════════════════
+const SAAS_ADMIN = 'brunoferrack@gmail.com';
+firebase.initializeApp({
+  apiKey:            "AIzaSyBOXHY9QvYR2OxJIsnrdHnZazIsjI-3Sa8",
+  authDomain:        "shopee-relatorio.firebaseapp.com",
+  projectId:         "shopee-relatorio",
+  storageBucket:     "shopee-relatorio.firebasestorage.app",
+  messagingSenderId: "562949590869",
+  appId:             "1:562949590869:web:fade2e3bbb5df4944469dc"
+});
+const saasAuth = firebase.auth();
+const saasDb   = firebase.firestore();
+let saasLicencas = [];   // [{email, status, valor, pagoEm:Date|null, expiraEm:Date|null}]
+
+async function saasLogin() {
+  try {
+    await saasAuth.signInWithPopup(new firebase.auth.GoogleAuthProvider());
+  } catch(e) {
+    if (e.code !== 'auth/popup-closed-by-user') alert('Erro no login: ' + e.message);
+  }
+}
+
+saasAuth.onAuthStateChanged(user => {
+  const isAdmin = user && (user.email||'').toLowerCase() === SAAS_ADMIN;
+  document.getElementById('saas-locked').style.display  = isAdmin ? 'none' : '';
+  document.getElementById('saas-content').style.display = isAdmin ? '' : 'none';
+  document.getElementById('saas-auth-area').innerHTML = isAdmin
+    ? `<span class="badge badge-green">✅ ${user.email}</span>`
+    : `<button class="btn btn-amber" onclick="saasLogin()">🔐 Entrar com Google</button>`;
+  if (isAdmin) carregarSaas();
+  else if (user) alert('Esta área é restrita ao administrador (' + SAAS_ADMIN + ').');
+});
+
+async function carregarSaas() {
+  try {
+    const snap = await saasDb.collection('licencas').get();
+    saasLicencas = snap.docs.map(d => {
+      const l = d.data();
+      return {
+        email: d.id,
+        status: l.status || '—',
+        valor: l.valor || 0,
+        pagoEm:   l.pagoEm   ? l.pagoEm.toDate()   : null,
+        expiraEm: l.expiraEm ? l.expiraEm.toDate() : null,
+      };
+    });
+  } catch(e) {
+    console.error('saas:', e);
+    document.getElementById('saas-tbody').innerHTML = `<tr><td colspan="5" class="empty-state" style="padding:30px;"><p>Erro ao carregar: ${e.message}</p></td></tr>`;
+    return;
+  }
+  renderSaas();
+  calcFinanceiro();
+}
+
+function saasAtiva(l) {
+  return l.status === 'ativa' && (!l.expiraEm || l.expiraEm > new Date());
+}
+
+function renderSaas() {
+  const agora = new Date();
+  const em30d = new Date(agora.getTime() + 30*86400000);
+  const ativas = saasLicencas.filter(saasAtiva);
+  const fmtD = d => d ? d.toLocaleDateString('pt-BR') : '—';
+
+  const brSaas = v => 'R$' + v.toLocaleString('pt-BR', {minimumFractionDigits: v % 1 ? 2 : 0, maximumFractionDigits: 2});
+  document.getElementById('sk-ativos').textContent    = ativas.length;
+  document.getElementById('sk-receita').textContent   = brSaas(saasLicencas.reduce((s,l)=>s+(l.status==='cancelada'?0:l.valor),0));
+  document.getElementById('sk-expirando').textContent = ativas.filter(l => l.expiraEm && l.expiraEm <= em30d).length;
+  document.getElementById('sk-cancel').textContent    = saasLicencas.filter(l=>l.status==='cancelada').length;
+
+  if (!saasLicencas.length) {
+    document.getElementById('saas-tbody').innerHTML = `<tr><td colspan="5" class="empty-state" style="padding:40px;"><div class="icon">💻</div><p>Nenhum assinante ainda.</p></td></tr>`;
+    return;
+  }
+  const ordenadas = [...saasLicencas].sort((a,b) => (b.pagoEm||0) - (a.pagoEm||0));
+  document.getElementById('saas-tbody').innerHTML = ordenadas.map(l => {
+    const vencida = l.status === 'ativa' && l.expiraEm && l.expiraEm <= agora;
+    const badge = l.status === 'cancelada' ? `<span class="badge badge-red">🚫 Cancelada</span>`
+                : vencida                   ? `<span class="badge badge-amber">⏳ Expirada</span>`
+                : l.status === 'ativa'      ? `<span class="badge badge-green">✅ Ativa</span>`
+                : `<span class="badge badge-amber">${l.status}</span>`;
+    return `<tr>
+      <td><div class="client-name" style="font-size:13px;">${l.email}</div></td>
+      <td>${badge}</td>
+      <td style="font-family:var(--mono);font-size:12.5px;">${brSaas(l.valor||0)}</td>
+      <td style="font-family:var(--mono);font-size:12px;">${fmtD(l.pagoEm)}</td>
+      <td style="font-family:var(--mono);font-size:12px;">${fmtD(l.expiraEm)}</td>
+    </tr>`;
+  }).join('');
+}
+
+// ══════════════════════════════════════════════════════════════
 // FINANCEIRO
 // ══════════════════════════════════════════════════════════════
 function mesesFinanceiro() {
@@ -1671,11 +1825,16 @@ function calcFinanceiro() {
   const [anoSelM, mesSelM] = mesKeySel ? mesKeySel.split('-') : [String(new Date().getFullYear()), String(new Date().getMonth()+1).padStart(2,'0')];
   const mentVal = slots.filter(s => { const [a,mm] = s.data.split('-'); return a===anoSelM && mm===mesSelM && !s.disponivel; }).length * preco;
 
+  // SaaS: pagamentos cujo mês do pagoEm bate com o mês selecionado (precisa do login admin na aba SaaS)
+  const mesKeyDe = d => d ? `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}` : null;
+  const saasVal = saasLicencas.reduce((s,l) => s + ((l.status!=='cancelada' && mesKeyDe(l.pagoEm)===mesKeySel) ? (l.valor||0) : 0), 0);
+  const saasValTotal = saasLicencas.reduce((s,l) => s + (l.status!=='cancelada' ? (l.valor||0) : 0), 0);
+
   const recHM    = m ? Math.round(m.liq) : 0;
   const metaGast = m ? Math.round(m.gasto_meta) : 0;
   const mesRef   = m ? m.mes : '—';
   const fixos    = 311;
-  const total    = recHM + assessVal + mentVal;
+  const total    = recHM + assessVal + mentVal + saasVal;
   const lucro    = total - metaGast - fixos;
   const margem   = total > 0 ? Math.round(lucro / total * 100) : 0;
 
@@ -1692,6 +1851,7 @@ function calcFinanceiro() {
   set('fin-hm-val',    '+'+br(recHM));
   set('fin-assess-val','+'+br(assessVal));
   set('fin-ment-val',  '+'+br(mentVal));
+  set('fin-saas-val',  '+'+br(saasVal));
   set('fin-total-rec', br(total));
   set('fin-c-meta',    '-'+br(metaGast));
   set('fin-c-total',   '-'+br(metaGast + fixos));
@@ -1699,15 +1859,16 @@ function calcFinanceiro() {
   set('fin-res-hm',    '+'+br(recHM));
   set('fin-res-assess','+'+br(assessVal));
   set('fin-res-ment',  '+'+br(mentVal));
+  set('fin-res-saas',  '+'+br(saasVal));
   set('fin-res-meta',  '-'+br(metaGast));
   set('fin-resultado', sinal(lucro));
   set('fin-margem',    margem+'%');
 
-  // Faturamento geral acumulado — soma de todos os meses de cursos + todo o histórico de pagamentos de assessorias + mentorias já realizadas
+  // Faturamento geral acumulado — soma de todos os meses de cursos + todo o histórico de pagamentos de assessorias + mentorias já realizadas + SaaS
   const somaCursos = meses.reduce((s, x) => s + (x.liq || 0), 0);
   const somaMeta    = meses.reduce((s, x) => s + (x.gasto_meta || 0), 0);
   const mentoriasRealizadas = slots.filter(s => !s.disponivel).length * preco;
-  const geralTotal = somaCursos + assessValTotal + mentoriasRealizadas;
+  const geralTotal = somaCursos + assessValTotal + mentoriasRealizadas + saasValTotal;
   const geralLucro = geralTotal - somaMeta - (fixos * meses.length);
   set('fin-geral-total', br(Math.round(geralTotal)));
   set('fin-geral-meta',  br(Math.round(somaMeta)));
