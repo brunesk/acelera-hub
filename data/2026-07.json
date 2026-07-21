@@ -1,13 +1,13 @@
 {
-  "gerado_em": "21/07/2026 às 19:40 (BRT)",
+  "gerado_em": "21/07/2026 às 19:44 (BRT)",
   "periodo": "01/07 – 21/07/2026",
   "mes_key": "2026-07",
   "kpis": {
     "vendas": 203,
     "bruto": 13957.06,
     "liq": 12401.07,
-    "gasto_meta": 9791.36,
-    "lucro": 2609.71,
+    "gasto_meta": 9793.18,
+    "lucro": 2607.89,
     "roas": 1.27,
     "ticket": 68.75
   },
@@ -197,9 +197,9 @@
       "vendas": 10,
       "bruto": 514.2,
       "liq": 453.72,
-      "gasto_meta": 294.12,
-      "lucro": 159.6,
-      "roas": 1.54
+      "gasto_meta": 295.94,
+      "lucro": 157.78,
+      "roas": 1.53
     }
   ],
   "semanas": [
@@ -231,8 +231,8 @@
       "vendas": 60,
       "bruto": 4205.48,
       "liq": 3743.6,
-      "gasto_meta": 2896.41,
-      "lucro": 847.19,
+      "gasto_meta": 2898.23,
+      "lucro": 845.37,
       "roas": 1.29,
       "atual": true
     }
@@ -265,14 +265,14 @@
     {
       "nome": "Video 05 — Cópia",
       "status": "ACTIVE",
-      "gasto": 1479.03,
-      "impressoes": 54196,
+      "gasto": 1480.85,
+      "impressoes": 54263,
       "ctr": 2.31,
       "cpm": 27.29,
       "compras": 30,
       "receita_meta": 1672.92,
       "roas": 1.13,
-      "cpa": 49.3
+      "cpa": 49.36
     },
     {
       "nome": "Criativo 03 — Cópia",
