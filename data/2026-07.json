@@ -6,8 +6,8 @@
     "vendas": 193,
     "bruto": 13442.86,
     "liq": 11947.35,
-    "gasto_meta": 9475.11,
-    "lucro": 2472.24,
+    "gasto_meta": 9476.46,
+    "lucro": 2470.89,
     "roas": 1.26,
     "ticket": 69.65
   },
@@ -188,9 +188,9 @@
       "vendas": 8,
       "bruto": 569.47,
       "liq": 506.83,
-      "gasto_meta": 384.85,
-      "lucro": 121.98,
-      "roas": 1.32
+      "gasto_meta": 386.2,
+      "lucro": 120.63,
+      "roas": 1.31
     }
   ],
   "semanas": [
@@ -222,9 +222,9 @@
       "vendas": 50,
       "bruto": 3691.28,
       "liq": 3289.88,
-      "gasto_meta": 2580.16,
-      "lucro": 709.72,
-      "roas": 1.28,
+      "gasto_meta": 2581.51,
+      "lucro": 708.37,
+      "roas": 1.27,
       "atual": true
     }
   ],
@@ -244,14 +244,14 @@
     {
       "nome": "Video 04 — Cópia",
       "status": "ACTIVE",
-      "gasto": 1673.08,
-      "impressoes": 60904,
+      "gasto": 1673.76,
+      "impressoes": 60913,
       "ctr": 2.23,
-      "cpm": 27.47,
+      "cpm": 27.48,
       "compras": 21,
       "receita_meta": 1293.58,
       "roas": 0.77,
-      "cpa": 79.67
+      "cpa": 79.7
     },
     {
       "nome": "Video 05 — Cópia",
