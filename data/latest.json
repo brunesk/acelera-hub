@@ -1,14 +1,14 @@
 {
-  "gerado_em": "21/07/2026 às 22:19 (BRT)",
+  "gerado_em": "21/07/2026 às 22:21 (BRT)",
   "periodo": "01/07 – 21/07/2026",
   "mes_key": "2026-07",
   "kpis": {
     "vendas": 207,
     "bruto": 14250.53,
     "liq": 12663.22,
-    "gasto_meta": 9853.6,
-    "lucro": 2809.62,
-    "roas": 1.29,
+    "gasto_meta": 9855.8,
+    "lucro": 2807.42,
+    "roas": 1.28,
     "ticket": 68.84
   },
   "dias": [
@@ -197,9 +197,9 @@
       "vendas": 14,
       "bruto": 807.67,
       "liq": 715.87,
-      "gasto_meta": 356.36,
-      "lucro": 359.51,
-      "roas": 2.01
+      "gasto_meta": 358.56,
+      "lucro": 357.31,
+      "roas": 2.0
     }
   ],
   "semanas": [
@@ -231,8 +231,8 @@
       "vendas": 64,
       "bruto": 4498.95,
       "liq": 4005.75,
-      "gasto_meta": 2958.65,
-      "lucro": 1047.1,
+      "gasto_meta": 2960.85,
+      "lucro": 1044.9,
       "roas": 1.35,
       "atual": true
     }
@@ -241,38 +241,38 @@
     {
       "nome": "Video 01 — Cópia",
       "status": "ACTIVE",
-      "gasto": 5513.29,
-      "impressoes": 186699,
-      "ctr": 2.46,
+      "gasto": 5514.29,
+      "impressoes": 186733,
+      "ctr": 2.47,
       "cpm": 29.53,
       "compras": 110,
       "receita_meta": 6642.83,
       "roas": 1.2,
-      "cpa": 50.12
+      "cpa": 50.13
     },
     {
       "nome": "Video 04 — Cópia",
       "status": "ACTIVE",
-      "gasto": 1739.94,
-      "impressoes": 63259,
+      "gasto": 1739.76,
+      "impressoes": 63242,
       "ctr": 2.23,
       "cpm": 27.51,
       "compras": 22,
       "receita_meta": 1363.76,
       "roas": 0.78,
-      "cpa": 79.09
+      "cpa": 79.08
     },
     {
       "nome": "Video 05 — Cópia",
       "status": "ACTIVE",
-      "gasto": 1519.56,
-      "impressoes": 55905,
+      "gasto": 1519.78,
+      "impressoes": 55928,
       "ctr": 2.32,
-      "cpm": 27.18,
+      "cpm": 27.17,
       "compras": 31,
       "receita_meta": 1743.1,
       "roas": 1.15,
-      "cpa": 49.02
+      "cpa": 49.03
     },
     {
       "nome": "Criativo 03 — Cópia",
