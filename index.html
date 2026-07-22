@@ -917,6 +917,7 @@ input[type="month"]::-webkit-calendar-picker-indicator { filter:invert(.6);curso
         <div class="kpi-card c-green"><div class="kpi-icon">✅</div><div class="kpi-label">Pagamentos ok</div><div class="kpi-value c-green" id="ak-pago">0</div></div>
         <div class="kpi-card c-amber"><div class="kpi-icon">⚠️</div><div class="kpi-label">Renovando em breve</div><div class="kpi-value c-amber" id="ak-renov">0</div></div>
         <div class="kpi-card c-red"><div class="kpi-icon">🚨</div><div class="kpi-label">Pendentes</div><div class="kpi-value c-red" id="ak-pend">0</div></div>
+        <div class="kpi-card c-orange"><div class="kpi-icon">😴</div><div class="kpi-label">Lojas paradas</div><div class="kpi-value c-orange" id="ak-paradas">0</div><div class="kpi-sub">+14 dias sem mexer</div></div>
       </div>
 
       <!-- Tabela -->
@@ -937,12 +938,13 @@ input[type="month"]::-webkit-calendar-picker-indicator { filter:invert(.6);curso
                 <th>Login</th>
                 <th>Senha</th>
                 <th>Renovação</th>
+                <th>Última mexida</th>
                 <th>Pagamento</th>
                 <th>Ações</th>
               </tr>
             </thead>
             <tbody id="assess-tbody">
-              <tr><td colspan="6" class="empty-state" style="padding:40px;"><div class="icon">🏪</div><p>Nenhuma assessoria cadastrada.<br>Clique em "+ Nova assessoria" para começar.</p></td></tr>
+              <tr><td colspan="7" class="empty-state" style="padding:40px;"><div class="icon">🏪</div><p>Nenhuma assessoria cadastrada.<br>Clique em "+ Nova assessoria" para começar.</p></td></tr>
             </tbody>
           </table>
         </div>
@@ -1170,6 +1172,7 @@ input[type="month"]::-webkit-calendar-picker-indicator { filter:invert(.6);curso
         <div class="field"><label>Valor mensal (R$)</label><input type="number" id="a-valor" placeholder="500"></div>
         <div class="field"><label>Dia da renovação (todo mês)</label><input type="number" id="a-renov-dia" min="1" max="31" placeholder="Ex: 10"></div>
       </div>
+      <div class="field"><label>Última mexida na loja</label><input type="date" id="a-mexida"></div>
       <div class="field"><label>Observações</label><textarea id="a-obs" rows="2" placeholder="Notas sobre o cliente..."></textarea></div>
     </div>
     <div class="modal-actions">
@@ -1519,6 +1522,12 @@ function mesKeyAtual() {
   return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}`;
 }
 
+// Data de hoje no fuso local (YYYY-MM-DD) — não usar toISOString (é UTC e vira o dia seguinte à noite no Brasil)
+function dataLocalHoje() {
+  const d = new Date();
+  return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
+}
+
 // status do cliente para um mes especifico: 'pago' se ha pagamento registrado
 // naquele mes; senao 'atrasado' se o dia de renovacao daquele mes ja passou,
 // ou 'pendente' se ainda nao chegou.
@@ -1544,10 +1553,11 @@ function abrirModalAssess(id) {
       document.getElementById('a-senha').value     = assess.senha || '';
       document.getElementById('a-valor').value     = assess.valor || '';
       document.getElementById('a-renov-dia').value = assess.renovDia || '';
+      document.getElementById('a-mexida').value     = assess.ultimaMexida || '';
       document.getElementById('a-obs').value       = assess.obs || '';
     }
   } else {
-    ['a-nome','a-loja','a-url','a-login','a-senha','a-valor','a-renov-dia','a-obs'].forEach(id => document.getElementById(id).value = '');
+    ['a-nome','a-loja','a-url','a-login','a-senha','a-valor','a-renov-dia','a-mexida','a-obs'].forEach(id => document.getElementById(id).value = '');
   }
   modal.classList.add('open');
 }
@@ -1567,6 +1577,7 @@ async function salvarAssess() {
     senha:    document.getElementById('a-senha').value.trim(),
     valor:    parseFloat(document.getElementById('a-valor').value) || 0,
     renovDia,
+    ultimaMexida: document.getElementById('a-mexida').value || null,
     obs:      document.getElementById('a-obs').value.trim(),
     atualizadoEm: Date.now()
   };
@@ -1593,7 +1604,7 @@ function abrirModalPagamento(id) {
   if (!a) return;
   pagamentoClienteId = id;
   document.getElementById('pg-cliente').value = `${a.nome} — ${a.loja}`;
-  document.getElementById('pg-data').value = new Date().toISOString().slice(0,10);
+  document.getElementById('pg-data').value = dataLocalHoje();
   document.getElementById('pg-valor').value = a.valor || '';
   document.getElementById('modal-pagamento').classList.add('open');
 }
@@ -1643,8 +1654,17 @@ function renderAssessorias() {
   });
   document.getElementById('ak-renov').textContent = renovBreve;
 
+  // Lojas paradas (nunca mexeu, ou +14 dias sem mexer)
+  const paradas = todos.filter(a => {
+    if (!a.ultimaMexida) return true;
+    const dias = Math.floor((hoje - new Date(a.ultimaMexida + 'T00:00:00')) / 86400000);
+    return dias > 14;
+  }).length;
+  const elParadas = document.getElementById('ak-paradas');
+  if (elParadas) elParadas.textContent = paradas;
+
   if (!lista.length) {
-    document.getElementById('assess-tbody').innerHTML = `<tr><td colspan="6"><div class="empty-state"><div class="icon">🏪</div><p>Nenhuma assessoria encontrada.</p></div></td></tr>`;
+    document.getElementById('assess-tbody').innerHTML = `<tr><td colspan="7"><div class="empty-state"><div class="icon">🏪</div><p>Nenhuma assessoria encontrada.</p></div></td></tr>`;
     return;
   }
 
@@ -1662,6 +1682,18 @@ function renderAssessorias() {
     const pagBadge = status === 'pago' ? `<span class="badge badge-green">✅ Pago${pg ? ` (${pg.data.split('-').reverse().join('/')})` : ''}</span>` :
                      status === 'atrasado' ? `<span class="badge badge-red">🚨 Atrasado</span>` :
                      `<span class="badge badge-amber">⚠️ Pendente</span>`;
+    // Última mexida na loja
+    let mexidaHtml;
+    if (a.ultimaMexida) {
+      const dm = new Date(a.ultimaMexida + 'T00:00:00');
+      const dias = Math.floor((hoje - dm) / 86400000);
+      const cor = dias <= 7 ? 'var(--green)' : dias <= 14 ? 'var(--amber)' : 'var(--red)';
+      const rotulo = dias === 0 ? 'hoje' : dias === 1 ? 'ontem' : `há ${dias}d`;
+      mexidaHtml = `<div style="font-family:var(--mono);font-size:12px;">${a.ultimaMexida.split('-').reverse().join('/')}</div>`
+        + `<div style="font-size:10.5px;color:${cor};font-weight:700;margin-top:2px;">● ${rotulo}</div>`;
+    } else {
+      mexidaHtml = `<span style="font-size:11px;color:var(--red);font-weight:700;">nunca</span>`;
+    }
     return `<tr>
       <td>
         <div class="client-name">${a.nome}</div>
@@ -1675,6 +1707,12 @@ function renderAssessorias() {
         </div>
       </td>
       <td class="${renovClass}" style="font-family:var(--mono);font-size:12px;">${renovText}</td>
+      <td>
+        <div style="display:flex;align-items:center;gap:8px;">
+          <div>${mexidaHtml}</div>
+          <button class="btn btn-ghost btn-sm" onclick="marcarMexida('${a.id}')" title="Marcar que mexi na loja hoje">✓ mexi</button>
+        </div>
+      </td>
       <td><span onclick="abrirModalPagamento('${a.id}')" style="cursor:pointer;" title="Clique para registrar pagamento">${pagBadge}</span></td>
       <td>
         <div class="action-btns">
@@ -1685,6 +1723,15 @@ function renderAssessorias() {
       </td>
     </tr>`;
   }).join('');
+}
+
+async function marcarMexida(id) {
+  const a = todosAssessorias[id];
+  if (!a) return;
+  const hojeStr = dataLocalHoje();
+  await fetch(`${DB}/assessorias/${id}/ultimaMexida.json`, { method:'PUT', headers:{'Content-Type':'application/json'}, body: JSON.stringify(hojeStr) });
+  todosAssessorias[id].ultimaMexida = hojeStr;
+  renderAssessorias();
 }
 
 function togglePwd(id, senha) {
