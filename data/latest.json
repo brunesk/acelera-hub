@@ -1,5 +1,5 @@
 {
-  "gerado_em": "23/07/2026 às 17:43 (BRT)",
+  "gerado_em": "23/07/2026 às 17:45 (BRT)",
   "periodo": "01/07 – 23/07/2026",
   "mes_key": "2026-07",
   "kpis": {
@@ -282,14 +282,14 @@
     {
       "nome": "Video 05 — Cópia",
       "status": "ACTIVE",
-      "gasto": 1864.59,
-      "impressoes": 68492,
-      "ctr": 2.3,
+      "gasto": 1865.17,
+      "impressoes": 68518,
+      "ctr": 2.29,
       "cpm": 27.22,
       "compras": 42,
       "receita_meta": 2370.92,
       "roas": 1.27,
-      "cpa": 44.39
+      "cpa": 44.41
     },
     {
       "nome": "Video 04 — Cópia",
