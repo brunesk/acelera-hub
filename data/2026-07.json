@@ -1,5 +1,5 @@
 {
-  "gerado_em": "23/07/2026 às 22:49 (BRT)",
+  "gerado_em": "23/07/2026 às 22:51 (BRT)",
   "periodo": "01/07 – 23/07/2026",
   "mes_key": "2026-07",
   "kpis": {
@@ -306,8 +306,8 @@
     {
       "nome": "Criativo 03 — Cópia",
       "status": "ACTIVE",
-      "gasto": 1078.92,
-      "impressoes": 31876,
+      "gasto": 1079.02,
+      "impressoes": 31881,
       "ctr": 2.29,
       "cpm": 33.85,
       "compras": 17,
