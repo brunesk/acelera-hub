@@ -1,13 +1,13 @@
 {
-  "gerado_em": "26/07/2026 às 22:56 (BRT)",
-  "periodo": "01/07 – 26/07/2026",
+  "gerado_em": "27/07/2026 às 00:12 (BRT)",
+  "periodo": "01/07 – 27/07/2026",
   "mes_key": "2026-07",
   "kpis": {
     "vendas": 258,
     "bruto": 17960.26,
     "liq": 15963.72,
-    "gasto_meta": 11730.44,
-    "lucro": 4233.28,
+    "gasto_meta": 11748.31,
+    "lucro": 4215.41,
     "roas": 1.36,
     "ticket": 69.61
   },
@@ -242,9 +242,9 @@
       "vendas": 13,
       "bruto": 1071.67,
       "liq": 957.01,
-      "gasto_meta": 385.11,
-      "lucro": 571.9,
-      "roas": 2.49
+      "gasto_meta": 402.98,
+      "lucro": 554.03,
+      "roas": 2.37
     }
   ],
   "semanas": [
@@ -287,9 +287,9 @@
       "vendas": 51,
       "bruto": 3626.93,
       "liq": 3225.62,
-      "gasto_meta": 1830.7,
-      "lucro": 1394.92,
-      "roas": 1.76,
+      "gasto_meta": 1848.57,
+      "lucro": 1377.05,
+      "roas": 1.74,
       "atual": true
     }
   ],
@@ -297,50 +297,50 @@
     {
       "nome": "Video 01 — Cópia",
       "status": "ACTIVE",
-      "gasto": 6019.9,
-      "impressoes": 201758,
+      "gasto": 6023.95,
+      "impressoes": 201884,
       "ctr": 2.5,
       "cpm": 29.84,
       "compras": 126,
       "receita_meta": 7621.55,
       "roas": 1.27,
-      "cpa": 47.78
+      "cpa": 47.81
     },
     {
       "nome": "Video 05 — Cópia",
       "status": "ACTIVE",
-      "gasto": 2440.76,
-      "impressoes": 87243,
+      "gasto": 2451.37,
+      "impressoes": 87605,
       "ctr": 2.35,
       "cpm": 27.98,
       "compras": 57,
       "receita_meta": 3315.5,
-      "roas": 1.36,
-      "cpa": 42.82
+      "roas": 1.35,
+      "cpa": 43.01
     },
     {
       "nome": "Video 04 — Cópia",
       "status": "ACTIVE",
-      "gasto": 1968.5,
-      "impressoes": 71366,
+      "gasto": 1971.15,
+      "impressoes": 71471,
       "ctr": 2.2,
       "cpm": 27.58,
       "compras": 26,
       "receita_meta": 1644.48,
-      "roas": 0.84,
-      "cpa": 75.71
+      "roas": 0.83,
+      "cpa": 75.81
     },
     {
       "nome": "Criativo 03 — Cópia",
       "status": "ACTIVE",
-      "gasto": 1225.24,
-      "impressoes": 36537,
+      "gasto": 1227.3,
+      "impressoes": 36613,
       "ctr": 2.26,
-      "cpm": 33.53,
+      "cpm": 33.52,
       "compras": 18,
       "receita_meta": 1047.0,
       "roas": 0.85,
-      "cpa": 68.07
+      "cpa": 68.18
     },
     {
       "nome": "Video 02 — Cópia",
