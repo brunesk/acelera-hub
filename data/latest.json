@@ -1,13 +1,13 @@
 {
-  "gerado_em": "01/08/2026 às 02:18 (BRT)",
+  "gerado_em": "01/08/2026 às 05:02 (BRT)",
   "periodo": "01/08 – 01/08/2026",
   "mes_key": "2026-08",
   "kpis": {
     "vendas": 0,
     "bruto": 0.0,
     "liq": 0.0,
-    "gasto_meta": 20.52,
-    "lucro": -20.52,
+    "gasto_meta": 24.35,
+    "lucro": -24.35,
     "roas": 0.0,
     "ticket": 0
   },
@@ -17,8 +17,8 @@
       "vendas": 0,
       "bruto": 0.0,
       "liq": 0.0,
-      "gasto_meta": 20.52,
-      "lucro": -20.52,
+      "gasto_meta": 24.35,
+      "lucro": -24.35,
       "roas": 0.0
     }
   ],
@@ -29,8 +29,8 @@
       "vendas": 0,
       "bruto": 0.0,
       "liq": 0.0,
-      "gasto_meta": 20.52,
-      "lucro": -20.52,
+      "gasto_meta": 24.35,
+      "lucro": -24.35,
       "roas": 0.0,
       "atual": true
     }
@@ -39,22 +39,10 @@
     {
       "nome": "Video 01 — Cópia",
       "status": "ACTIVE",
-      "gasto": 10.06,
-      "impressoes": 246,
-      "ctr": 2.44,
-      "cpm": 40.89,
-      "compras": 0,
-      "receita_meta": 0,
-      "roas": 0.0,
-      "cpa": 0
-    },
-    {
-      "nome": "Video 04 — Cópia",
-      "status": "ACTIVE",
-      "gasto": 4.96,
-      "impressoes": 185,
-      "ctr": 1.62,
-      "cpm": 26.81,
+      "gasto": 10.12,
+      "impressoes": 249,
+      "ctr": 2.41,
+      "cpm": 40.64,
       "compras": 0,
       "receita_meta": 0,
       "roas": 0.0,
@@ -63,10 +51,22 @@
     {
       "nome": "Video 05 — Cópia",
       "status": "ACTIVE",
-      "gasto": 3.38,
-      "impressoes": 133,
-      "ctr": 2.26,
-      "cpm": 25.41,
+      "gasto": 6.98,
+      "impressoes": 214,
+      "ctr": 2.8,
+      "cpm": 32.62,
+      "compras": 0,
+      "receita_meta": 0,
+      "roas": 0.0,
+      "cpa": 0
+    },
+    {
+      "nome": "Video 04 — Cópia",
+      "status": "ACTIVE",
+      "gasto": 5.12,
+      "impressoes": 190,
+      "ctr": 1.58,
+      "cpm": 26.95,
       "compras": 0,
       "receita_meta": 0,
       "roas": 0.0,
@@ -75,10 +75,10 @@
     {
       "nome": "Criativo 03 — Cópia",
       "status": "ACTIVE",
-      "gasto": 2.12,
-      "impressoes": 91,
-      "ctr": 2.2,
-      "cpm": 23.3,
+      "gasto": 2.13,
+      "impressoes": 92,
+      "ctr": 2.17,
+      "cpm": 23.15,
       "compras": 0,
       "receita_meta": 0,
       "roas": 0.0,
@@ -92,8 +92,8 @@
       "vendas": 295,
       "bruto": 20523.53,
       "liq": 18241.24,
-      "gasto_meta": 13695.79,
-      "lucro": 4545.45,
+      "gasto_meta": 13696.03,
+      "lucro": 4545.21,
       "roas": 1.33
     },
     {
