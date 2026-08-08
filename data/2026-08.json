@@ -1,13 +1,13 @@
 {
-  "gerado_em": "08/08/2026 às 11:22 (BRT)",
+  "gerado_em": "08/08/2026 às 12:19 (BRT)",
   "periodo": "01/08 – 08/08/2026",
   "mes_key": "2026-08",
   "kpis": {
     "vendas": 41,
     "bruto": 2875.1,
     "liq": 2554.07,
-    "gasto_meta": 2449.81,
-    "lucro": 104.26,
+    "gasto_meta": 2456.42,
+    "lucro": 97.65,
     "roas": 1.04,
     "ticket": 70.12
   },
@@ -80,8 +80,8 @@
       "vendas": 0,
       "bruto": 0.0,
       "liq": 0.0,
-      "gasto_meta": 55.04,
-      "lucro": -55.04,
+      "gasto_meta": 61.65,
+      "lucro": -61.65,
       "roas": 0.0
     }
   ],
@@ -103,8 +103,8 @@
       "vendas": 0,
       "bruto": 0.0,
       "liq": 0.0,
-      "gasto_meta": 55.04,
-      "lucro": -55.04,
+      "gasto_meta": 61.65,
+      "lucro": -61.65,
       "roas": 0.0,
       "atual": true
     }
@@ -113,38 +113,38 @@
     {
       "nome": "Video 05 — Cópia",
       "status": "ACTIVE",
-      "gasto": 1502.19,
-      "impressoes": 47619,
-      "ctr": 2.44,
-      "cpm": 31.55,
+      "gasto": 1508.72,
+      "impressoes": 47791,
+      "ctr": 2.46,
+      "cpm": 31.57,
       "compras": 21,
       "receita_meta": 1293.58,
       "roas": 0.86,
-      "cpa": 71.53
+      "cpa": 71.84
     },
     {
       "nome": "Video 01 — Cópia",
       "status": "ACTIVE",
-      "gasto": 531.49,
-      "impressoes": 15472,
-      "ctr": 2.7,
+      "gasto": 531.52,
+      "impressoes": 15475,
+      "ctr": 2.69,
       "cpm": 34.35,
       "compras": 9,
       "receita_meta": 523.5,
       "roas": 0.98,
-      "cpa": 59.05
+      "cpa": 59.06
     },
     {
       "nome": "Video 04 — Cópia",
       "status": "ACTIVE",
-      "gasto": 251.6,
-      "impressoes": 9372,
+      "gasto": 251.65,
+      "impressoes": 9376,
       "ctr": 2.08,
-      "cpm": 26.85,
+      "cpm": 26.84,
       "compras": 7,
       "receita_meta": 455.22,
       "roas": 1.81,
-      "cpa": 35.94
+      "cpa": 35.95
     },
     {
       "nome": "Criativo 03 — Cópia",
