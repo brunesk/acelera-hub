@@ -1,13 +1,13 @@
 {
-  "gerado_em": "08/08/2026 às 08:19 (BRT)",
+  "gerado_em": "08/08/2026 às 09:25 (BRT)",
   "periodo": "01/08 – 08/08/2026",
   "mes_key": "2026-08",
   "kpis": {
     "vendas": 41,
     "bruto": 2875.1,
     "liq": 2554.07,
-    "gasto_meta": 2421.2,
-    "lucro": 132.87,
+    "gasto_meta": 2432.08,
+    "lucro": 121.99,
     "roas": 1.05,
     "ticket": 70.12
   },
@@ -71,8 +71,8 @@
       "vendas": 5,
       "bruto": 399.16,
       "liq": 355.06,
-      "gasto_meta": 263.56,
-      "lucro": 91.5,
+      "gasto_meta": 263.59,
+      "lucro": 91.47,
       "roas": 1.35
     },
     {
@@ -80,8 +80,8 @@
       "vendas": 0,
       "bruto": 0.0,
       "liq": 0.0,
-      "gasto_meta": 26.46,
-      "lucro": -26.46,
+      "gasto_meta": 37.31,
+      "lucro": -37.31,
       "roas": 0.0
     }
   ],
@@ -92,8 +92,8 @@
       "vendas": 41,
       "bruto": 2875.1,
       "liq": 2554.07,
-      "gasto_meta": 2394.74,
-      "lucro": 159.33,
+      "gasto_meta": 2394.77,
+      "lucro": 159.3,
       "roas": 1.07,
       "atual": false
     },
@@ -103,8 +103,8 @@
       "vendas": 0,
       "bruto": 0.0,
       "liq": 0.0,
-      "gasto_meta": 26.46,
-      "lucro": -26.46,
+      "gasto_meta": 37.31,
+      "lucro": -37.31,
       "roas": 0.0,
       "atual": true
     }
@@ -113,25 +113,25 @@
     {
       "nome": "Video 05 — Cópia",
       "status": "ACTIVE",
-      "gasto": 1473.6,
-      "impressoes": 47099,
-      "ctr": 2.44,
-      "cpm": 31.29,
+      "gasto": 1484.46,
+      "impressoes": 47281,
+      "ctr": 2.45,
+      "cpm": 31.4,
       "compras": 21,
       "receita_meta": 1293.58,
-      "roas": 0.88,
-      "cpa": 70.17
+      "roas": 0.87,
+      "cpa": 70.69
     },
     {
       "nome": "Video 01 — Cópia",
       "status": "ACTIVE",
-      "gasto": 531.47,
-      "impressoes": 15471,
+      "gasto": 531.49,
+      "impressoes": 15472,
       "ctr": 2.7,
       "cpm": 34.35,
       "compras": 9,
       "receita_meta": 523.5,
-      "roas": 0.99,
+      "roas": 0.98,
       "cpa": 59.05
     },
     {
