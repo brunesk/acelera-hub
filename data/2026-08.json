@@ -1,15 +1,15 @@
 {
-  "gerado_em": "09/08/2026 às 12:20 (BRT)",
+  "gerado_em": "09/08/2026 às 13:22 (BRT)",
   "periodo": "01/08 – 09/08/2026",
   "mes_key": "2026-08",
   "kpis": {
-    "vendas": 45,
-    "bruto": 3101.1,
-    "liq": 2753.7,
-    "gasto_meta": 2689.58,
-    "lucro": 64.12,
-    "roas": 1.02,
-    "ticket": 68.91
+    "vendas": 46,
+    "bruto": 3180.1,
+    "liq": 2823.88,
+    "gasto_meta": 2697.59,
+    "lucro": 126.29,
+    "roas": 1.05,
+    "ticket": 69.13
   },
   "dias": [
     {
@@ -80,18 +80,18 @@
       "vendas": 3,
       "bruto": 147.0,
       "liq": 129.45,
-      "gasto_meta": 222.9,
-      "lucro": -93.45,
+      "gasto_meta": 222.96,
+      "lucro": -93.51,
       "roas": 0.58
     },
     {
       "dia": "09/08",
-      "vendas": 1,
-      "bruto": 79.0,
-      "liq": 70.18,
-      "gasto_meta": 71.89,
-      "lucro": -1.71,
-      "roas": 0.98
+      "vendas": 2,
+      "bruto": 158.0,
+      "liq": 140.36,
+      "gasto_meta": 79.84,
+      "lucro": 60.52,
+      "roas": 1.76
     }
   ],
   "semanas": [
@@ -109,12 +109,12 @@
     {
       "semana": "Semana 2",
       "periodo": "08/08 – 09/08",
-      "vendas": 4,
-      "bruto": 226.0,
-      "liq": 199.63,
-      "gasto_meta": 294.79,
-      "lucro": -95.16,
-      "roas": 0.68,
+      "vendas": 5,
+      "bruto": 305.0,
+      "liq": 269.81,
+      "gasto_meta": 302.8,
+      "lucro": -32.99,
+      "roas": 0.89,
       "atual": true
     }
   ],
@@ -122,20 +122,20 @@
     {
       "nome": "Video 05 — Cópia",
       "status": "ACTIVE",
-      "gasto": 1673.03,
-      "impressoes": 51960,
+      "gasto": 1681.59,
+      "impressoes": 52186,
       "ctr": 2.46,
-      "cpm": 32.2,
+      "cpm": 32.22,
       "compras": 24,
       "receita_meta": 1468.08,
-      "roas": 0.88,
-      "cpa": 69.71
+      "roas": 0.87,
+      "cpa": 70.07
     },
     {
       "nome": "Video 01 — Cópia",
       "status": "ACTIVE",
-      "gasto": 552.71,
-      "impressoes": 16020,
+      "gasto": 552.72,
+      "impressoes": 16022,
       "ctr": 2.72,
       "cpm": 34.5,
       "compras": 9,
