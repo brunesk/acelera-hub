@@ -1,14 +1,14 @@
 {
-  "gerado_em": "08/08/2026 às 23:57 (BRT)",
-  "periodo": "01/08 – 08/08/2026",
+  "gerado_em": "09/08/2026 às 01:14 (BRT)",
+  "periodo": "01/08 – 09/08/2026",
   "mes_key": "2026-08",
   "kpis": {
     "vendas": 44,
     "bruto": 3022.1,
     "liq": 2683.52,
-    "gasto_meta": 2615.24,
-    "lucro": 68.28,
-    "roas": 1.03,
+    "gasto_meta": 2629.23,
+    "lucro": 54.29,
+    "roas": 1.02,
     "ticket": 68.68
   },
   "dias": [
@@ -80,9 +80,18 @@
       "vendas": 3,
       "bruto": 147.0,
       "liq": 129.45,
-      "gasto_meta": 220.45,
-      "lucro": -91.0,
-      "roas": 0.59
+      "gasto_meta": 222.72,
+      "lucro": -93.27,
+      "roas": 0.58
+    },
+    {
+      "dia": "09/08",
+      "vendas": 0,
+      "bruto": 0.0,
+      "liq": 0.0,
+      "gasto_meta": 11.72,
+      "lucro": -11.72,
+      "roas": 0.0
     }
   ],
   "semanas": [
@@ -99,13 +108,13 @@
     },
     {
       "semana": "Semana 2",
-      "periodo": "08/08 – 08/08",
+      "periodo": "08/08 – 09/08",
       "vendas": 3,
       "bruto": 147.0,
       "liq": 129.45,
-      "gasto_meta": 220.45,
-      "lucro": -91.0,
-      "roas": 0.59,
+      "gasto_meta": 234.44,
+      "lucro": -104.99,
+      "roas": 0.55,
       "atual": true
     }
   ],
@@ -113,26 +122,26 @@
     {
       "nome": "Video 05 — Cópia",
       "status": "ACTIVE",
-      "gasto": 1618.08,
-      "impressoes": 50677,
+      "gasto": 1621.61,
+      "impressoes": 50768,
       "ctr": 2.46,
-      "cpm": 31.93,
+      "cpm": 31.94,
       "compras": 23,
       "receita_meta": 1397.9,
       "roas": 0.86,
-      "cpa": 70.35
+      "cpa": 70.5
     },
     {
       "nome": "Video 01 — Cópia",
       "status": "ACTIVE",
-      "gasto": 536.89,
-      "impressoes": 15621,
-      "ctr": 2.72,
-      "cpm": 34.37,
+      "gasto": 547.35,
+      "impressoes": 15847,
+      "ctr": 2.73,
+      "cpm": 34.54,
       "compras": 9,
       "receita_meta": 523.5,
-      "roas": 0.98,
-      "cpa": 59.65
+      "roas": 0.96,
+      "cpa": 60.82
     },
     {
       "nome": "Video 04 — Cópia",
