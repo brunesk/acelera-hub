@@ -1,15 +1,15 @@
 {
-  "gerado_em": "11/08/2026 às 11:11 (BRT)",
+  "gerado_em": "11/08/2026 às 12:49 (BRT)",
   "periodo": "01/08 – 11/08/2026",
   "mes_key": "2026-08",
   "kpis": {
-    "vendas": 58,
-    "bruto": 4015.57,
-    "liq": 3566.38,
-    "gasto_meta": 3154.97,
-    "lucro": 411.41,
+    "vendas": 59,
+    "bruto": 4054.57,
+    "liq": 3600.52,
+    "gasto_meta": 3180.36,
+    "lucro": 420.16,
     "roas": 1.13,
-    "ticket": 69.23
+    "ticket": 68.72
   },
   "dias": [
     {
@@ -98,18 +98,18 @@
       "vendas": 6,
       "bruto": 474.0,
       "liq": 421.08,
-      "gasto_meta": 260.18,
-      "lucro": 160.9,
+      "gasto_meta": 260.19,
+      "lucro": 160.89,
       "roas": 1.62
     },
     {
       "dia": "11/08",
-      "vendas": 3,
-      "bruto": 147.0,
-      "liq": 129.45,
-      "gasto_meta": 69.65,
-      "lucro": 59.8,
-      "roas": 1.86
+      "vendas": 4,
+      "bruto": 186.0,
+      "liq": 163.59,
+      "gasto_meta": 95.03,
+      "lucro": 68.56,
+      "roas": 1.72
     }
   ],
   "semanas": [
@@ -127,11 +127,11 @@
     {
       "semana": "Semana 2",
       "periodo": "08/08 – 11/08",
-      "vendas": 18,
-      "bruto": 1219.47,
-      "liq": 1082.49,
-      "gasto_meta": 760.18,
-      "lucro": 322.31,
+      "vendas": 19,
+      "bruto": 1258.47,
+      "liq": 1116.63,
+      "gasto_meta": 785.57,
+      "lucro": 331.06,
       "roas": 1.42,
       "atual": true
     }
@@ -140,20 +140,20 @@
     {
       "nome": "Video 05 — Cópia",
       "status": "ACTIVE",
-      "gasto": 2019.33,
-      "impressoes": 63727,
-      "ctr": 2.48,
-      "cpm": 31.69,
+      "gasto": 2044.71,
+      "impressoes": 64700,
+      "ctr": 2.47,
+      "cpm": 31.6,
       "compras": 31,
       "receita_meta": 1923.3,
-      "roas": 0.95,
-      "cpa": 65.14
+      "roas": 0.94,
+      "cpa": 65.96
     },
     {
       "nome": "Video 01 — Cópia",
       "status": "ACTIVE",
-      "gasto": 599.2,
-      "impressoes": 17590,
+      "gasto": 599.21,
+      "impressoes": 17591,
       "ctr": 2.65,
       "cpm": 34.06,
       "compras": 9,
