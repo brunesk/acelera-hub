@@ -1,13 +1,13 @@
 {
-  "gerado_em": "17/08/2026 às 17:54 (BRT)",
+  "gerado_em": "17/08/2026 às 18:16 (BRT)",
   "periodo": "01/08 – 17/08/2026",
   "mes_key": "2026-08",
   "kpis": {
     "vendas": 89,
     "bruto": 6037.36,
     "liq": 5360.29,
-    "gasto_meta": 4972.99,
-    "lucro": 387.3,
+    "gasto_meta": 4983.0,
+    "lucro": 377.29,
     "roas": 1.08,
     "ticket": 67.84
   },
@@ -161,9 +161,9 @@
       "vendas": 2,
       "bruto": 162.16,
       "liq": 144.52,
-      "gasto_meta": 160.54,
-      "lucro": -16.02,
-      "roas": 0.9
+      "gasto_meta": 170.55,
+      "lucro": -26.03,
+      "roas": 0.85
     }
   ],
   "semanas": [
@@ -195,9 +195,9 @@
       "vendas": 14,
       "bruto": 980.16,
       "liq": 869.55,
-      "gasto_meta": 602.71,
-      "lucro": 266.84,
-      "roas": 1.44,
+      "gasto_meta": 612.72,
+      "lucro": 256.83,
+      "roas": 1.42,
       "atual": true
     }
   ],
@@ -205,38 +205,38 @@
     {
       "nome": "Video 05 — Cópia",
       "status": "ACTIVE",
-      "gasto": 3211.27,
-      "impressoes": 101860,
-      "ctr": 2.4,
+      "gasto": 3214.18,
+      "impressoes": 101934,
+      "ctr": 2.41,
       "cpm": 31.53,
       "compras": 52,
       "receita_meta": 3036.68,
-      "roas": 0.95,
-      "cpa": 61.76
+      "roas": 0.94,
+      "cpa": 61.81
     },
     {
       "nome": "Video 01 — Cópia",
       "status": "ACTIVE",
-      "gasto": 907.17,
-      "impressoes": 27339,
-      "ctr": 2.57,
+      "gasto": 911.35,
+      "impressoes": 27464,
+      "ctr": 2.56,
       "cpm": 33.18,
       "compras": 16,
       "receita_meta": 906.64,
-      "roas": 1.0,
-      "cpa": 56.7
+      "roas": 0.99,
+      "cpa": 56.96
     },
     {
       "nome": "Video 04 — Cópia",
       "status": "ACTIVE",
-      "gasto": 590.84,
-      "impressoes": 22568,
+      "gasto": 593.76,
+      "impressoes": 22690,
       "ctr": 2.04,
-      "cpm": 26.18,
+      "cpm": 26.17,
       "compras": 11,
       "receita_meta": 699.9,
       "roas": 1.18,
-      "cpa": 53.71
+      "cpa": 53.98
     },
     {
       "nome": "Criativo 03 — Cópia",
