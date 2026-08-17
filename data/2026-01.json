@@ -1,5 +1,5 @@
 {
-  "gerado_em": "21/07/2026 às 22:52 (BRT)",
+  "gerado_em": "14/08/2026 às 12:41 (BRT)",
   "periodo": "01/01 – 31/01/2026",
   "mes_key": "2026-01",
   "kpis": {
@@ -351,6 +351,16 @@
   ],
   "criativos": [],
   "historico": [
+    {
+      "mes": "Jul/2026",
+      "mes_key": "2026-07",
+      "vendas": 295,
+      "bruto": 20523.53,
+      "liq": 18241.24,
+      "gasto_meta": 13696.35,
+      "lucro": 4544.89,
+      "roas": 1.33
+    },
     {
       "mes": "Jun/2026",
       "mes_key": "2026-06",
