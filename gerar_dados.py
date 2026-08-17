@@ -66,7 +66,10 @@ def meta_daily(token, since, until):
         return results
     except urllib.error.HTTPError as e:
         err = json.loads(e.read().decode())
-        sys.exit(f"❌ Meta API: {err.get('error',{}).get('message','erro desconhecido')}")
+        # Token expirado / erro da Meta: NÃO derruba o script nem sobrescreve os
+        # dados bons com zeros. Retorna None para o main preservar o último JSON.
+        print(f"⚠️ Meta API indisponível: {err.get('error',{}).get('message','erro desconhecido')}")
+        return None
 
 def meta_ads(token, since, until):
     url = f'https://graph.facebook.com/v19.0/{ADSET_ID}/ads?fields=id,name,status&access_token={token}&limit=100'
@@ -147,6 +150,11 @@ for item in hm_all:
 print('📊 Buscando Meta (Jan/2025 → hoje)...')
 until_str = today.strftime('%Y-%m-%d')
 meta_raw = meta_daily(meta_token, '2025-01-01', until_str)
+if meta_raw is None:
+    print('🛑 Meta indisponível (token provavelmente expirado). Mantendo os dados '
+          'já salvos sem alteração para não corromper o histórico. '
+          'Renove o secret META_ACCESS_TOKEN e rode a atualização de novo.')
+    sys.exit(0)   # sai com sucesso: sem email de falha, sem sobrescrever data/
 print(f'  Meta: {len(meta_raw)} dias')
 
 meta_dia = {}
