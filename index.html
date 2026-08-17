@@ -1166,6 +1166,24 @@ input[type="month"]::-webkit-calendar-picker-indicator { filter:invert(.6);curso
   </div>
 </div>
 
+<!-- ══ MODAL: HORÁRIOS DO DIA (permite varios no mesmo dia) ═══ -->
+<div class="modal-overlay" id="modal-dia" onclick="if(event.target===this)fecharModalDia()">
+  <div class="modal-box">
+    <div class="modal-title" id="modal-dia-titulo">📅 Horários do dia</div>
+    <div id="modal-dia-lista"></div>
+    <div class="field" style="margin-top:16px;border-top:1px solid var(--border);padding-top:16px;">
+      <label>Adicionar outro horário nesse dia</label>
+      <div style="display:flex;gap:8px;">
+        <input type="time" id="dia-novo-hora" style="flex:1;">
+        <button class="btn btn-amber btn-sm" onclick="adicionarHorarioDia()">+ Liberar</button>
+      </div>
+    </div>
+    <div class="modal-actions">
+      <button class="btn btn-ghost" onclick="fecharModalDia()">Fechar</button>
+    </div>
+  </div>
+</div>
+
 <!-- ══ MODAL: ASSESSORIA ══════════════════════════════════════ -->
 <div class="modal-overlay" id="modal-assess" onclick="if(event.target===this)fecharModalAssess()">
   <div class="modal-box">
@@ -1362,7 +1380,10 @@ function renderCalendario() {
   const slotsMes = {};
   Object.entries(todosSlots).forEach(([id, s]) => {
     const [sa, sm] = s.data.split('-').map(Number);
-    if (sa === ano && sm === mes) slotsMes[s.data] = {id, hora:s.hora, disponivel:s.disponivel, nome:s.clienteNome};
+    if (sa === ano && sm === mes) {
+      if (!slotsMes[s.data]) slotsMes[s.data] = [];
+      slotsMes[s.data].push({id, hora:s.hora, disponivel:s.disponivel, nome:s.clienteNome});
+    }
   });
   const prim = new Date(ano, mes-1, 1).getDay();
   const dias = new Date(ano, mes, 0).getDate();
@@ -1371,14 +1392,21 @@ function renderCalendario() {
   for (let d=1; d<=dias; d++) {
     const ds = `${ano}-${String(mes).padStart(2,'0')}-${String(d).padStart(2,'0')}`;
     const passado = new Date(ds+'T00:00:00') < hj;
-    const slot = slotsMes[ds];
-    if (slot && slot.disponivel) {
-      cells += `<div class="cal-day has-slot${passado?' passado':''}" onclick="abrirModalAgendar('${slot.id}','${ds}','${slot.hora}')">
-        <span class="cal-day-num">${d}</span><span class="cal-slot-hora">${slot.hora}</span></div>`;
-    } else if (slot && !slot.disponivel) {
-      cells += `<div class="cal-day agendado${passado?' passado':''}" onclick="if(confirm('Remover agendamento de ${(slot.nome||'').split(' ')[0]}?'))deletarSlot('${slot.id}')">
-        <span class="cal-day-num">${d}</span><span class="cal-slot-hora">${slot.hora}</span>
-        <span class="cal-slot-nome">${(slot.nome||'').split(' ')[0]}</span></div>`;
+    const lista = (slotsMes[ds] || []).sort((a,b) => a.hora.localeCompare(b.hora));
+    if (lista.length === 1) {
+      const slot = lista[0];
+      if (slot.disponivel) {
+        cells += `<div class="cal-day has-slot${passado?' passado':''}" onclick="abrirModalDia('${ds}')">
+          <span class="cal-day-num">${d}</span><span class="cal-slot-hora">${slot.hora}</span></div>`;
+      } else {
+        cells += `<div class="cal-day agendado${passado?' passado':''}" onclick="abrirModalDia('${ds}')">
+          <span class="cal-day-num">${d}</span><span class="cal-slot-hora">${slot.hora}</span>
+          <span class="cal-slot-nome">${(slot.nome||'').split(' ')[0]}</span></div>`;
+      }
+    } else if (lista.length > 1) {
+      const temAgend = lista.some(s => !s.disponivel);
+      cells += `<div class="cal-day ${temAgend ? 'agendado' : 'has-slot'}${passado?' passado':''}" onclick="abrirModalDia('${ds}')">
+        <span class="cal-day-num">${d}</span><span class="cal-slot-hora">${lista.length} horários</span></div>`;
     } else if (!passado) {
       cells += `<div class="cal-day livre" onclick="abrirModalLiberar('${ds}')"><span class="cal-day-num">${d}</span></div>`;
     } else {
@@ -1511,14 +1539,22 @@ function abrirModalLiberar(data) {
 }
 function fecharModalLiberar() { document.getElementById('modal-liberar').classList.remove('open'); dataParaLiberar = null; }
 
+// Valida se um horário pode ser liberado numa data (regras de dia/horário do Bruno).
+// Retorna null se válido, ou a mensagem de erro se não.
+function validarHorarioLiberar(data, hora) {
+  const dia = new Date(data+'T00:00:00').getDay();
+  if (dia === 3) return 'Bruno não dá mentoria às quartas!';
+  const h = parseInt(hora.split(':')[0]);
+  if (dia === 6) { if (h >= 13) return 'Sábado só de manhã!'; }
+  else { if (h < 18) return 'Apenas após 18h!'; }
+  return null;
+}
+
 async function confirmarLiberar() {
   const hora = document.getElementById('liberar-hora').value;
   if (!hora) { alert('Selecione um horário!'); return; }
-  const d = new Date(dataParaLiberar+'T00:00:00'); const dia = d.getDay();
-  if (dia === 3) { alert('Bruno não dá mentoria às quartas!'); return; }
-  const h = parseInt(hora.split(':')[0]);
-  if (dia === 6) { if (h >= 13) { alert('Sábado só de manhã!'); return; } }
-  else { if (h < 18) { alert('Apenas após 18h!'); return; } }
+  const erro = validarHorarioLiberar(dataParaLiberar, hora);
+  if (erro) { alert(erro); return; }
   await fetch(`${DB}/slots.json`, { method:'POST', headers:{'Content-Type':'application/json'},
     body: JSON.stringify({data:dataParaLiberar, hora, disponivel:true, clienteNome:null, clienteTel:null, criadoEm:Date.now()}) });
   fecharModalLiberar();
@@ -1531,6 +1567,66 @@ async function deletarSlot(id) {
 }
 
 function fmt(d) { const [a,m,dia] = d.split('-'); return `${dia}/${m}/${a}`; }
+
+// ══════════════════════════════════════════════════════════════
+// MODAL "HORÁRIOS DO DIA" — lista + agenda + remove + adiciona
+// mais de um horário na mesma data.
+// ══════════════════════════════════════════════════════════════
+let diaModalData = null;
+
+function abrirModalDia(data) {
+  diaModalData = data;
+  document.getElementById('modal-dia-titulo').textContent = `📅 ${fmt(data)}`;
+  document.getElementById('dia-novo-hora').value = '';
+  renderModalDiaLista();
+  document.getElementById('modal-dia').classList.add('open');
+}
+function fecharModalDia() { document.getElementById('modal-dia').classList.remove('open'); diaModalData = null; }
+
+function renderModalDiaLista() {
+  const slots = Object.entries(todosSlots)
+    .filter(([id, s]) => s.data === diaModalData)
+    .map(([id, s]) => ({id, ...s}))
+    .sort((a,b) => a.hora.localeCompare(b.hora));
+  const c = document.getElementById('modal-dia-lista');
+  if (!slots.length) {
+    c.innerHTML = `<p style="color:var(--muted);font-size:13px;">Nenhum horário nesse dia ainda.</p>`;
+    return;
+  }
+  c.innerHTML = slots.map(s => `
+    <div style="display:flex;align-items:center;justify-content:space-between;gap:10px;padding:11px 0;border-bottom:1px solid var(--border);">
+      <div>
+        <div style="font-weight:700;font-size:14px;">🕐 ${s.hora} — ${s.disponivel ? 'Disponível' : (s.clienteNome||'Cliente')}</div>
+        ${!s.disponivel && s.clienteTel ? `<div style="font-size:11.5px;color:var(--muted);font-family:var(--mono);margin-top:2px;">${s.clienteTel}</div>` : ''}
+      </div>
+      <div style="display:flex;gap:6px;flex-shrink:0;">
+        ${s.disponivel ? `<button class="btn btn-green btn-sm" onclick="fecharModalDia();abrirModalAgendar('${s.id}','${s.data}','${s.hora}')">Agendar</button>` : ''}
+        <button class="btn btn-red btn-sm" onclick="removerHorarioDia('${s.id}','${(s.clienteNome||'').replace(/'/g,"\\'")}')">Remover</button>
+      </div>
+    </div>
+  `).join('');
+}
+
+async function removerHorarioDia(id, nome) {
+  const msg = nome ? `Remover agendamento de ${nome.split(' ')[0]}?` : 'Remover esse horário?';
+  if (!confirm(msg)) return;
+  await deletarSlot(id);
+  renderModalDiaLista();
+}
+
+async function adicionarHorarioDia() {
+  const hora = document.getElementById('dia-novo-hora').value;
+  if (!hora) { alert('Selecione um horário!'); return; }
+  const erro = validarHorarioLiberar(diaModalData, hora);
+  if (erro) { alert(erro); return; }
+  const jaExiste = Object.values(todosSlots).some(s => s.data === diaModalData && s.hora === hora);
+  if (jaExiste) { alert('Já existe um horário cadastrado nesse dia e hora!'); return; }
+  await fetch(`${DB}/slots.json`, { method:'POST', headers:{'Content-Type':'application/json'},
+    body: JSON.stringify({data:diaModalData, hora, disponivel:true, clienteNome:null, clienteTel:null, criadoEm:Date.now()}) });
+  await carregarSlots();
+  document.getElementById('dia-novo-hora').value = '';
+  renderModalDiaLista();
+}
 
 // ══════════════════════════════════════════════════════════════
 // ASSESSORIAS — Firebase (mesmo banco das Mentorias)
