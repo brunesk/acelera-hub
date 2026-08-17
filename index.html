@@ -506,6 +506,18 @@ body::after {
 .mentor-card.disp::before  { background: var(--amber); }
 .mentor-card.agend::before { background: var(--green); }
 
+.mentor-hoje-section { margin-bottom: 22px; padding-bottom: 18px; border-bottom: 1px dashed var(--border2); }
+.mentor-hoje-label {
+  font-size: 12px; font-weight: 800; text-transform: uppercase; letter-spacing: .08em;
+  color: var(--amber); margin-bottom: 10px; display: flex; align-items: center; gap: 6px;
+}
+.mentor-card.mentor-hoje {
+  background: linear-gradient(90deg, rgba(245,166,35,.1), var(--surface2) 45%);
+  border-color: rgba(245,166,35,.5);
+  box-shadow: 0 4px 24px rgba(245,166,35,.15), 0 0 50px rgba(245,166,35,.08), inset 0 1px 0 rgba(255,255,255,.05);
+}
+.mentor-card.mentor-hoje::before { width: 3px; background: var(--amber); box-shadow: 0 0 10px rgba(245,166,35,.7); }
+
 .cal-grid { display: grid; grid-template-columns: repeat(7,1fr); gap:7px; max-width: 780px; }
 .cal-dow { text-align:center; font-size:12px; font-weight:700; color:var(--muted); text-transform:uppercase; padding:8px 0; letter-spacing:.06em; }
 .cal-day {
@@ -1293,24 +1305,12 @@ function setMentTab(tab, el) {
   renderMentorias();
 }
 
-function renderMentorias() {
-  if (tabMentoria === 'calendario') { renderCalendario(); return; }
-  if (tabMentoria === 'dashboard')  { renderDashMent(); return; }
-
-  let slots = Object.entries(todosSlots).map(([id,s]) => ({id,...s})).sort((a,b) => (a.data+a.hora).localeCompare(b.data+b.hora));
-  if (tabMentoria === 'agendadas') slots = slots.filter(s => !s.disponivel);
-
-  const c = document.getElementById('ment-content');
-  if (!slots.length) {
-    c.innerHTML = `<div class="empty-state"><div class="icon">📭</div><p>Nenhuma mentoria encontrada.</p></div>`;
-    return;
-  }
-  c.innerHTML = slots.map(s => {
-    const waNum = (s.clienteTel||'').replace(/\D/g,'');
-    const waLink = waNum ? `https://wa.me/55${waNum}?text=${encodeURIComponent('Olá! Tudo certo para nossa mentoria?')}` : '';
-    return `<div class="mentor-card ${s.disponivel?'disp':'agend'}">
+function mentorCardHtml(s, destaque) {
+  const waNum = (s.clienteTel||'').replace(/\D/g,'');
+  const waLink = waNum ? `https://wa.me/55${waNum}?text=${encodeURIComponent('Olá! Tudo certo para nossa mentoria?')}` : '';
+  return `<div class="mentor-card ${s.disponivel?'disp':'agend'}${destaque ? ' mentor-hoje' : ''}">
       <div>
-        <div style="font-size:11.5px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:${s.disponivel?'var(--amber)':'var(--green)'};margin-bottom:6px;">${s.disponivel?'Disponível':'Agendada'}</div>
+        <div style="font-size:11.5px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:${s.disponivel?'var(--amber)':'var(--green)'};margin-bottom:6px;">${destaque ? '🔥 Hoje' : (s.disponivel?'Disponível':'Agendada')}</div>
         <div style="font-size:17px;font-weight:700;margin-bottom:9px;">${s.disponivel ? 'Horário livre' : (s.clienteNome||'Cliente')}</div>
         <div style="display:flex;gap:8px;flex-wrap:wrap;">
           <span class="badge badge-amber">📅 ${fmt(s.data)}</span>
@@ -1323,7 +1323,36 @@ function renderMentorias() {
         <button class="btn btn-red btn-sm" onclick="deletarSlot('${s.id}')">Remover</button>
       </div>
     </div>`;
-  }).join('');
+}
+
+function renderMentorias() {
+  if (tabMentoria === 'calendario') { renderCalendario(); return; }
+  if (tabMentoria === 'dashboard')  { renderDashMent(); return; }
+
+  let slots = Object.entries(todosSlots).map(([id,s]) => ({id,...s})).sort((a,b) => (a.data+a.hora).localeCompare(b.data+b.hora));
+  if (tabMentoria === 'agendadas') slots = slots.filter(s => !s.disponivel);
+
+  const c = document.getElementById('ment-content');
+  if (!slots.length) {
+    c.innerHTML = `<div class="empty-state"><div class="icon">📭</div><p>Nenhuma mentoria encontrada.</p></div>`;
+    return;
+  }
+
+  if (tabMentoria === 'agendadas') {
+    const hojeStr = dataLocalHoje();
+    const deHoje = slots.filter(s => s.data === hojeStr);
+    const resto  = slots.filter(s => s.data !== hojeStr);
+    const destaqueHtml = deHoje.length
+      ? `<div class="mentor-hoje-section">
+           <div class="mentor-hoje-label">🎯 Mentoria${deHoje.length>1?'s':''} de hoje</div>
+           ${deHoje.map(s => mentorCardHtml(s, true)).join('')}
+         </div>`
+      : '';
+    c.innerHTML = destaqueHtml + resto.map(s => mentorCardHtml(s, false)).join('');
+    return;
+  }
+
+  c.innerHTML = slots.map(s => mentorCardHtml(s, false)).join('');
 }
 
 function renderCalendario() {
