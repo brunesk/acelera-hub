@@ -502,9 +502,12 @@ body::after {
 .mentor-card:hover { transform: translateY(-1px); }
 .mentor-card.disp:hover  { border-color: rgba(245,166,35,.4); box-shadow: 0 4px 20px rgba(245,166,35,.12), 0 0 40px rgba(245,166,35,.06); }
 .mentor-card.agend:hover { border-color: rgba(0,232,122,.4);  box-shadow: 0 4px 20px rgba(0,232,122,.12),  0 0 40px rgba(0,232,122,.06); }
+.mentor-card.pend:hover  { border-color: rgba(255,107,53,.4); box-shadow: 0 4px 20px rgba(255,107,53,.12), 0 0 40px rgba(255,107,53,.06); }
 .mentor-card::before { content:''; position:absolute; left:0;top:0;bottom:0; width:2px; border-radius:2px 0 0 2px; }
 .mentor-card.disp::before  { background: var(--amber); }
 .mentor-card.agend::before { background: var(--green); }
+.mentor-card.pend::before  { background: var(--orange); }
+.mentor-card.pend { border-style: dashed; opacity: .85; }
 
 .mentor-hoje-section { margin-bottom: 22px; padding-bottom: 18px; border-bottom: 1px dashed var(--border2); }
 .mentor-hoje-label {
@@ -543,6 +546,15 @@ body::after {
   box-shadow: 0 0 20px rgba(0,232,122,.3);
 }
 .cal-day.agendado:hover * { color: #000 !important; }
+.cal-day.pendente {
+  background: var(--orange-dim); border: 1px dashed rgba(255,107,53,.45); cursor:pointer;
+}
+.cal-day.pendente:hover {
+  background: var(--orange); border-color: var(--orange);
+  box-shadow: 0 0 20px rgba(255,107,53,.3);
+}
+.cal-day.pendente:hover * { color: #000 !important; }
+.cal-day.pendente .cal-slot-nome { color: var(--orange); }
 .cal-day.livre { cursor:pointer; }
 .cal-day.livre:hover { border-color: var(--border2); background: var(--surface); }
 .cal-day-num { font-size:16px; font-weight:700; color:var(--text); }
@@ -1298,9 +1310,24 @@ async function carregarSlots() {
   try {
     const r = await fetch(`${DB}/slots.json`);
     todosSlots = (await r.json()) || {};
+    liberarHoldsExpirados();
     renderMentorias();
     atualizarBadgeMent();
   } catch(e) {}
+}
+
+// Reserva temporaria (aluna escolheu horario mas nao terminou de pagar) que
+// passou do prazo volta a ficar disponivel sozinha -- nao depende de alguem
+// abrir a pagina publica de agendamento pra liberar.
+function liberarHoldsExpirados() {
+  const agora = Date.now();
+  for (const [id, s] of Object.entries(todosSlots)) {
+    if (s.pendente && s.holdExpira && s.holdExpira < agora) {
+      fetch(`${DB}/slots/${id}.json`, { method:'PATCH', headers:{'Content-Type':'application/json'},
+        body: JSON.stringify({ disponivel:true, pendente:false, clienteNome:null, clienteTel:null, holdExpira:null }) });
+      s.disponivel = true; s.pendente = false; s.clienteNome = null; s.clienteTel = null;
+    }
+  }
 }
 
 function atualizarBadgeMent() {
@@ -1312,7 +1339,7 @@ function atualizarBadgeMent() {
 
   const hj = new Date(); hj.setHours(0,0,0,0);
   document.getElementById('stat-disp').textContent  = slots.filter(s => s.disponivel).length;
-  document.getElementById('stat-agend').textContent = slots.filter(s => !s.disponivel).length;
+  document.getElementById('stat-agend').textContent = slots.filter(s => !s.disponivel && !s.pendente).length;
   document.getElementById('stat-hoje').textContent  = slots.filter(s => new Date(s.data+'T00:00:00').getTime() === hj.getTime()).length;
 }
 
@@ -1326,14 +1353,20 @@ function setMentTab(tab, el) {
 function mentorCardHtml(s, destaque) {
   const waNum = (s.clienteTel||'').replace(/\D/g,'');
   const waLink = waNum ? `https://wa.me/55${waNum}?text=${encodeURIComponent('Olá! Tudo certo para nossa mentoria?')}` : '';
-  return `<div class="mentor-card ${s.disponivel?'disp':'agend'}${destaque ? ' mentor-hoje' : ''}">
+  // pendente = reserva temporaria (aluna escolheu o horario mas ainda nao
+  // confirmou o pagamento) -- nunca mostrar isso como se fosse "Agendada".
+  const classe = s.disponivel ? 'disp' : (s.pendente ? 'pend' : 'agend');
+  const label = destaque ? '🔥 Hoje' : s.disponivel ? 'Disponível' : s.pendente ? '⏳ Aguardando pagamento' : 'Agendada';
+  const cor = s.disponivel ? 'var(--amber)' : s.pendente ? 'var(--orange)' : 'var(--green)';
+  const nomeExibido = s.disponivel ? 'Horário livre' : s.pendente ? `${s.clienteNome||'Cliente'} (não confirmado)` : (s.clienteNome||'Cliente');
+  return `<div class="mentor-card ${classe}${destaque ? ' mentor-hoje' : ''}">
       <div>
-        <div style="font-size:11.5px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:${s.disponivel?'var(--amber)':'var(--green)'};margin-bottom:6px;">${destaque ? '🔥 Hoje' : (s.disponivel?'Disponível':'Agendada')}</div>
-        <div style="font-size:17px;font-weight:700;margin-bottom:9px;">${s.disponivel ? 'Horário livre' : (s.clienteNome||'Cliente')}</div>
+        <div style="font-size:11.5px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:${cor};margin-bottom:6px;">${label}</div>
+        <div style="font-size:17px;font-weight:700;margin-bottom:9px;">${nomeExibido}</div>
         <div style="display:flex;gap:8px;flex-wrap:wrap;">
           <span class="badge badge-amber">📅 ${fmt(s.data)}</span>
           <span class="badge badge-amber">🕐 ${s.hora}</span>
-          ${!s.disponivel && waLink ? `<a href="${waLink}" target="_blank" class="badge badge-green" style="text-decoration:none;">💬 ${s.clienteTel}</a>` : ''}
+          ${!s.disponivel && !s.pendente && waLink ? `<a href="${waLink}" target="_blank" class="badge badge-green" style="text-decoration:none;">💬 ${s.clienteTel}</a>` : ''}
         </div>
       </div>
       <div style="display:flex;gap:8px;flex-wrap:wrap;justify-content:flex-end;">
@@ -1382,7 +1415,7 @@ function renderCalendario() {
     const [sa, sm] = s.data.split('-').map(Number);
     if (sa === ano && sm === mes) {
       if (!slotsMes[s.data]) slotsMes[s.data] = [];
-      slotsMes[s.data].push({id, hora:s.hora, disponivel:s.disponivel, nome:s.clienteNome});
+      slotsMes[s.data].push({id, hora:s.hora, disponivel:s.disponivel, pendente:s.pendente, nome:s.clienteNome});
     }
   });
   const prim = new Date(ano, mes-1, 1).getDay();
@@ -1398,14 +1431,20 @@ function renderCalendario() {
       if (slot.disponivel) {
         cells += `<div class="cal-day has-slot${passado?' passado':''}" onclick="abrirModalDia('${ds}')">
           <span class="cal-day-num">${d}</span><span class="cal-slot-hora">${slot.hora}</span></div>`;
+      } else if (slot.pendente) {
+        cells += `<div class="cal-day pendente${passado?' passado':''}" onclick="abrirModalDia('${ds}')">
+          <span class="cal-day-num">${d}</span><span class="cal-slot-hora">${slot.hora}</span>
+          <span class="cal-slot-nome">⏳ aguardando</span></div>`;
       } else {
         cells += `<div class="cal-day agendado${passado?' passado':''}" onclick="abrirModalDia('${ds}')">
           <span class="cal-day-num">${d}</span><span class="cal-slot-hora">${slot.hora}</span>
           <span class="cal-slot-nome">${(slot.nome||'').split(' ')[0]}</span></div>`;
       }
     } else if (lista.length > 1) {
-      const temAgend = lista.some(s => !s.disponivel);
-      cells += `<div class="cal-day ${temAgend ? 'agendado' : 'has-slot'}${passado?' passado':''}" onclick="abrirModalDia('${ds}')">
+      const temAgend = lista.some(s => !s.disponivel && !s.pendente);
+      const temPendente = lista.some(s => s.pendente);
+      const cls = temAgend ? 'agendado' : temPendente ? 'pendente' : 'has-slot';
+      cells += `<div class="cal-day ${cls}${passado?' passado':''}" onclick="abrirModalDia('${ds}')">
         <span class="cal-day-num">${d}</span><span class="cal-slot-hora">${lista.length} horários</span></div>`;
     } else if (!passado) {
       cells += `<div class="cal-day livre" onclick="abrirModalLiberar('${ds}')"><span class="cal-day-num">${d}</span></div>`;
