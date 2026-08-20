@@ -1,13 +1,13 @@
 {
-  "gerado_em": "20/08/2026 às 16:22 (BRT)",
+  "gerado_em": "20/08/2026 às 17:16 (BRT)",
   "periodo": "01/08 – 20/08/2026",
   "mes_key": "2026-08",
   "kpis": {
     "vendas": 105,
     "bruto": 7242.99,
     "liq": 6432.72,
-    "gasto_meta": 5651.78,
-    "lucro": 780.94,
+    "gasto_meta": 5663.05,
+    "lucro": 769.67,
     "roas": 1.14,
     "ticket": 68.98
   },
@@ -188,9 +188,9 @@
       "vendas": 5,
       "bruto": 315.0,
       "liq": 278.82,
-      "gasto_meta": 154.88,
-      "lucro": 123.94,
-      "roas": 1.8
+      "gasto_meta": 166.15,
+      "lucro": 112.67,
+      "roas": 1.68
     }
   ],
   "semanas": [
@@ -222,9 +222,9 @@
       "vendas": 32,
       "bruto": 2303.79,
       "liq": 2046.3,
-      "gasto_meta": 1281.5,
-      "lucro": 764.8,
-      "roas": 1.6,
+      "gasto_meta": 1292.77,
+      "lucro": 753.53,
+      "roas": 1.58,
       "atual": true
     }
   ],
@@ -244,26 +244,26 @@
     {
       "nome": "Video 01 — Cópia",
       "status": "ACTIVE",
-      "gasto": 1215.17,
-      "impressoes": 35414,
+      "gasto": 1220.88,
+      "impressoes": 35578,
       "ctr": 2.61,
-      "cpm": 34.31,
+      "cpm": 34.32,
       "compras": 21,
       "receita_meta": 1221.5,
-      "roas": 1.01,
-      "cpa": 57.87
+      "roas": 1.0,
+      "cpa": 58.14
     },
     {
       "nome": "Video 04 — Cópia",
       "status": "ACTIVE",
-      "gasto": 840.92,
-      "impressoes": 31806,
-      "ctr": 2.09,
-      "cpm": 26.44,
+      "gasto": 846.46,
+      "impressoes": 32055,
+      "ctr": 2.1,
+      "cpm": 26.41,
       "compras": 17,
       "receita_meta": 1084.94,
-      "roas": 1.29,
-      "cpa": 49.47
+      "roas": 1.28,
+      "cpa": 49.79
     },
     {
       "nome": "Criativo 03 — Cópia",
@@ -292,10 +292,10 @@
     {
       "nome": "Criativo Novo - Ago2026",
       "status": "ACTIVE",
-      "gasto": 4.61,
-      "impressoes": 133,
-      "ctr": 2.26,
-      "cpm": 34.66,
+      "gasto": 4.63,
+      "impressoes": 135,
+      "ctr": 2.22,
+      "cpm": 34.3,
       "compras": 0,
       "receita_meta": 0,
       "roas": 0.0,
