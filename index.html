@@ -1309,7 +1309,14 @@ async function carregarConfig() {
 async function carregarSlots() {
   try {
     const r = await fetch(`${DB}/slots.json`);
-    todosSlots = (await r.json()) || {};
+    const brutos = (await r.json()) || {};
+    // Descarta registros malformados (sem data/hora) -- um so ja derrubava
+    // a aba inteira antes. Nunca deveriam existir, mas nao confiamos cegamente.
+    todosSlots = {};
+    for (const [id, s] of Object.entries(brutos)) {
+      if (s && typeof s.data === 'string' && typeof s.hora === 'string') todosSlots[id] = s;
+      else console.warn('slot malformado ignorado:', id, s);
+    }
     liberarHoldsExpirados();
     renderMentorias();
     atualizarBadgeMent();
@@ -1377,6 +1384,16 @@ function mentorCardHtml(s, destaque) {
 }
 
 function renderMentorias() {
+  try {
+    renderMentoriasInterno();
+  } catch(e) {
+    console.error('renderMentorias:', e);
+    const c = document.getElementById('ment-content');
+    if (c) c.innerHTML = `<div class="empty-state"><div class="icon">⚠️</div><p>Erro ao mostrar as mentorias.<br>Recarregue a página. Se continuar, avise o Bruno.</p></div>`;
+  }
+}
+
+function renderMentoriasInterno() {
   if (tabMentoria === 'calendario') { renderCalendario(); return; }
   if (tabMentoria === 'dashboard')  { renderDashMent(); return; }
 
