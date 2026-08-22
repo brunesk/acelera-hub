@@ -1,13 +1,13 @@
 {
-  "gerado_em": "21/08/2026 às 22:56 (BRT)",
+  "gerado_em": "21/08/2026 às 23:08 (BRT)",
   "periodo": "01/08 – 21/08/2026",
   "mes_key": "2026-08",
   "kpis": {
     "vendas": 114,
     "bruto": 7942.9,
     "liq": 7057.21,
-    "gasto_meta": 6087.07,
-    "lucro": 970.14,
+    "gasto_meta": 6087.19,
+    "lucro": 970.02,
     "roas": 1.16,
     "ticket": 69.67
   },
@@ -197,9 +197,9 @@
       "vendas": 6,
       "bruto": 462.91,
       "liq": 413.95,
-      "gasto_meta": 261.1,
-      "lucro": 152.85,
-      "roas": 1.59
+      "gasto_meta": 261.22,
+      "lucro": 152.73,
+      "roas": 1.58
     }
   ],
   "semanas": [
@@ -231,8 +231,8 @@
       "vendas": 41,
       "bruto": 3003.7,
       "liq": 2670.79,
-      "gasto_meta": 1716.79,
-      "lucro": 954.0,
+      "gasto_meta": 1716.91,
+      "lucro": 953.88,
       "roas": 1.56,
       "atual": true
     }
@@ -301,10 +301,10 @@
     {
       "nome": "Criativo Novo - Ago2026",
       "status": "ACTIVE",
-      "gasto": 7.75,
-      "impressoes": 276,
-      "ctr": 1.09,
-      "cpm": 28.08,
+      "gasto": 7.87,
+      "impressoes": 277,
+      "ctr": 1.08,
+      "cpm": 28.41,
       "compras": 0,
       "receita_meta": 0,
       "roas": 0.0,
