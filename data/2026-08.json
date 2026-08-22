@@ -1,14 +1,14 @@
 {
-  "gerado_em": "22/08/2026 às 08:11 (BRT)",
+  "gerado_em": "22/08/2026 às 09:18 (BRT)",
   "periodo": "01/08 – 22/08/2026",
   "mes_key": "2026-08",
   "kpis": {
     "vendas": 114,
     "bruto": 7942.9,
     "liq": 7057.21,
-    "gasto_meta": 6149.12,
-    "lucro": 908.09,
-    "roas": 1.15,
+    "gasto_meta": 6167.94,
+    "lucro": 889.27,
+    "roas": 1.14,
     "ticket": 69.67
   },
   "dias": [
@@ -206,8 +206,8 @@
       "vendas": 0,
       "bruto": 0.0,
       "liq": 0.0,
-      "gasto_meta": 51.02,
-      "lucro": -51.02,
+      "gasto_meta": 69.84,
+      "lucro": -69.84,
       "roas": 0.0
     }
   ],
@@ -251,8 +251,8 @@
       "vendas": 0,
       "bruto": 0.0,
       "liq": 0.0,
-      "gasto_meta": 51.02,
-      "lucro": -51.02,
+      "gasto_meta": 69.84,
+      "lucro": -69.84,
       "roas": 0.0,
       "atual": true
     }
@@ -273,38 +273,38 @@
     {
       "nome": "Video 01 — Cópia",
       "status": "ACTIVE",
-      "gasto": 1358.68,
-      "impressoes": 38856,
+      "gasto": 1361.04,
+      "impressoes": 38914,
       "ctr": 2.66,
-      "cpm": 34.97,
+      "cpm": 34.98,
       "compras": 23,
       "receita_meta": 1361.86,
       "roas": 1.0,
-      "cpa": 59.07
+      "cpa": 59.18
     },
     {
       "nome": "Video 04 — Cópia",
       "status": "ACTIVE",
-      "gasto": 1046.69,
-      "impressoes": 38755,
-      "ctr": 2.1,
-      "cpm": 27.01,
+      "gasto": 1063.02,
+      "impressoes": 39240,
+      "ctr": 2.13,
+      "cpm": 27.09,
       "compras": 22,
       "receita_meta": 1399.8,
-      "roas": 1.34,
-      "cpa": 47.58
+      "roas": 1.32,
+      "cpa": 48.32
     },
     {
       "nome": "Criativo 03 — Cópia",
       "status": "ACTIVE",
-      "gasto": 316.68,
-      "impressoes": 9566,
+      "gasto": 316.81,
+      "impressoes": 9568,
       "ctr": 2.52,
-      "cpm": 33.1,
+      "cpm": 33.11,
       "compras": 2,
       "receita_meta": 140.36,
       "roas": 0.44,
-      "cpa": 158.34
+      "cpa": 158.41
     },
     {
       "nome": "Video 02 — Cópia",
