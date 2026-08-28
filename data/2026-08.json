@@ -1,15 +1,15 @@
 {
-  "gerado_em": "28/08/2026 às 16:45 (BRT)",
+  "gerado_em": "28/08/2026 às 19:27 (BRT)",
   "periodo": "01/08 – 28/08/2026",
   "mes_key": "2026-08",
   "kpis": {
-    "vendas": 192,
-    "bruto": 13171.66,
-    "liq": 11698.83,
-    "gasto_meta": 9278.08,
-    "lucro": 2420.75,
+    "vendas": 193,
+    "bruto": 13250.66,
+    "liq": 11769.01,
+    "gasto_meta": 9364.88,
+    "lucro": 2404.13,
     "roas": 1.26,
-    "ticket": 68.6
+    "ticket": 68.66
   },
   "dias": [
     {
@@ -251,18 +251,18 @@
       "vendas": 11,
       "bruto": 719.06,
       "liq": 638.87,
-      "gasto_meta": 582.64,
-      "lucro": 56.23,
+      "gasto_meta": 582.68,
+      "lucro": 56.19,
       "roas": 1.1
     },
     {
       "dia": "28/08",
-      "vendas": 14,
-      "bruto": 860.52,
-      "liq": 763.61,
-      "gasto_meta": 408.69,
-      "lucro": 354.92,
-      "roas": 1.87
+      "vendas": 15,
+      "bruto": 939.52,
+      "liq": 833.79,
+      "gasto_meta": 495.45,
+      "lucro": 338.34,
+      "roas": 1.68
     }
   ],
   "semanas": [
@@ -302,12 +302,12 @@
     {
       "semana": "Semana 4",
       "periodo": "22/08 – 28/08",
-      "vendas": 78,
-      "bruto": 5228.76,
-      "liq": 4641.62,
-      "gasto_meta": 3179.95,
-      "lucro": 1461.67,
-      "roas": 1.46,
+      "vendas": 79,
+      "bruto": 5307.76,
+      "liq": 4711.8,
+      "gasto_meta": 3266.75,
+      "lucro": 1445.05,
+      "roas": 1.44,
       "atual": true
     }
   ],
@@ -315,50 +315,50 @@
     {
       "nome": "Video 05 — Cópia",
       "status": "ACTIVE",
-      "gasto": 3923.49,
-      "impressoes": 124069,
-      "ctr": 2.49,
-      "cpm": 31.62,
+      "gasto": 3949.44,
+      "impressoes": 124989,
+      "ctr": 2.48,
+      "cpm": 31.6,
       "compras": 69,
       "receita_meta": 4085.58,
-      "roas": 1.04,
-      "cpa": 56.86
+      "roas": 1.03,
+      "cpa": 57.24
     },
     {
       "nome": "Video 01 — Cópia",
       "status": "ACTIVE",
-      "gasto": 2159.54,
-      "impressoes": 56581,
-      "ctr": 2.9,
-      "cpm": 38.17,
+      "gasto": 2175.8,
+      "impressoes": 56976,
+      "ctr": 2.92,
+      "cpm": 38.19,
       "compras": 44,
       "receita_meta": 2691.48,
-      "roas": 1.25,
-      "cpa": 49.08
+      "roas": 1.24,
+      "cpa": 49.45
     },
     {
       "nome": "Video 04 — Cópia",
       "status": "ACTIVE",
-      "gasto": 1804.31,
-      "impressoes": 63081,
-      "ctr": 2.27,
-      "cpm": 28.6,
+      "gasto": 1813.06,
+      "impressoes": 63463,
+      "ctr": 2.28,
+      "cpm": 28.57,
       "compras": 37,
       "receita_meta": 2308.34,
-      "roas": 1.28,
-      "cpa": 48.77
+      "roas": 1.27,
+      "cpa": 49.0
     },
     {
       "nome": "Criativo 03 — Cópia",
       "status": "ACTIVE",
-      "gasto": 619.72,
-      "impressoes": 16829,
-      "ctr": 2.63,
-      "cpm": 36.82,
-      "compras": 7,
-      "receita_meta": 383.14,
-      "roas": 0.62,
-      "cpa": 88.53
+      "gasto": 621.59,
+      "impressoes": 16893,
+      "ctr": 2.62,
+      "cpm": 36.8,
+      "compras": 8,
+      "receita_meta": 417.28,
+      "roas": 0.67,
+      "cpa": 77.7
     },
     {
       "nome": "Video 02 — Cópia",
