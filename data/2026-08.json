@@ -1,13 +1,13 @@
 {
-  "gerado_em": "01/09/2026 às 16:51 (BRT)",
+  "gerado_em": "01/09/2026 às 18:36 (BRT)",
   "periodo": "01/08 – 31/08/2026",
   "mes_key": "2026-08",
   "kpis": {
     "vendas": 237,
     "bruto": 16147.54,
     "liq": 14343.15,
-    "gasto_meta": 11558.15,
-    "lucro": 2785.0,
+    "gasto_meta": 11558.36,
+    "lucro": 2784.79,
     "roas": 1.24,
     "ticket": 68.13
   },
@@ -287,9 +287,9 @@
       "vendas": 15,
       "bruto": 1025.84,
       "liq": 914.33,
-      "gasto_meta": 595.48,
-      "lucro": 318.85,
-      "roas": 1.54
+      "gasto_meta": 595.69,
+      "lucro": 318.64,
+      "roas": 1.53
     }
   ],
   "semanas": [
@@ -343,8 +343,8 @@
       "vendas": 40,
       "bruto": 2750.88,
       "liq": 2446.59,
-      "gasto_meta": 2005.83,
-      "lucro": 440.76,
+      "gasto_meta": 2006.04,
+      "lucro": 440.55,
       "roas": 1.22,
       "atual": true
     }
@@ -357,8 +357,8 @@
       "vendas": 237,
       "bruto": 16147.54,
       "liq": 14343.15,
-      "gasto_meta": 11558.15,
-      "lucro": 2785.0,
+      "gasto_meta": 11558.36,
+      "lucro": 2784.79,
       "roas": 1.24
     },
     {
