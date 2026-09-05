@@ -1,15 +1,15 @@
 {
-  "gerado_em": "04/09/2026 às 22:57 (BRT)",
+  "gerado_em": "04/09/2026 às 23:04 (BRT)",
   "periodo": "01/09 – 04/09/2026",
   "mes_key": "2026-09",
   "kpis": {
-    "vendas": 52,
-    "bruto": 3520.32,
-    "liq": 3127.02,
-    "gasto_meta": 2266.14,
-    "lucro": 860.88,
-    "roas": 1.38,
-    "ticket": 67.7
+    "vendas": 53,
+    "bruto": 3599.32,
+    "liq": 3197.2,
+    "gasto_meta": 2270.95,
+    "lucro": 926.25,
+    "roas": 1.41,
+    "ticket": 67.91
   },
   "dias": [
     {
@@ -41,24 +41,24 @@
     },
     {
       "dia": "04/09",
-      "vendas": 18,
-      "bruto": 1251.56,
-      "liq": 1113.59,
-      "gasto_meta": 521.32,
-      "lucro": 592.27,
-      "roas": 2.14
+      "vendas": 19,
+      "bruto": 1330.56,
+      "liq": 1183.77,
+      "gasto_meta": 526.13,
+      "lucro": 657.64,
+      "roas": 2.25
     }
   ],
   "semanas": [
     {
       "semana": "Semana 1",
       "periodo": "01/09 – 04/09",
-      "vendas": 52,
-      "bruto": 3520.32,
-      "liq": 3127.02,
-      "gasto_meta": 2266.14,
-      "lucro": 860.88,
-      "roas": 1.38,
+      "vendas": 53,
+      "bruto": 3599.32,
+      "liq": 3197.2,
+      "gasto_meta": 2270.95,
+      "lucro": 926.25,
+      "roas": 1.41,
       "atual": true
     }
   ],
@@ -66,26 +66,26 @@
     {
       "nome": "Video 01 — Cópia",
       "status": "ACTIVE",
-      "gasto": 851.0,
-      "impressoes": 22193,
-      "ctr": 3.15,
-      "cpm": 38.35,
-      "compras": 20,
-      "receita_meta": 1187.36,
-      "roas": 1.4,
-      "cpa": 42.55
+      "gasto": 853.52,
+      "impressoes": 22276,
+      "ctr": 3.14,
+      "cpm": 38.32,
+      "compras": 21,
+      "receita_meta": 1257.54,
+      "roas": 1.47,
+      "cpa": 40.64
     },
     {
       "nome": "Video 05 — Cópia",
       "status": "ACTIVE",
-      "gasto": 303.83,
-      "impressoes": 10992,
+      "gasto": 303.95,
+      "impressoes": 11003,
       "ctr": 2.23,
-      "cpm": 27.64,
+      "cpm": 27.62,
       "compras": 2,
       "receita_meta": 104.32,
       "roas": 0.34,
-      "cpa": 151.91
+      "cpa": 151.97
     },
     {
       "nome": "Video 04 — Cópia",
