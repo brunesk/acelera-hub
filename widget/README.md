@@ -7,11 +7,11 @@ Todos leem `https://brunesk.github.io/acelera-hub/data/latest.json`, o mesmo
 arquivo que o painel usa. O consolidado lê também o Firebase das mentorias e
 assessorias — as mesmas URLs que a aba Financeiro do Hub consome.
 
-| Script | Foco | Pergunta que responde | Fontes |
+| Script | Número em destaque | Pergunta que responde | Fontes |
 |---|---|---|---|
-| [`acelera-widget.js`](acelera-widget.js) | Resultado | "Estou lucrando? O tráfego está pagando?" | cursos |
-| [`acelera-faturamento.js`](acelera-faturamento.js) | Receita de cursos | "Quanto entrou líquido de curso no mês?" | cursos |
-| [`acelera-consolidado.js`](acelera-consolidado.js) | Negócio inteiro | "Quanto o negócio faturou no mês, por fonte?" | cursos + mentorias + assessorias |
+| [`acelera-widget.js`](acelera-widget.js) | Lucro dos cursos | "O tráfego está pagando?" | cursos |
+| [`acelera-faturamento.js`](acelera-faturamento.js) | Receita líquida de cursos | "Quanto entrou de curso no mês?" | cursos |
+| [`acelera-consolidado.js`](acelera-consolidado.js) | **Lucro líquido do negócio** | "Quanto sobrou no fim do mês?" | cursos + mentorias + assessorias |
 
 Dá para instalar os três e deixar lado a lado — são scripts independentes.
 
@@ -70,14 +70,21 @@ somando as três fontes do mês corrente:
 | 🤝 Mentorias | Firebase `/slots.json` + `/config.json` | slots do mês já ocupados × preço configurado |
 | 🏪 Assessorias | Firebase `/assessorias.json` | pagamentos registrados no mês |
 
-Descontos aplicados no resultado: gasto no Meta Ads e `FIXOS` (custo fixo mensal,
-espelhando o mesmo valor do Hub — **se mudar lá, mude no script também**).
+O número em destaque é o **lucro líquido**: as três fontes somadas menos todos os
+gastos (Meta Ads + `FIXOS`, o custo fixo mensal que espelha o valor do Hub —
+**se mudar lá, mude no script também**).
+
+```
+lucro = (cursos + mentorias + assessorias) − (Meta Ads + custos fixos)
+```
 
 | Tamanho | Conteúdo |
 |---|---|
-| **Pequeno** | Total do mês, barra de proporção e as três fontes |
-| **Médio** | Total, lucro e margem, três fontes e barra de proporção |
-| **Grande** | Tudo isso + nº de mentorias, Meta Ads, custos fixos, resultado e margem |
+| **Pequeno** | Lucro líquido, margem, barra de proporção, faturou × gastou |
+| **Médio** | Lucro líquido, margem, a conta resumida, três fontes e barra |
+| **Grande** | Lucro líquido e margem no topo, depois o demonstrativo: ENTROU (três fontes + total) e SAIU (Meta Ads, fixos, total) |
+
+O lucro aparece verde quando positivo e vermelho quando negativo, em todos os tamanhos.
 
 **O SaaS fica de fora.** No Hub, as licenças SaaS vêm do Firestore e exigem login
 Google de administrador; um widget não tem como autenticar. Então o total do widget

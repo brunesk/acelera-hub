@@ -97,10 +97,11 @@ function consolidar(d) {
 
   const total  = cursos + mentorias + assessorias;
   const meta   = Math.round(Number(k.gasto_meta) || 0);
-  const lucro  = total - meta - FIXOS;
+  const custos = meta + FIXOS;
+  const lucro  = total - custos;
   const margem = total > 0 ? Math.round((lucro / total) * 100) : 0;
 
-  return { mesKey, cursos, mentorias, assessorias, realizadas, total, meta, lucro, margem };
+  return { mesKey, cursos, mentorias, assessorias, realizadas, total, meta, custos, lucro, margem };
 }
 
 // ── Formatação ─────────────────────────────────────────────────
@@ -130,6 +131,8 @@ function texto(pai, valor, { cor = C.text, tam = 12, peso = 'regular', opacidade
   return t;
 }
 
+const corLucro = v => (Number(v) || 0) >= 0 ? C.green : C.red;
+
 function fundo(w) {
   const g = new LinearGradient();
   g.colors = [new Color(C.bg1), new Color(C.bg2)];
@@ -157,6 +160,16 @@ function fonte(pai, cor, rotulo, valor, { tam = 11 } = {}) {
   texto(l, rotulo, { cor: C.muted, tam });
   l.addSpacer();
   texto(l, valor, { cor: C.text, tam, peso: 'bold' });
+  return l;
+}
+
+// Linha simples: rótulo ......... valor
+function linhaValor(pai, rotulo, valor, cor, { tam = 11, peso = 'medium' } = {}) {
+  const l = pai.addStack();
+  l.centerAlignContent();
+  texto(l, rotulo, { cor: C.muted, tam });
+  l.addSpacer();
+  texto(l, valor, { cor, tam, peso });
   return l;
 }
 
@@ -219,18 +232,25 @@ function widgetPequeno(d, c) {
   cabecalho(w, d, c);
   w.addSpacer(6);
 
-  texto(w, 'FATURAMENTO', { cor: C.muted, tam: 9 });
-  texto(w, moeda(c.total, { compacto: true }), { cor: C.green, tam: 22, peso: 'bold' });
+  texto(w, 'LUCRO LÍQUIDO', { cor: C.muted, tam: 9 });
+  texto(w, moeda(c.lucro, { compacto: true }), { cor: corLucro(c.lucro), tam: 22, peso: 'bold' });
+  texto(w, `margem ${c.margem}%`, { cor: C.muted, tam: 9 });
 
   w.addSpacer(6);
   grafico(w, c, 128, 7);
   w.addSpacer(6);
 
-  fonte(w, C.green,  'Cursos',      moeda(c.cursos,      { compacto: true }), { tam: 10 });
-  w.addSpacer(3);
-  fonte(w, C.blue,   'Mentorias',   moeda(c.mentorias,   { compacto: true }), { tam: 10 });
-  w.addSpacer(3);
-  fonte(w, C.purple, 'Assessorias', moeda(c.assessorias, { compacto: true }), { tam: 10 });
+  const fat = w.addStack();
+  fat.centerAlignContent();
+  texto(fat, 'faturou', { cor: C.muted, tam: 9 });
+  fat.addSpacer();
+  texto(fat, moeda(c.total, { compacto: true }), { cor: C.text, tam: 10, peso: 'bold' });
+  w.addSpacer(2);
+  const cst = w.addStack();
+  cst.centerAlignContent();
+  texto(cst, 'gastou', { cor: C.muted, tam: 9 });
+  cst.addSpacer();
+  texto(cst, moeda(-c.custos, { compacto: true }), { cor: C.red, tam: 10, peso: 'bold' });
 
   return w;
 }
@@ -248,14 +268,15 @@ function widgetMedio(d, c) {
 
   const esq = corpo.addStack();
   esq.layoutVertically();
-  texto(esq, 'FATURAMENTO DO MÊS', { cor: C.muted, tam: 9 });
-  texto(esq, moeda(c.total), { cor: C.green, tam: 24, peso: 'bold' });
+  texto(esq, 'LUCRO LÍQUIDO DO MÊS', { cor: C.muted, tam: 9 });
+  texto(esq, moeda(c.lucro), { cor: corLucro(c.lucro), tam: 24, peso: 'bold' });
   esq.addSpacer(3);
   const res = esq.addStack();
   res.centerAlignContent();
-  texto(res, 'lucro ', { cor: C.muted, tam: 9 });
-  texto(res, moeda(c.lucro), { cor: c.lucro >= 0 ? C.green : C.red, tam: 9, peso: 'bold' });
-  texto(res, ` · margem ${c.margem}%`, { cor: C.muted, tam: 9 });
+  texto(res, `margem ${c.margem}% · `, { cor: C.muted, tam: 9 });
+  texto(res, moeda(c.total, { compacto: true }), { cor: C.text, tam: 9, peso: 'bold' });
+  texto(res, ' − ', { cor: C.muted, tam: 9 });
+  texto(res, moeda(c.custos, { compacto: true }), { cor: C.red, tam: 9, peso: 'bold' });
 
   corpo.addSpacer();
 
@@ -282,44 +303,34 @@ function widgetGrande(d, c) {
   cabecalho(w, d, c);
   w.addSpacer(10);
 
-  texto(w, 'FATURAMENTO DO MÊS — TODAS AS FONTES', { cor: C.muted, tam: 10 });
-  texto(w, moeda(c.total, { centavos: true }), { cor: C.green, tam: 30, peso: 'bold' });
+  texto(w, 'LUCRO LÍQUIDO DO MÊS — TUDO SOMADO', { cor: C.muted, tam: 10 });
+  const topo = w.addStack();
+  topo.centerAlignContent();
+  texto(topo, moeda(c.lucro, { centavos: true }), { cor: corLucro(c.lucro), tam: 30, peso: 'bold' });
+  topo.addSpacer(8);
+  texto(topo, `${c.margem}%`, { cor: corLucro(c.lucro), tam: 15, peso: 'bold', opacidade: 0.75 });
 
-  w.addSpacer(10);
-  grafico(w, c, 300, 10);
-  w.addSpacer(10);
-
-  fonte(w, C.green,  'Cursos — Hotmart',   moeda(c.cursos),      { tam: 13 });
+  w.addSpacer(12);
+  texto(w, 'ENTROU', { cor: C.muted, tam: 9 });
+  w.addSpacer(5);
+  fonte(w, C.green,  'Cursos — Hotmart',            moeda(c.cursos),      { tam: 12 });
+  w.addSpacer(5);
+  fonte(w, C.blue,   `Mentorias (${c.realizadas})`,  moeda(c.mentorias),   { tam: 12 });
+  w.addSpacer(5);
+  fonte(w, C.purple, 'Assessorias de Loja',          moeda(c.assessorias), { tam: 12 });
   w.addSpacer(6);
-  fonte(w, C.blue,   `Mentorias (${c.realizadas})`, moeda(c.mentorias), { tam: 13 });
-  w.addSpacer(6);
-  fonte(w, C.purple, 'Assessorias de Loja', moeda(c.assessorias), { tam: 13 });
+  grafico(w, c, 300, 7);
+  w.addSpacer(5);
+  linhaValor(w, 'Faturamento total', moeda(c.total), C.text, { tam: 12, peso: 'bold' });
 
   w.addSpacer(11);
-  const div = w.addStack();
-  div.centerAlignContent();
-  texto(div, 'Meta Ads', { cor: C.muted, tam: 11 });
-  div.addSpacer();
-  texto(div, moeda(-c.meta), { cor: C.red, tam: 11, peso: 'medium' });
+  texto(w, 'SAIU', { cor: C.muted, tam: 9 });
   w.addSpacer(5);
-  const fx = w.addStack();
-  fx.centerAlignContent();
-  texto(fx, 'Custos fixos', { cor: C.muted, tam: 11 });
-  fx.addSpacer();
-  texto(fx, moeda(-FIXOS), { cor: C.red, tam: 11, peso: 'medium' });
-
-  w.addSpacer(9);
-  const linha = w.addStack();
-  linha.centerAlignContent();
-  const esq = linha.addStack();
-  esq.layoutVertically();
-  texto(esq, 'RESULTADO', { cor: C.muted, tam: 9 });
-  texto(esq, moeda(c.lucro), { cor: c.lucro >= 0 ? C.green : C.red, tam: 20, peso: 'bold' });
-  linha.addSpacer();
-  const dir = linha.addStack();
-  dir.layoutVertically();
-  texto(dir, 'MARGEM', { cor: C.muted, tam: 9 });
-  texto(dir, `${c.margem}%`, { cor: c.margem >= 0 ? C.green : C.red, tam: 20, peso: 'bold' });
+  linhaValor(w, 'Meta Ads',     moeda(-c.meta),  C.red, { tam: 12 });
+  w.addSpacer(5);
+  linhaValor(w, 'Custos fixos', moeda(-FIXOS),   C.red, { tam: 12 });
+  w.addSpacer(5);
+  linhaValor(w, 'Custo total',  moeda(-c.custos), C.red, { tam: 12, peso: 'bold' });
 
   w.addSpacer();
   const rodape = d.parcial
