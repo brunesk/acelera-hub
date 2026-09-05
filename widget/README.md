@@ -3,25 +3,27 @@
 Widgets de tela de início que mostram os números do painel direto no iOS/iPadOS,
 sem precisar de Mac, Xcode ou conta paga de desenvolvedor.
 
-Ambos leem o mesmo arquivo que o painel usa:
-`https://brunesk.github.io/acelera-hub/data/latest.json`
+Todos leem `https://brunesk.github.io/acelera-hub/data/latest.json`, o mesmo
+arquivo que o painel usa. O consolidado lê também o Firebase das mentorias e
+assessorias — as mesmas URLs que a aba Financeiro do Hub consome.
 
-| Script | Foco | Pergunta que responde |
-|---|---|---|
-| [`acelera-widget.js`](acelera-widget.js) | Resultado | "Estou lucrando? O tráfego está pagando?" |
-| [`acelera-faturamento.js`](acelera-faturamento.js) | Faturamento | "Quanto entrou líquido no mês, somando tudo?" |
+| Script | Foco | Pergunta que responde | Fontes |
+|---|---|---|---|
+| [`acelera-widget.js`](acelera-widget.js) | Resultado | "Estou lucrando? O tráfego está pagando?" | cursos |
+| [`acelera-faturamento.js`](acelera-faturamento.js) | Receita de cursos | "Quanto entrou líquido de curso no mês?" | cursos |
+| [`acelera-consolidado.js`](acelera-consolidado.js) | Negócio inteiro | "Quanto o negócio faturou no mês, por fonte?" | cursos + mentorias + assessorias |
 
-Dá para instalar os dois e deixar lado a lado — são scripts independentes.
+Dá para instalar os três e deixar lado a lado — são scripts independentes.
 
 ## Instalação (5 minutos, uma vez só)
 
 1. Instale o app **Scriptable** (gratuito) na App Store.
-2. Abra o script que quiser (`acelera-widget.js` ou `acelera-faturamento.js`) e copie todo o conteúdo.
+2. Abra o script que quiser e copie todo o conteúdo.
    - No iPhone/iPad: abra este arquivo no GitHub, toque em **Raw**, segure na tela e escolha *Selecionar tudo → Copiar*.
 3. No Scriptable, toque em **+** (canto superior direito), cole o código.
-4. Toque no nome do script no topo e renomeie (ex.: **Acelera Hub** ou **Acelera Faturamento**). Toque em *Done*.
+4. Toque no nome do script no topo e renomeie (ex.: **Acelera Hub**, **Acelera Faturamento**, **Acelera Consolidado**). Toque em *Done*.
 
-   Para instalar o segundo widget, repita os passos 2 a 4 com o outro arquivo, criando um script separado.
+   Para instalar outro widget, repita os passos 2 a 4 com o outro arquivo, criando um script separado.
 5. Volte à tela de início, segure em uma área vazia até os ícones tremerem, toque em **+**,
    procure **Scriptable** e escolha o tamanho desejado (pequeno, médio ou grande).
 6. Com o widget na tela, segure nele → **Editar widget**:
@@ -57,7 +59,37 @@ marcando o total do mês anterior — quando a curva cruza a linha, você bateu 
 passado. A **projeção** é linear: líquido até agora ÷ dias corridos × dias do mês.
 Nos primeiros dias ela oscila bastante; ganha confiança depois da primeira semana.
 
-## O que entra no "líquido"
+### `acelera-consolidado.js` — faturamento por fonte
+
+Replica o cálculo da aba **Financeiro** do Hub (`calcFinanceiro` em `index.html`),
+somando as três fontes do mês corrente:
+
+| Fonte | Origem | Como é somado |
+|---|---|---|
+| 🎓 Cursos | `data/latest.json` | líquido Hotmart do mês + receita externa |
+| 🤝 Mentorias | Firebase `/slots.json` + `/config.json` | slots do mês já ocupados × preço configurado |
+| 🏪 Assessorias | Firebase `/assessorias.json` | pagamentos registrados no mês |
+
+Descontos aplicados no resultado: gasto no Meta Ads e `FIXOS` (custo fixo mensal,
+espelhando o mesmo valor do Hub — **se mudar lá, mude no script também**).
+
+| Tamanho | Conteúdo |
+|---|---|
+| **Pequeno** | Total do mês, barra de proporção e as três fontes |
+| **Médio** | Total, lucro e margem, três fontes e barra de proporção |
+| **Grande** | Tudo isso + nº de mentorias, Meta Ads, custos fixos, resultado e margem |
+
+**O SaaS fica de fora.** No Hub, as licenças SaaS vêm do Firestore e exigem login
+Google de administrador; um widget não tem como autenticar. Então o total do widget
+é menor que o do Hub exatamente pelo valor do SaaS do mês. Se isso incomodar, a
+saída é o `gerar_dados.py` publicar também um total de SaaS no JSON — aí o widget
+lê de lá, sem autenticação.
+
+Se o Firebase não responder, o widget mostra só os cursos, zera as outras fontes e
+marca `⚠︎` no cabeçalho com um aviso no rodapé — ele nunca finge que mentorias e
+assessorias foram zero de verdade.
+
+## O que entra no "líquido" (widget de faturamento)
 
 O número é a soma de **todas** as vendas aprovadas na Hotmart no mês — curso,
 mentoria, order bumps, upsells, qualquer produto — já descontada a taxa da
@@ -78,8 +110,9 @@ O pipeline não separa por produto: ele soma tudo sem olhar qual é
 ## Detalhes
 
 - **Toque no widget** abre o painel completo no navegador.
-- **Os dois widgets compartilham o mesmo cache local**, então instalar ambos não
-  dobra o tráfego de rede.
+- **Os widgets de resultado e faturamento compartilham o mesmo cache local**, então
+  instalar ambos não dobra o tráfego de rede. O consolidado usa cache próprio,
+  porque guarda também os dados do Firebase.
 - **Sem internet**: mostra o último dado baixado com um `⚠︎` no cabeçalho.
   Se nunca tiver baixado nada, exibe "Sem dados".
 - **Valores grandes** aparecem compactados (`R$ 14,3 mil`) para caber no widget.
@@ -94,3 +127,4 @@ Tudo fica no topo do `acelera-widget.js`:
 - `C` — paleta de cores.
 - Em `acelera-widget.js`, `dias.slice(-14)` define quantos dias entram no mini-gráfico.
 - Em `acelera-faturamento.js`, a função `projecao(...)` define o cálculo da projeção.
+- Em `acelera-consolidado.js`, `FIXOS` é o custo fixo mensal e `DB` é o Firebase.
