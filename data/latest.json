@@ -1,13 +1,13 @@
 {
-  "gerado_em": "12/09/2026 às 15:51 (BRT)",
+  "gerado_em": "12/09/2026 às 16:14 (BRT)",
   "periodo": "01/09 – 12/09/2026",
   "mes_key": "2026-09",
   "kpis": {
     "vendas": 111,
     "bruto": 7418.5,
     "liq": 6593.76,
-    "gasto_meta": 5748.2,
-    "lucro": 845.56,
+    "gasto_meta": 5749.36,
+    "lucro": 844.4,
     "roas": 1.15,
     "ticket": 66.83
   },
@@ -116,9 +116,9 @@
       "vendas": 2,
       "bruto": 118.0,
       "liq": 104.32,
-      "gasto_meta": 82.15,
-      "lucro": 22.17,
-      "roas": 1.27
+      "gasto_meta": 83.31,
+      "lucro": 21.01,
+      "roas": 1.25
     }
   ],
   "semanas": [
@@ -139,8 +139,8 @@
       "vendas": 33,
       "bruto": 2035.97,
       "liq": 1810.09,
-      "gasto_meta": 1569.98,
-      "lucro": 240.11,
+      "gasto_meta": 1571.14,
+      "lucro": 238.95,
       "roas": 1.15,
       "atual": true
     }
@@ -161,14 +161,14 @@
     {
       "nome": "Video 05 — Cópia",
       "status": "ACTIVE",
-      "gasto": 636.71,
-      "impressoes": 22831,
+      "gasto": 636.78,
+      "impressoes": 22832,
       "ctr": 2.47,
       "cpm": 27.89,
       "compras": 10,
       "receita_meta": 557.64,
       "roas": 0.88,
-      "cpa": 63.67
+      "cpa": 63.68
     },
     {
       "nome": "Video 04 — Cópia",
@@ -197,14 +197,14 @@
     {
       "nome": "Video Mylene 05 - CJ01",
       "status": "ACTIVE",
-      "gasto": 62.83,
-      "impressoes": 1818,
-      "ctr": 1.87,
-      "cpm": 34.56,
+      "gasto": 63.77,
+      "impressoes": 1846,
+      "ctr": 1.9,
+      "cpm": 34.54,
       "compras": 3,
       "receita_meta": 174.5,
-      "roas": 2.78,
-      "cpa": 20.94
+      "roas": 2.74,
+      "cpa": 21.26
     },
     {
       "nome": "Video Mylene 03 - CJ01",
@@ -221,22 +221,22 @@
     {
       "nome": "Video Mylene 02 - CJ01",
       "status": "ACTIVE",
-      "gasto": 31.56,
-      "impressoes": 958,
-      "ctr": 2.19,
-      "cpm": 32.94,
+      "gasto": 31.64,
+      "impressoes": 965,
+      "ctr": 2.18,
+      "cpm": 32.79,
       "compras": 1,
       "receita_meta": 70.18,
       "roas": 2.22,
-      "cpa": 31.56
+      "cpa": 31.64
     },
     {
       "nome": "10 Imagem Novo - CJ01",
       "status": "ACTIVE",
-      "gasto": 8.13,
-      "impressoes": 220,
-      "ctr": 3.18,
-      "cpm": 36.95,
+      "gasto": 8.2,
+      "impressoes": 224,
+      "ctr": 3.12,
+      "cpm": 36.61,
       "compras": 0,
       "receita_meta": 0,
       "roas": 0.0,
