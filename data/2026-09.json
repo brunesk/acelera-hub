@@ -1,13 +1,13 @@
 {
-  "gerado_em": "16/09/2026 às 17:37 (BRT)",
+  "gerado_em": "16/09/2026 às 19:20 (BRT)",
   "periodo": "01/09 – 16/09/2026",
   "mes_key": "2026-09",
   "kpis": {
     "vendas": 134,
     "bruto": 9018.54,
     "liq": 8014.7,
-    "gasto_meta": 6453.6,
-    "lucro": 1561.1,
+    "gasto_meta": 6461.42,
+    "lucro": 1553.28,
     "roas": 1.24,
     "ticket": 67.3
   },
@@ -152,9 +152,9 @@
       "vendas": 6,
       "bruto": 354.0,
       "liq": 312.96,
-      "gasto_meta": 82.88,
-      "lucro": 230.08,
-      "roas": 3.78
+      "gasto_meta": 90.7,
+      "lucro": 222.26,
+      "roas": 3.45
     }
   ],
   "semanas": [
@@ -186,9 +186,9 @@
       "vendas": 10,
       "bruto": 670.0,
       "liq": 593.68,
-      "gasto_meta": 187.9,
-      "lucro": 405.78,
-      "roas": 3.16,
+      "gasto_meta": 195.72,
+      "lucro": 397.96,
+      "roas": 3.03,
       "atual": true
     }
   ],
@@ -220,14 +220,14 @@
     {
       "nome": "Video 04 — Cópia",
       "status": "ACTIVE",
-      "gasto": 404.08,
-      "impressoes": 11783,
-      "ctr": 3.0,
+      "gasto": 404.15,
+      "impressoes": 11787,
+      "ctr": 3.01,
       "cpm": 34.29,
       "compras": 9,
       "receita_meta": 487.46,
       "roas": 1.21,
-      "cpa": 44.9
+      "cpa": 44.91
     },
     {
       "nome": "Criativo 03 — Cópia",
@@ -244,14 +244,14 @@
     {
       "nome": "Video Mylene 05 - CJ01",
       "status": "ACTIVE",
-      "gasto": 121.43,
-      "impressoes": 3643,
-      "ctr": 1.98,
-      "cpm": 33.33,
+      "gasto": 129.18,
+      "impressoes": 3925,
+      "ctr": 1.99,
+      "cpm": 32.91,
       "compras": 3,
       "receita_meta": 174.5,
-      "roas": 1.44,
-      "cpa": 40.48
+      "roas": 1.35,
+      "cpa": 43.06
     },
     {
       "nome": "Video Mylene 02 - CJ01",
