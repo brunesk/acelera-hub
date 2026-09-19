@@ -1,14 +1,14 @@
 {
-  "gerado_em": "18/09/2026 às 19:02 (BRT)",
+  "gerado_em": "18/09/2026 às 21:46 (BRT)",
   "periodo": "01/09 – 18/09/2026",
   "mes_key": "2026-09",
   "kpis": {
     "vendas": 144,
     "bruto": 9670.21,
     "liq": 8594.01,
-    "gasto_meta": 6678.97,
-    "lucro": 1915.04,
-    "roas": 1.29,
+    "gasto_meta": 6696.5,
+    "lucro": 1897.51,
+    "roas": 1.28,
     "ticket": 67.15
   },
   "dias": [
@@ -170,9 +170,9 @@
       "vendas": 5,
       "bruto": 412.47,
       "liq": 368.37,
-      "gasto_meta": 60.34,
-      "lucro": 308.03,
-      "roas": 6.1
+      "gasto_meta": 77.87,
+      "lucro": 290.5,
+      "roas": 4.73
     }
   ],
   "semanas": [
@@ -204,9 +204,9 @@
       "vendas": 20,
       "bruto": 1321.67,
       "liq": 1172.99,
-      "gasto_meta": 413.27,
-      "lucro": 759.72,
-      "roas": 2.84,
+      "gasto_meta": 430.8,
+      "lucro": 742.19,
+      "roas": 2.72,
       "atual": true
     }
   ],
@@ -250,14 +250,14 @@
     {
       "nome": "Video Mylene 05 - CJ01",
       "status": "ACTIVE",
-      "gasto": 324.96,
-      "impressoes": 10952,
+      "gasto": 342.49,
+      "impressoes": 11483,
       "ctr": 2.44,
-      "cpm": 29.67,
+      "cpm": 29.83,
       "compras": 20,
       "receita_meta": 1295.48,
-      "roas": 3.99,
-      "cpa": 16.25
+      "roas": 3.78,
+      "cpa": 17.12
     },
     {
       "nome": "Criativo 03 — Cópia",
