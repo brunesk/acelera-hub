@@ -1,15 +1,15 @@
 {
-  "gerado_em": "21/09/2026 às 14:23 (BRT)",
+  "gerado_em": "21/09/2026 às 18:23 (BRT)",
   "periodo": "01/09 – 21/09/2026",
   "mes_key": "2026-09",
   "kpis": {
-    "vendas": 163,
-    "bruto": 11156.82,
-    "liq": 9920.96,
-    "gasto_meta": 7550.16,
-    "lucro": 2370.8,
-    "roas": 1.31,
-    "ticket": 68.45
+    "vendas": 165,
+    "bruto": 11234.82,
+    "liq": 9986.26,
+    "gasto_meta": 7575.23,
+    "lucro": 2411.03,
+    "roas": 1.32,
+    "ticket": 68.09
   },
   "dias": [
     {
@@ -194,12 +194,12 @@
     },
     {
       "dia": "21/09",
-      "vendas": 1,
-      "bruto": 96.47,
-      "liq": 87.65,
-      "gasto_meta": 59.4,
-      "lucro": 28.25,
-      "roas": 1.48
+      "vendas": 3,
+      "bruto": 174.47,
+      "liq": 152.95,
+      "gasto_meta": 84.47,
+      "lucro": 68.48,
+      "roas": 1.81
     }
   ],
   "semanas": [
@@ -228,12 +228,12 @@
     {
       "semana": "Semana 3",
       "periodo": "15/09 – 21/09",
-      "vendas": 39,
-      "bruto": 2808.28,
-      "liq": 2499.94,
-      "gasto_meta": 1284.46,
-      "lucro": 1215.48,
-      "roas": 1.95,
+      "vendas": 41,
+      "bruto": 2886.28,
+      "liq": 2565.24,
+      "gasto_meta": 1309.53,
+      "lucro": 1255.71,
+      "roas": 1.96,
       "atual": true
     }
   ],
@@ -265,14 +265,14 @@
     {
       "nome": "Video Mylene 05 - CJ01",
       "status": "ACTIVE",
-      "gasto": 550.69,
-      "impressoes": 18112,
-      "ctr": 2.4,
+      "gasto": 570.06,
+      "impressoes": 18750,
+      "ctr": 2.38,
       "cpm": 30.4,
-      "compras": 25,
-      "receita_meta": 1646.38,
-      "roas": 2.99,
-      "cpa": 22.03
+      "compras": 27,
+      "receita_meta": 1711.68,
+      "roas": 3.0,
+      "cpa": 21.11
     },
     {
       "nome": "Video 04 — Cópia",
@@ -289,26 +289,26 @@
     {
       "nome": "Criativo 03 — Cópia",
       "status": "ACTIVE",
-      "gasto": 238.74,
-      "impressoes": 6145,
-      "ctr": 2.86,
-      "cpm": 38.85,
+      "gasto": 239.4,
+      "impressoes": 6170,
+      "ctr": 2.85,
+      "cpm": 38.8,
       "compras": 4,
       "receita_meta": 244.68,
       "roas": 1.02,
-      "cpa": 59.69
+      "cpa": 59.85
     },
     {
       "nome": "Video Mylene 03 - CJ01",
       "status": "ACTIVE",
-      "gasto": 107.05,
-      "impressoes": 3675,
-      "ctr": 2.56,
-      "cpm": 29.13,
+      "gasto": 112.09,
+      "impressoes": 3801,
+      "ctr": 2.55,
+      "cpm": 29.49,
       "compras": 2,
       "receita_meta": 140.36,
-      "roas": 1.31,
-      "cpa": 53.52
+      "roas": 1.25,
+      "cpa": 56.05
     },
     {
       "nome": "Video Mylene 02 - CJ01",
