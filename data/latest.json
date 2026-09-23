@@ -1,15 +1,15 @@
 {
-  "gerado_em": "23/09/2026 às 09:30 (BRT)",
+  "gerado_em": "23/09/2026 às 14:19 (BRT)",
   "periodo": "01/09 – 23/09/2026",
   "mes_key": "2026-09",
   "kpis": {
-    "vendas": 168,
-    "bruto": 11431.82,
-    "liq": 10156.29,
-    "gasto_meta": 7725.41,
-    "lucro": 2430.88,
-    "roas": 1.31,
-    "ticket": 68.05
+    "vendas": 169,
+    "bruto": 11514.98,
+    "liq": 10229.14,
+    "gasto_meta": 7749.14,
+    "lucro": 2480.0,
+    "roas": 1.32,
+    "ticket": 68.14
   },
   "dias": [
     {
@@ -206,18 +206,18 @@
       "vendas": 2,
       "bruto": 118.0,
       "liq": 101.34,
-      "gasto_meta": 87.24,
-      "lucro": 14.1,
+      "gasto_meta": 87.31,
+      "lucro": 14.03,
       "roas": 1.16
     },
     {
       "dia": "23/09",
-      "vendas": 1,
-      "bruto": 79.0,
-      "liq": 68.69,
-      "gasto_meta": 22.06,
-      "lucro": 46.63,
-      "roas": 3.11
+      "vendas": 2,
+      "bruto": 162.16,
+      "liq": 141.54,
+      "gasto_meta": 45.72,
+      "lucro": 95.82,
+      "roas": 3.1
     }
   ],
   "semanas": [
@@ -257,12 +257,12 @@
     {
       "semana": "Semana 4",
       "periodo": "22/09 – 23/09",
-      "vendas": 3,
-      "bruto": 197.0,
-      "liq": 170.03,
-      "gasto_meta": 109.3,
-      "lucro": 60.73,
-      "roas": 1.56,
+      "vendas": 4,
+      "bruto": 280.16,
+      "liq": 242.88,
+      "gasto_meta": 133.03,
+      "lucro": 109.85,
+      "roas": 1.83,
       "atual": true
     }
   ],
@@ -294,14 +294,14 @@
     {
       "nome": "Video Mylene 05 - CJ01",
       "status": "ACTIVE",
-      "gasto": 703.6,
-      "impressoes": 23078,
+      "gasto": 720.49,
+      "impressoes": 23779,
       "ctr": 2.24,
-      "cpm": 30.49,
+      "cpm": 30.3,
       "compras": 31,
       "receita_meta": 1950.4,
-      "roas": 2.77,
-      "cpa": 22.7
+      "roas": 2.71,
+      "cpa": 23.24
     },
     {
       "nome": "Video 04 — Cópia",
@@ -376,12 +376,84 @@
       "cpa": 0
     },
     {
+      "nome": "Criativo 01 - CJ01",
+      "status": "ACTIVE",
+      "gasto": 3.81,
+      "impressoes": 122,
+      "ctr": 0.82,
+      "cpm": 31.23,
+      "compras": 0,
+      "receita_meta": 0,
+      "roas": 0.0,
+      "cpa": 0
+    },
+    {
+      "nome": "Img 01 - CJ01",
+      "status": "ACTIVE",
+      "gasto": 1.92,
+      "impressoes": 23,
+      "ctr": 13.04,
+      "cpm": 83.48,
+      "compras": 0,
+      "receita_meta": 0,
+      "roas": 0.0,
+      "cpa": 0
+    },
+    {
+      "nome": "09 Imagem Novo - CJ01",
+      "status": "ACTIVE",
+      "gasto": 0.74,
+      "impressoes": 22,
+      "ctr": 4.55,
+      "cpm": 33.64,
+      "compras": 0,
+      "receita_meta": 0,
+      "roas": 0.0,
+      "cpa": 0
+    },
+    {
+      "nome": "Criativo 04v2 - CJ01",
+      "status": "ACTIVE",
+      "gasto": 0.2,
+      "impressoes": 7,
+      "ctr": 28.57,
+      "cpm": 28.57,
+      "compras": 0,
+      "receita_meta": 0,
+      "roas": 0.0,
+      "cpa": 0
+    },
+    {
       "nome": "Video 06 - CJ01",
       "status": "ACTIVE",
       "gasto": 0.18,
       "impressoes": 7,
       "ctr": 0.0,
       "cpm": 25.71,
+      "compras": 0,
+      "receita_meta": 0,
+      "roas": 0.0,
+      "cpa": 0
+    },
+    {
+      "nome": "Criativo 05 - CJ01",
+      "status": "ACTIVE",
+      "gasto": 0.1,
+      "impressoes": 7,
+      "ctr": 0.0,
+      "cpm": 14.29,
+      "compras": 0,
+      "receita_meta": 0,
+      "roas": 0.0,
+      "cpa": 0
+    },
+    {
+      "nome": "Img 03 - CJ01",
+      "status": "ACTIVE",
+      "gasto": 0.07,
+      "impressoes": 4,
+      "ctr": 25.0,
+      "cpm": 17.5,
       "compras": 0,
       "receita_meta": 0,
       "roas": 0.0,
