@@ -1,13 +1,13 @@
 {
-  "gerado_em": "24/09/2026 às 10:04 (BRT)",
+  "gerado_em": "24/09/2026 às 10:20 (BRT)",
   "periodo": "01/09 – 24/09/2026",
   "mes_key": "2026-09",
   "kpis": {
     "vendas": 170,
     "bruto": 11593.98,
     "liq": 10297.83,
-    "gasto_meta": 7808.39,
-    "lucro": 2489.44,
+    "gasto_meta": 7809.09,
+    "lucro": 2488.74,
     "roas": 1.32,
     "ticket": 68.2
   },
@@ -224,8 +224,8 @@
       "vendas": 0,
       "bruto": 0.0,
       "liq": 0.0,
-      "gasto_meta": 14.89,
-      "lucro": -14.89,
+      "gasto_meta": 15.59,
+      "lucro": -15.59,
       "roas": 0.0
     }
   ],
@@ -269,9 +269,9 @@
       "vendas": 5,
       "bruto": 359.16,
       "liq": 311.57,
-      "gasto_meta": 192.28,
-      "lucro": 119.29,
-      "roas": 1.62,
+      "gasto_meta": 192.98,
+      "lucro": 118.59,
+      "roas": 1.61,
       "atual": true
     }
   ],
@@ -303,8 +303,8 @@
     {
       "nome": "Video Mylene 05 - CJ01",
       "status": "ACTIVE",
-      "gasto": 721.91,
-      "impressoes": 23863,
+      "gasto": 721.98,
+      "impressoes": 23864,
       "ctr": 2.23,
       "cpm": 30.25,
       "compras": 31,
@@ -339,26 +339,26 @@
     {
       "nome": "Video Mylene 03 - CJ01",
       "status": "ACTIVE",
-      "gasto": 126.19,
-      "impressoes": 4274,
+      "gasto": 126.24,
+      "impressoes": 4276,
       "ctr": 2.64,
-      "cpm": 29.53,
+      "cpm": 29.52,
       "compras": 2,
       "receita_meta": 140.36,
       "roas": 1.11,
-      "cpa": 63.09
+      "cpa": 63.12
     },
     {
       "nome": "Video Mylene 02 - CJ01",
       "status": "ACTIVE",
-      "gasto": 73.45,
-      "impressoes": 2196,
+      "gasto": 73.94,
+      "impressoes": 2198,
       "ctr": 2.37,
-      "cpm": 33.45,
+      "cpm": 33.64,
       "compras": 6,
       "receita_meta": 324.44,
-      "roas": 4.42,
-      "cpa": 12.24
+      "roas": 4.39,
+      "cpa": 12.32
     },
     {
       "nome": "10 Imagem Novo - CJ01",
@@ -447,10 +447,10 @@
     {
       "nome": "Video Mylene 04 - CJ01",
       "status": "ACTIVE",
-      "gasto": 3.19,
-      "impressoes": 80,
-      "ctr": 8.75,
-      "cpm": 39.88,
+      "gasto": 3.28,
+      "impressoes": 83,
+      "ctr": 8.43,
+      "cpm": 39.52,
       "compras": 0,
       "receita_meta": 0,
       "roas": 0.0,
@@ -496,9 +496,9 @@
       "nome": "Criativo 51 - CJ01",
       "status": "ACTIVE",
       "gasto": 1.84,
-      "impressoes": 37,
+      "impressoes": 38,
       "ctr": 0.0,
-      "cpm": 49.73,
+      "cpm": 48.42,
       "compras": 0,
       "receita_meta": 0,
       "roas": 0.0,
