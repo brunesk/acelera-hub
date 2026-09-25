@@ -1,13 +1,13 @@
 {
-  "gerado_em": "25/09/2026 às 07:47 (BRT)",
+  "gerado_em": "25/09/2026 às 12:39 (BRT)",
   "periodo": "01/09 – 25/09/2026",
   "mes_key": "2026-09",
   "kpis": {
     "vendas": 173,
     "bruto": 11740.98,
     "liq": 10422.81,
-    "gasto_meta": 7834.66,
-    "lucro": 2588.15,
+    "gasto_meta": 7837.42,
+    "lucro": 2585.39,
     "roas": 1.33,
     "ticket": 67.87
   },
@@ -224,17 +224,17 @@
       "vendas": 3,
       "bruto": 147.0,
       "liq": 124.98,
-      "gasto_meta": 38.86,
-      "lucro": 86.12,
-      "roas": 3.22
+      "gasto_meta": 38.91,
+      "lucro": 86.07,
+      "roas": 3.21
     },
     {
       "dia": "25/09",
       "vendas": 0,
       "bruto": 0.0,
       "liq": 0.0,
-      "gasto_meta": 2.3,
-      "lucro": -2.3,
+      "gasto_meta": 5.01,
+      "lucro": -5.01,
       "roas": 0.0
     }
   ],
@@ -278,9 +278,9 @@
       "vendas": 8,
       "bruto": 506.16,
       "liq": 436.55,
-      "gasto_meta": 218.55,
-      "lucro": 218.0,
-      "roas": 2.0,
+      "gasto_meta": 221.31,
+      "lucro": 215.24,
+      "roas": 1.97,
       "atual": true
     }
   ],
@@ -396,14 +396,14 @@
     {
       "nome": "Criativo 74 - CJ01",
       "status": "ACTIVE",
-      "gasto": 12.25,
-      "impressoes": 401,
-      "ctr": 1.75,
-      "cpm": 30.55,
+      "gasto": 12.3,
+      "impressoes": 403,
+      "ctr": 1.74,
+      "cpm": 30.52,
       "compras": 1,
       "receita_meta": 68.69,
-      "roas": 5.61,
-      "cpa": 12.25
+      "roas": 5.58,
+      "cpa": 12.3
     },
     {
       "nome": "Criativo 80 - CJ01",
@@ -432,14 +432,14 @@
     {
       "nome": "Video Mylene 04 - CJ01",
       "status": "ACTIVE",
-      "gasto": 8.39,
-      "impressoes": 170,
-      "ctr": 6.47,
-      "cpm": 49.35,
+      "gasto": 8.84,
+      "impressoes": 184,
+      "ctr": 7.07,
+      "cpm": 48.04,
       "compras": 1,
       "receita_meta": 32.65,
-      "roas": 3.89,
-      "cpa": 8.39
+      "roas": 3.69,
+      "cpa": 8.84
     },
     {
       "nome": "Img 04 - CJ01",
@@ -514,6 +514,18 @@
       "cpa": 0
     },
     {
+      "nome": "Criativo 75 - CJ01",
+      "status": "ACTIVE",
+      "gasto": 2.24,
+      "impressoes": 34,
+      "ctr": 11.76,
+      "cpm": 65.88,
+      "compras": 0,
+      "receita_meta": 0,
+      "roas": 0.0,
+      "cpa": 0
+    },
+    {
       "nome": "Criativo 50 - CJ01",
       "status": "ACTIVE",
       "gasto": 1.96,
@@ -526,24 +538,24 @@
       "cpa": 0
     },
     {
-      "nome": "Criativo 51 - CJ01",
+      "nome": "Criativo 67 - CJ01",
       "status": "ACTIVE",
-      "gasto": 1.84,
+      "gasto": 1.86,
       "impressoes": 38,
       "ctr": 0.0,
-      "cpm": 48.42,
+      "cpm": 48.95,
       "compras": 0,
       "receita_meta": 0,
       "roas": 0.0,
       "cpa": 0
     },
     {
-      "nome": "Criativo 67 - CJ01",
+      "nome": "Criativo 51 - CJ01",
       "status": "ACTIVE",
-      "gasto": 1.62,
-      "impressoes": 32,
+      "gasto": 1.84,
+      "impressoes": 38,
       "ctr": 0.0,
-      "cpm": 50.62,
+      "cpm": 48.42,
       "compras": 0,
       "receita_meta": 0,
       "roas": 0.0,
@@ -568,18 +580,6 @@
       "impressoes": 35,
       "ctr": 2.86,
       "cpm": 33.43,
-      "compras": 0,
-      "receita_meta": 0,
-      "roas": 0.0,
-      "cpa": 0
-    },
-    {
-      "nome": "Criativo 75 - CJ01",
-      "status": "ACTIVE",
-      "gasto": 1.1,
-      "impressoes": 19,
-      "ctr": 5.26,
-      "cpm": 57.89,
       "compras": 0,
       "receita_meta": 0,
       "roas": 0.0,
@@ -622,12 +622,36 @@
       "cpa": 0
     },
     {
+      "nome": "Criativo 62 - CJ01",
+      "status": "ACTIVE",
+      "gasto": 0.54,
+      "impressoes": 10,
+      "ctr": 0.0,
+      "cpm": 54.0,
+      "compras": 0,
+      "receita_meta": 0,
+      "roas": 0.0,
+      "cpa": 0
+    },
+    {
       "nome": "Criativo 60 - CJ01",
       "status": "ACTIVE",
       "gasto": 0.46,
       "impressoes": 19,
       "ctr": 0.0,
       "cpm": 24.21,
+      "compras": 0,
+      "receita_meta": 0,
+      "roas": 0.0,
+      "cpa": 0
+    },
+    {
+      "nome": "Criativo 68 - CJ01",
+      "status": "ACTIVE",
+      "gasto": 0.43,
+      "impressoes": 13,
+      "ctr": 0.0,
+      "cpm": 33.08,
       "compras": 0,
       "receita_meta": 0,
       "roas": 0.0,
@@ -670,12 +694,12 @@
       "cpa": 0
     },
     {
-      "nome": "Criativo 68 - CJ01",
+      "nome": "Criativo 54 - CJ01",
       "status": "ACTIVE",
-      "gasto": 0.34,
-      "impressoes": 12,
+      "gasto": 0.36,
+      "impressoes": 7,
       "ctr": 0.0,
-      "cpm": 28.33,
+      "cpm": 51.43,
       "compras": 0,
       "receita_meta": 0,
       "roas": 0.0,
@@ -696,10 +720,10 @@
     {
       "nome": "Criativo 59 - CJ01",
       "status": "ACTIVE",
-      "gasto": 0.25,
-      "impressoes": 7,
+      "gasto": 0.26,
+      "impressoes": 8,
       "ctr": 0.0,
-      "cpm": 35.71,
+      "cpm": 32.5,
       "compras": 0,
       "receita_meta": 0,
       "roas": 0.0,
@@ -720,22 +744,10 @@
     {
       "nome": "Criativo 70 - CJ01",
       "status": "ACTIVE",
-      "gasto": 0.12,
-      "impressoes": 5,
+      "gasto": 0.13,
+      "impressoes": 6,
       "ctr": 0.0,
-      "cpm": 24.0,
-      "compras": 0,
-      "receita_meta": 0,
-      "roas": 0.0,
-      "cpa": 0
-    },
-    {
-      "nome": "Criativo 54 - CJ01",
-      "status": "ACTIVE",
-      "gasto": 0.11,
-      "impressoes": 2,
-      "ctr": 0.0,
-      "cpm": 55.0,
+      "cpm": 21.67,
       "compras": 0,
       "receita_meta": 0,
       "roas": 0.0,
@@ -772,18 +784,6 @@
       "impressoes": 2,
       "ctr": 0.0,
       "cpm": 10.0,
-      "compras": 0,
-      "receita_meta": 0,
-      "roas": 0.0,
-      "cpa": 0
-    },
-    {
-      "nome": "Criativo 62 - CJ01",
-      "status": "ACTIVE",
-      "gasto": 0.02,
-      "impressoes": 3,
-      "ctr": 0.0,
-      "cpm": 6.67,
       "compras": 0,
       "receita_meta": 0,
       "roas": 0.0,
