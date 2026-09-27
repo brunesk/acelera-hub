@@ -1,14 +1,14 @@
 {
-  "gerado_em": "27/09/2026 às 16:37 (BRT)",
+  "gerado_em": "27/09/2026 às 19:40 (BRT)",
   "periodo": "01/09 – 27/09/2026",
   "mes_key": "2026-09",
   "kpis": {
     "vendas": 180,
     "bruto": 12258.14,
     "liq": 10871.76,
-    "gasto_meta": 7905.68,
-    "lucro": 2966.08,
-    "roas": 1.38,
+    "gasto_meta": 7915.24,
+    "lucro": 2956.52,
+    "roas": 1.37,
     "ticket": 68.1
   },
   "dias": [
@@ -251,9 +251,9 @@
       "vendas": 3,
       "bruto": 197.0,
       "liq": 170.03,
-      "gasto_meta": 29.45,
-      "lucro": 140.58,
-      "roas": 5.77
+      "gasto_meta": 39.01,
+      "lucro": 131.02,
+      "roas": 4.36
     }
   ],
   "semanas": [
@@ -296,9 +296,9 @@
       "vendas": 15,
       "bruto": 1023.32,
       "liq": 885.5,
-      "gasto_meta": 289.57,
-      "lucro": 595.93,
-      "roas": 3.06,
+      "gasto_meta": 299.13,
+      "lucro": 586.37,
+      "roas": 2.96,
       "atual": true
     }
   ],
@@ -330,14 +330,14 @@
     {
       "nome": "Video Mylene 05 - CJ01",
       "status": "ACTIVE",
-      "gasto": 741.92,
-      "impressoes": 24629,
-      "ctr": 2.24,
-      "cpm": 30.12,
+      "gasto": 747.37,
+      "impressoes": 24841,
+      "ctr": 2.23,
+      "cpm": 30.09,
       "compras": 32,
       "receita_meta": 2019.09,
-      "roas": 2.72,
-      "cpa": 23.18
+      "roas": 2.7,
+      "cpa": 23.36
     },
     {
       "nome": "Video 04 — Cópia",
@@ -378,14 +378,14 @@
     {
       "nome": "Video Mylene 02 - CJ01",
       "status": "ACTIVE",
-      "gasto": 74.95,
-      "impressoes": 2234,
-      "ctr": 2.33,
-      "cpm": 33.55,
+      "gasto": 77.1,
+      "impressoes": 2296,
+      "ctr": 2.31,
+      "cpm": 33.58,
       "compras": 6,
       "receita_meta": 324.44,
-      "roas": 4.33,
-      "cpa": 12.49
+      "roas": 4.21,
+      "cpa": 12.85
     },
     {
       "nome": "Criativo 74 - CJ01",
@@ -402,14 +402,14 @@
     {
       "nome": "10 Imagem Novo - CJ01",
       "status": "ACTIVE",
-      "gasto": 36.49,
-      "impressoes": 860,
+      "gasto": 36.54,
+      "impressoes": 862,
       "ctr": 2.44,
-      "cpm": 42.43,
+      "cpm": 42.39,
       "compras": 1,
       "receita_meta": 70.18,
       "roas": 1.92,
-      "cpa": 36.49
+      "cpa": 36.54
     },
     {
       "nome": "Img 03 - CJ01",
@@ -438,14 +438,14 @@
     {
       "nome": "Video Mylene 04 - CJ01",
       "status": "ACTIVE",
-      "gasto": 10.65,
-      "impressoes": 235,
-      "ctr": 6.38,
-      "cpm": 45.32,
+      "gasto": 12.21,
+      "impressoes": 307,
+      "ctr": 5.21,
+      "cpm": 39.77,
       "compras": 1,
       "receita_meta": 32.65,
-      "roas": 3.07,
-      "cpa": 10.65
+      "roas": 2.67,
+      "cpa": 12.21
     },
     {
       "nome": "Criativo 80 - CJ01",
@@ -462,10 +462,10 @@
     {
       "nome": "Criativo 75 - CJ01",
       "status": "ACTIVE",
-      "gasto": 7.51,
-      "impressoes": 162,
-      "ctr": 4.94,
-      "cpm": 46.36,
+      "gasto": 7.56,
+      "impressoes": 163,
+      "ctr": 4.91,
+      "cpm": 46.38,
       "compras": 0,
       "receita_meta": 0,
       "roas": 0.0,
@@ -474,10 +474,10 @@
     {
       "nome": "Img 04 - CJ01",
       "status": "ACTIVE",
-      "gasto": 5.95,
-      "impressoes": 38,
-      "ctr": 7.89,
-      "cpm": 156.58,
+      "gasto": 6.1,
+      "impressoes": 46,
+      "ctr": 6.52,
+      "cpm": 132.61,
       "compras": 0,
       "receita_meta": 0,
       "roas": 0.0,
@@ -486,10 +486,10 @@
     {
       "nome": "Criativo 77 - CJ01",
       "status": "ACTIVE",
-      "gasto": 4.34,
-      "impressoes": 167,
-      "ctr": 4.79,
-      "cpm": 25.99,
+      "gasto": 4.49,
+      "impressoes": 177,
+      "ctr": 4.52,
+      "cpm": 25.37,
       "compras": 0,
       "receita_meta": 0,
       "roas": 0.0,
