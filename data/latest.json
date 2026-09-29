@@ -1,15 +1,15 @@
 {
-  "gerado_em": "29/09/2026 às 06:15 (BRT)",
+  "gerado_em": "29/09/2026 às 13:02 (BRT)",
   "periodo": "01/09 – 29/09/2026",
   "mes_key": "2026-09",
   "kpis": {
-    "vendas": 182,
-    "bruto": 12376.14,
-    "liq": 10973.1,
-    "gasto_meta": 8006.02,
-    "lucro": 2967.08,
-    "roas": 1.37,
-    "ticket": 68.0
+    "vendas": 184,
+    "bruto": 12640.14,
+    "liq": 11205.98,
+    "gasto_meta": 8029.88,
+    "lucro": 3176.1,
+    "roas": 1.4,
+    "ticket": 68.7
   },
   "dias": [
     {
@@ -260,18 +260,18 @@
       "vendas": 2,
       "bruto": 118.0,
       "liq": 101.34,
-      "gasto_meta": 69.99,
-      "lucro": 31.35,
-      "roas": 1.45
+      "gasto_meta": 70.31,
+      "lucro": 31.03,
+      "roas": 1.44
     },
     {
       "dia": "29/09",
-      "vendas": 0,
-      "bruto": 0.0,
-      "liq": 0.0,
-      "gasto_meta": 4.8,
-      "lucro": -4.8,
-      "roas": 0.0
+      "vendas": 2,
+      "bruto": 264.0,
+      "liq": 232.88,
+      "gasto_meta": 28.34,
+      "lucro": 204.54,
+      "roas": 8.22
     }
   ],
   "semanas": [
@@ -314,20 +314,20 @@
       "vendas": 17,
       "bruto": 1141.32,
       "liq": 986.84,
-      "gasto_meta": 385.11,
-      "lucro": 601.73,
+      "gasto_meta": 385.43,
+      "lucro": 601.41,
       "roas": 2.56,
       "atual": false
     },
     {
       "semana": "Semana 5",
       "periodo": "29/09 – 29/09",
-      "vendas": 0,
-      "bruto": 0.0,
-      "liq": 0.0,
-      "gasto_meta": 4.8,
-      "lucro": -4.8,
-      "roas": 0.0,
+      "vendas": 2,
+      "bruto": 264.0,
+      "liq": 232.88,
+      "gasto_meta": 28.34,
+      "lucro": 204.54,
+      "roas": 8.22,
       "atual": true
     }
   ],
@@ -359,14 +359,14 @@
     {
       "nome": "Video Mylene 05 - CJ01",
       "status": "ACTIVE",
-      "gasto": 807.95,
-      "impressoes": 27253,
+      "gasto": 808.24,
+      "impressoes": 27255,
       "ctr": 2.19,
       "cpm": 29.65,
       "compras": 34,
       "receita_meta": 2120.43,
       "roas": 2.62,
-      "cpa": 23.76
+      "cpa": 23.77
     },
     {
       "nome": "Video 04 — Cópia",
@@ -659,10 +659,10 @@
     {
       "nome": "Criativo 70 - CJ01",
       "status": "ACTIVE",
-      "gasto": 1.19,
-      "impressoes": 33,
+      "gasto": 1.22,
+      "impressoes": 34,
       "ctr": 0.0,
-      "cpm": 36.06,
+      "cpm": 35.88,
       "compras": 0,
       "receita_meta": 0,
       "roas": 0.0,
