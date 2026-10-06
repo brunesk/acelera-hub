@@ -942,6 +942,7 @@ input[type="month"]::-webkit-calendar-picker-indicator { filter:invert(.6);curso
         <div class="kpi-card c-amber"><div class="kpi-icon">⚠️</div><div class="kpi-label">Renovando em breve</div><div class="kpi-value c-amber" id="ak-renov">0</div></div>
         <div class="kpi-card c-red"><div class="kpi-icon">🚨</div><div class="kpi-label">Pendentes</div><div class="kpi-value c-red" id="ak-pend">0</div></div>
         <div class="kpi-card c-orange"><div class="kpi-icon">😴</div><div class="kpi-label">Lojas paradas</div><div class="kpi-value c-orange" id="ak-paradas">0</div><div class="kpi-sub">+14 dias sem mexer</div></div>
+        <div class="kpi-card c-green"><div class="kpi-icon">💰</div><div class="kpi-label">A receber no mês</div><div class="kpi-value c-green" id="ak-receber">R$0</div><div class="kpi-sub" id="ak-receber-sub">se todos os clientes pagarem</div></div>
       </div>
 
       <!-- Tabela -->
@@ -1897,6 +1898,21 @@ function renderAssessorias() {
   }).length;
   const elParadas = document.getElementById('ak-paradas');
   if (elParadas) elParadas.textContent = paradas;
+
+  // Quanto entra no mes se todos os clientes pagarem:
+  // quem ja pagou conta pelo valor realmente pago, quem nao pagou conta pela mensalidade cadastrada.
+  let recebido = 0, aReceber = 0;
+  todos.forEach(a => {
+    const pg = a.pagamentos && a.pagamentos[mesAtual];
+    if (pg) recebido += parseFloat(pg.valor) || 0;
+    else    aReceber += parseFloat(a.valor)  || 0;
+  });
+  const elReceber = document.getElementById('ak-receber');
+  if (elReceber) {
+    elReceber.textContent = brFin(recebido + aReceber);
+    document.getElementById('ak-receber-sub').textContent =
+      `${brFin(recebido)} já pago · falta ${brFin(aReceber)}`;
+  }
 
   if (!lista.length) {
     document.getElementById('assess-tbody').innerHTML = `<tr><td colspan="7"><div class="empty-state"><div class="icon">🏪</div><p>Nenhuma assessoria encontrada.</p></div></td></tr>`;
