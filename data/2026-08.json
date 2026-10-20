@@ -1,5 +1,5 @@
 {
-  "gerado_em": "20/10/2026 às 17:43 (BRT)",
+  "gerado_em": "20/10/2026 às 18:29 (BRT)",
   "periodo": "01/08 – 31/08/2026",
   "mes_key": "2026-08",
   "kpis": {
@@ -18,6 +18,9 @@
       "bruto": 0.0,
       "liq": 0.0,
       "gasto_meta": 297.7,
+      "gasto_por_conta": {
+        "Ferrack Store": 297.7
+      },
       "lucro": -297.7,
       "roas": 0.0
     },
@@ -27,6 +30,9 @@
       "bruto": 597.47,
       "liq": 530.06,
       "gasto_meta": 359.7,
+      "gasto_por_conta": {
+        "Ferrack Store": 359.7
+      },
       "lucro": 170.36,
       "roas": 1.47
     },
@@ -36,6 +42,9 @@
       "bruto": 631.0,
       "liq": 559.54,
       "gasto_meta": 388.18,
+      "gasto_por_conta": {
+        "Ferrack Store": 388.18
+      },
       "lucro": 171.36,
       "roas": 1.44
     },
@@ -45,6 +54,9 @@
       "bruto": 559.0,
       "liq": 496.36,
       "gasto_meta": 405.39,
+      "gasto_por_conta": {
+        "Ferrack Store": 405.39
+      },
       "lucro": 90.97,
       "roas": 1.22
     },
@@ -54,6 +66,9 @@
       "bruto": 513.0,
       "liq": 455.22,
       "gasto_meta": 370.75,
+      "gasto_por_conta": {
+        "Ferrack Store": 370.75
+      },
       "lucro": 84.47,
       "roas": 1.23
     },
@@ -63,6 +78,9 @@
       "bruto": 96.47,
       "liq": 87.65,
       "gasto_meta": 309.46,
+      "gasto_por_conta": {
+        "Ferrack Store": 309.46
+      },
       "lucro": -221.81,
       "roas": 0.28
     },
@@ -72,6 +90,9 @@
       "bruto": 399.16,
       "liq": 355.06,
       "gasto_meta": 263.61,
+      "gasto_por_conta": {
+        "Ferrack Store": 263.61
+      },
       "lucro": 91.45,
       "roas": 1.35
     },
@@ -81,6 +102,9 @@
       "bruto": 147.0,
       "liq": 129.45,
       "gasto_meta": 222.97,
+      "gasto_por_conta": {
+        "Ferrack Store": 222.97
+      },
       "lucro": -93.52,
       "roas": 0.58
     },
@@ -90,6 +114,9 @@
       "bruto": 451.47,
       "liq": 402.51,
       "gasto_meta": 207.38,
+      "gasto_por_conta": {
+        "Ferrack Store": 207.38
+      },
       "lucro": 195.13,
       "roas": 1.94
     },
@@ -99,6 +126,9 @@
       "bruto": 395.0,
       "liq": 350.9,
       "gasto_meta": 260.19,
+      "gasto_por_conta": {
+        "Ferrack Store": 260.19
+      },
       "lucro": 90.71,
       "roas": 1.35
     },
@@ -108,6 +138,9 @@
       "bruto": 400.47,
       "liq": 355.56,
       "gasto_meta": 266.04,
+      "gasto_por_conta": {
+        "Ferrack Store": 266.04
+      },
       "lucro": 89.52,
       "roas": 1.34
     },
@@ -117,6 +150,9 @@
       "bruto": 473.16,
       "liq": 419.43,
       "gasto_meta": 309.57,
+      "gasto_por_conta": {
+        "Ferrack Store": 309.57
+      },
       "lucro": 109.86,
       "roas": 1.35
     },
@@ -126,6 +162,9 @@
       "bruto": 118.0,
       "liq": 104.32,
       "gasto_meta": 466.8,
+      "gasto_por_conta": {
+        "Ferrack Store": 466.8
+      },
       "lucro": -362.48,
       "roas": 0.22
     },
@@ -135,6 +174,9 @@
       "bruto": 158.0,
       "liq": 140.36,
       "gasto_meta": 242.54,
+      "gasto_por_conta": {
+        "Ferrack Store": 242.54
+      },
       "lucro": -102.18,
       "roas": 0.58
     },
@@ -144,6 +186,9 @@
       "bruto": 395.0,
       "liq": 350.9,
       "gasto_meta": 205.59,
+      "gasto_por_conta": {
+        "Ferrack Store": 205.59
+      },
       "lucro": 145.31,
       "roas": 1.71
     },
@@ -153,6 +198,9 @@
       "bruto": 423.0,
       "liq": 374.13,
       "gasto_meta": 236.58,
+      "gasto_por_conta": {
+        "Ferrack Store": 236.58
+      },
       "lucro": 137.55,
       "roas": 1.58
     },
@@ -162,6 +210,9 @@
       "bruto": 499.79,
       "liq": 446.87,
       "gasto_meta": 338.49,
+      "gasto_por_conta": {
+        "Ferrack Store": 338.49
+      },
       "lucro": 108.38,
       "roas": 1.32
     },
@@ -171,6 +222,9 @@
       "bruto": 434.0,
       "liq": 385.04,
       "gasto_meta": 291.32,
+      "gasto_por_conta": {
+        "Ferrack Store": 291.32
+      },
       "lucro": 93.72,
       "roas": 1.32
     },
@@ -180,6 +234,9 @@
       "bruto": 237.0,
       "liq": 210.54,
       "gasto_meta": 54.64,
+      "gasto_por_conta": {
+        "Ferrack Store": 54.64
+      },
       "lucro": 155.9,
       "roas": 3.85
     },
@@ -189,6 +246,9 @@
       "bruto": 552.0,
       "liq": 489.36,
       "gasto_meta": 329.07,
+      "gasto_por_conta": {
+        "Ferrack Store": 329.07
+      },
       "lucro": 160.29,
       "roas": 1.49
     },
@@ -198,6 +258,9 @@
       "bruto": 462.91,
       "liq": 413.95,
       "gasto_meta": 272.16,
+      "gasto_por_conta": {
+        "Ferrack Store": 272.16
+      },
       "lucro": 141.79,
       "roas": 1.52
     },
@@ -207,6 +270,9 @@
       "bruto": 701.06,
       "liq": 620.87,
       "gasto_meta": 458.67,
+      "gasto_por_conta": {
+        "Ferrack Store": 458.67
+      },
       "lucro": 162.2,
       "roas": 1.35
     },
@@ -216,6 +282,9 @@
       "bruto": 541.0,
       "liq": 478.45,
       "gasto_meta": 374.51,
+      "gasto_por_conta": {
+        "Ferrack Store": 374.51
+      },
       "lucro": 103.94,
       "roas": 1.28
     },
@@ -225,6 +294,9 @@
       "bruto": 399.16,
       "liq": 355.06,
       "gasto_meta": 382.11,
+      "gasto_por_conta": {
+        "Ferrack Store": 382.11
+      },
       "lucro": -27.05,
       "roas": 0.93
     },
@@ -234,6 +306,9 @@
       "bruto": 833.57,
       "liq": 739.61,
       "gasto_meta": 512.56,
+      "gasto_por_conta": {
+        "Ferrack Store": 512.56
+      },
       "lucro": 227.05,
       "roas": 1.44
     },
@@ -243,6 +318,9 @@
       "bruto": 1016.39,
       "liq": 904.79,
       "gasto_meta": 460.77,
+      "gasto_por_conta": {
+        "Ferrack Store": 460.77
+      },
       "lucro": 444.02,
       "roas": 1.96
     },
@@ -252,6 +330,9 @@
       "bruto": 680.06,
       "liq": 604.73,
       "gasto_meta": 582.78,
+      "gasto_por_conta": {
+        "Ferrack Store": 582.78
+      },
       "lucro": 21.95,
       "roas": 1.04
     },
@@ -261,6 +342,9 @@
       "bruto": 1164.52,
       "liq": 1031.52,
       "gasto_meta": 682.79,
+      "gasto_por_conta": {
+        "Ferrack Store": 682.79
+      },
       "lucro": 348.73,
       "roas": 1.51
     },
@@ -270,6 +354,9 @@
       "bruto": 969.04,
       "liq": 861.4,
       "gasto_meta": 727.82,
+      "gasto_por_conta": {
+        "Ferrack Store": 727.82
+      },
       "lucro": 133.58,
       "roas": 1.18
     },
@@ -279,6 +366,9 @@
       "bruto": 638.0,
       "liq": 566.54,
       "gasto_meta": 682.53,
+      "gasto_por_conta": {
+        "Ferrack Store": 682.53
+      },
       "lucro": -115.99,
       "roas": 0.83
     },
@@ -288,6 +378,9 @@
       "bruto": 1025.84,
       "liq": 914.33,
       "gasto_meta": 595.69,
+      "gasto_por_conta": {
+        "Ferrack Store": 595.69
+      },
       "lucro": 318.64,
       "roas": 1.53
     }
