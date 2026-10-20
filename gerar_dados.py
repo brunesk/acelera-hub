@@ -6,8 +6,16 @@ import urllib.request, urllib.parse, json, os, calendar, sys
 from datetime import datetime, timezone, timedelta
 from collections import defaultdict
 
-AD_ACCOUNT = 'act_913802749957339'
+AD_ACCOUNT = 'act_913802749957339'   # Ferrack Store (conta principal)
 ADSET_ID   = '120253420414220339'
+
+# Contas de anúncios somadas no gasto do curso (aba "Vendas Curso").
+# "desde": a Robotics Guide também tem anúncios do negócio de robótica, então só conta
+# a partir da data em que o Acelera Shopee começou a rodar nela (evita somar gasto alheio ao curso).
+CONTAS_META = [
+    {'id': AD_ACCOUNT,              'nome': 'Ferrack Store', 'desde': None},
+    {'id': 'act_1020327977000359',  'nome': 'Robotics Guide', 'desde': '2026-10-15'},
+]
 BRT        = timezone(timedelta(hours=-3))
 
 # Receita de plataformas externas (Green etc.) que não aparecem no Hotmart
@@ -49,14 +57,19 @@ def hotmart_all(token, start_ms, end_ms):
     return items
 
 # ── Meta ───────────────────────────────────────────────────────
-def meta_daily(token, since, until):
+def meta_daily_conta(token, conta, since, until):
+    """Insights diários de UMA conta. Retorna lista (pode ser vazia) ou None se a API falhar."""
+    if conta['desde'] and conta['desde'] > since:
+        since = conta['desde']
+    if since > until:
+        return []
     params = {
         'access_token': token, 'level': 'account', 'time_increment': '1',
         'time_range': json.dumps({'since': since, 'until': until}), 'limit': 500,
         'fields': 'date_start,spend,impressions,clicks,ctr,cpm,actions,action_values'
     }
     results = []
-    url = f'https://graph.facebook.com/v19.0/{AD_ACCOUNT}/insights?' + urllib.parse.urlencode(params)
+    url = f"https://graph.facebook.com/v19.0/{conta['id']}/insights?" + urllib.parse.urlencode(params)
     try:
         while url:
             with urllib.request.urlopen(url) as r:
@@ -66,10 +79,26 @@ def meta_daily(token, since, until):
         return results
     except urllib.error.HTTPError as e:
         err = json.loads(e.read().decode())
-        # Token expirado / erro da Meta: NÃO derruba o script nem sobrescreve os
-        # dados bons com zeros. Retorna None para o main preservar o último JSON.
-        print(f"⚠️ Meta API indisponível: {err.get('error',{}).get('message','erro desconhecido')}")
+        print(f"⚠️ Meta API indisponível ({conta['nome']}): {err.get('error',{}).get('message','erro desconhecido')}")
         return None
+
+def meta_daily(token, since, until):
+    """Soma o gasto diário de todas as contas em CONTAS_META.
+    Se QUALQUER conta falhar, retorna None: o main preserva o último JSON bom em vez de gravar
+    um total que esqueceu uma das contas."""
+    por_dia = {}
+    for conta in CONTAS_META:
+        linhas = meta_daily_conta(token, conta, since, until)
+        if linhas is None:
+            return None
+        for d in linhas:
+            dk = d['date_start']
+            acc = por_dia.setdefault(dk, {'date_start': dk, 'spend': 0.0, 'actions': [], 'por_conta': {}})
+            gasto = float(d.get('spend', 0))
+            acc['spend'] += gasto
+            acc['actions'].extend(d.get('actions', []))
+            acc['por_conta'][conta['nome']] = round(gasto, 2)
+    return [por_dia[k] for k in sorted(por_dia)]
 
 def meta_ads(token, since, until):
     url = f'https://graph.facebook.com/v19.0/{ADSET_ID}/ads?fields=id,name,status&access_token={token}&limit=100'
@@ -162,8 +191,9 @@ meta_mes = defaultdict(lambda: {'gasto': 0.0, 'compras_pixel': 0})
 for d in meta_raw:
     dk = d['date_start']
     spend = float(d.get('spend', 0))
-    purchases = next((int(a['value']) for a in d.get('actions', []) if a['action_type'] == 'purchase'), 0)
-    meta_dia[dk] = {'gasto': spend, 'compras_pixel': purchases}
+    # soma as compras de todas as contas (com mais de uma conta há várias ações "purchase" no dia)
+    purchases = sum(int(a['value']) for a in d.get('actions', []) if a['action_type'] == 'purchase')
+    meta_dia[dk] = {'gasto': spend, 'compras_pixel': purchases, 'por_conta': d.get('por_conta', {})}
     meta_mes[dk[:7]]['gasto'] += spend
     meta_mes[dk[:7]]['compras_pixel'] += purchases
 
@@ -248,6 +278,7 @@ def build_month(mk):
             'dia': datetime.strptime(d, '%Y-%m-%d').strftime('%d/%m'),
             'vendas': h.get('v', 0), 'bruto': round(h.get('bruto', 0), 2),
             'liq': round(liq, 2), 'gasto_meta': round(gasto, 2),
+            'gasto_por_conta': m.get('por_conta', {}),
             'lucro': round(liq - gasto, 2),
             'roas': round(liq / gasto, 2) if gasto > 0 else 0
         })
