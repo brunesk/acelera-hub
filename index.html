@@ -963,7 +963,7 @@ input[type="month"]::-webkit-calendar-picker-indicator { filter:invert(.6);curso
                 <th>Login</th>
                 <th>Senha</th>
                 <th>Renovação</th>
-                <th>Última mexida</th>
+                <th>Já mexi</th>
                 <th>Pagamento</th>
                 <th>Ações</th>
               </tr>
@@ -1249,12 +1249,32 @@ input[type="month"]::-webkit-calendar-picker-indicator { filter:invert(.6);curso
         <div class="field"><label>Valor mensal (R$)</label><input type="number" id="a-valor" placeholder="500"></div>
         <div class="field"><label>Dia da renovação (todo mês)</label><input type="number" id="a-renov-dia" min="1" max="31" placeholder="Ex: 10"></div>
       </div>
-      <div class="field"><label>Última mexida na loja</label><input type="date" id="a-mexida"></div>
+      <div class="field"><label>ROAS ideal desta loja</label><input type="number" id="a-roas" step="0.1" min="0" placeholder="Ex: 8"></div>
+      <div class="field-row">
+        <div class="field"><label>Última mexida na loja</label><input type="date" id="a-mexida"></div>
+        <div class="field"><label>Última mexida em Ads</label><input type="date" id="a-mexida-ads"></div>
+      </div>
+      <div class="field"><label>Última mexida em Afiliados</label><input type="date" id="a-mexida-afil"></div>
       <div class="field"><label>Observações</label><textarea id="a-obs" rows="2" placeholder="Notas sobre o cliente..."></textarea></div>
     </div>
     <div class="modal-actions">
       <button class="btn btn-ghost" onclick="fecharModalAssess()">Cancelar</button>
       <button class="btn btn-amber" onclick="salvarAssess()" id="btn-salvar-assess">Salvar</button>
+    </div>
+  </div>
+</div>
+
+<!-- ══ MODAL: QUEM MEXEU ═══════════════════════════════════════ -->
+<div class="modal-overlay" id="modal-mexida" onclick="if(event.target===this)fecharModalMexida()">
+  <div class="modal-box" style="max-width:360px;">
+    <div class="modal-title" id="mexida-titulo">Quem mexeu?</div>
+    <p style="font-size:13px;color:var(--muted);margin:-6px 0 16px;" id="mexida-sub"></p>
+    <div style="display:flex;gap:10px;">
+      <button class="btn btn-amber" style="flex:1;" onclick="confirmarMexida('Bruno')">Bruno</button>
+      <button class="btn btn-amber" style="flex:1;" onclick="confirmarMexida('Mylene')">Mylene</button>
+    </div>
+    <div class="modal-actions">
+      <button class="btn btn-ghost" onclick="fecharModalMexida()">Cancelar</button>
     </div>
   </div>
 </div>
@@ -1790,10 +1810,13 @@ function abrirModalAssess(id) {
       document.getElementById('a-valor').value     = assess.valor || '';
       document.getElementById('a-renov-dia').value = assess.renovDia || '';
       document.getElementById('a-mexida').value     = assess.ultimaMexida || '';
+      document.getElementById('a-mexida-ads').value = assess.adsMexida || '';
+      document.getElementById('a-mexida-afil').value = assess.afilMexida || '';
+      document.getElementById('a-roas').value      = assess.roasIdeal || '';
       document.getElementById('a-obs').value       = assess.obs || '';
     }
   } else {
-    ['a-nome','a-loja','a-url','a-login','a-senha','a-valor','a-renov-dia','a-mexida','a-obs'].forEach(id => document.getElementById(id).value = '');
+    ['a-nome','a-loja','a-url','a-login','a-senha','a-valor','a-renov-dia','a-mexida','a-mexida-ads','a-mexida-afil','a-roas','a-obs'].forEach(id => document.getElementById(id).value = '');
   }
   modal.classList.add('open');
 }
@@ -1814,7 +1837,10 @@ async function salvarAssess() {
     valor:    parseFloat(document.getElementById('a-valor').value) || 0,
     renovDia,
     ultimaMexida: document.getElementById('a-mexida').value || null,
-    obs:      document.getElementById('a-obs').value.trim(),
+    adsMexida:    document.getElementById('a-mexida-ads').value || null,
+    afilMexida:   document.getElementById('a-mexida-afil').value || null,
+    roasIdeal:    parseFloat(document.getElementById('a-roas').value) || null,
+    obs:     document.getElementById('a-obs').value.trim(),
     atualizadoEm: Date.now()
   };
   // PATCH em vez de PUT: preserva o historico de pagamentos ja registrado,
@@ -1933,22 +1959,31 @@ function renderAssessorias() {
     const pagBadge = status === 'pago' ? `<span class="badge badge-green">✅ Pago${pg ? ` (${pg.data.split('-').reverse().join('/')})` : ''}</span>` :
                      status === 'atrasado' ? `<span class="badge badge-red">🚨 Atrasado</span>` :
                      `<span class="badge badge-amber">⚠️ Pendente</span>`;
-    // Última mexida na loja
-    let mexidaHtml;
-    if (a.ultimaMexida) {
-      const dm = new Date(a.ultimaMexida + 'T00:00:00');
-      const dias = Math.floor((hoje - dm) / 86400000);
-      const cor = dias <= 7 ? 'var(--green)' : dias <= 14 ? 'var(--amber)' : 'var(--red)';
-      const rotulo = dias === 0 ? 'hoje' : dias === 1 ? 'ontem' : `há ${dias}d`;
-      mexidaHtml = `<div style="font-family:var(--mono);font-size:12px;">${a.ultimaMexida.split('-').reverse().join('/')}</div>`
-        + `<div style="font-size:10.5px;color:${cor};font-weight:700;margin-top:2px;">● ${rotulo}</div>`;
-    } else {
-      mexidaHtml = `<span style="font-size:11px;color:var(--red);font-weight:700;">nunca</span>`;
-    }
+    // Já mexi: loja, Ads e Afiliados (data + quem mexeu)
+    const mexidaHtml = Object.keys(MEXIDA_TIPOS).map(tipo => {
+      const t = MEXIDA_TIPOS[tipo];
+      const data = a[t.campo], quem = a[t.campoPor];
+      let info;
+      if (data) {
+        const dias = Math.floor((hoje - new Date(data + 'T00:00:00')) / 86400000);
+        const cor = dias <= 7 ? 'var(--green)' : dias <= 14 ? 'var(--amber)' : 'var(--red)';
+        const rotulo = dias === 0 ? 'hoje' : dias === 1 ? 'ontem' : `há ${dias}d`;
+        info = `<span style="font-family:var(--mono);font-size:11.5px;">${data.split('-').reverse().join('/')}</span>`
+          + ` <span style="font-size:10.5px;color:${cor};font-weight:700;">● ${rotulo}</span>`
+          + (quem ? ` <span style="font-size:10.5px;color:var(--muted);">· ${quem}</span>` : '');
+      } else {
+        info = `<span style="font-size:11px;color:var(--red);font-weight:700;">nunca</span>`;
+      }
+      return `<div style="display:flex;align-items:center;gap:8px;justify-content:space-between;padding:3px 0;">
+        <div style="white-space:nowrap;"><span style="font-size:10.5px;color:var(--muted);display:inline-block;width:58px;">${t.rotulo}</span>${info}</div>
+        <button class="btn btn-ghost btn-sm" onclick="abrirModalMexida('${a.id}','${tipo}')" title="Marcar que mexi em ${t.rotulo} hoje">✓ mexi</button>
+      </div>`;
+    }).join('');
     return `<tr>
       <td>
         <div class="client-name">${a.nome}</div>
         <div class="client-store">🏪 ${a.loja}${a.url ? ` · <a href="${a.url}" target="_blank" style="color:var(--blue);text-decoration:none;">${a.url.replace('https://','')}</a>` : ''}</div>
+        ${a.roasIdeal ? `<div style="margin-top:4px;"><span class="badge badge-amber" title="ROAS ideal desta loja">🎯 ROAS ideal ${String(a.roasIdeal).replace('.',',')}</span></div>` : ''}
       </td>
       <td style="font-family:var(--mono);font-size:12px;">${a.login || '—'}</td>
       <td>
@@ -1958,12 +1993,7 @@ function renderAssessorias() {
         </div>
       </td>
       <td class="${renovClass}" style="font-family:var(--mono);font-size:12px;">${renovText}</td>
-      <td>
-        <div style="display:flex;align-items:center;gap:8px;">
-          <div>${mexidaHtml}</div>
-          <button class="btn btn-ghost btn-sm" onclick="marcarMexida('${a.id}')" title="Marcar que mexi na loja hoje">✓ mexi</button>
-        </div>
-      </td>
+      <td>${mexidaHtml}</td>
       <td><span onclick="abrirModalPagamento('${a.id}')" style="cursor:pointer;" title="Clique para registrar pagamento">${pagBadge}</span></td>
       <td>
         <div class="action-btns">
@@ -1976,12 +2006,33 @@ function renderAssessorias() {
   }).join('');
 }
 
-async function marcarMexida(id) {
+// Tipos de "já mexi": cada um guarda a data e quem mexeu em campos próprios
+// (ultimaMexida continua sendo o da loja — é o que conta para "Lojas paradas")
+const MEXIDA_TIPOS = {
+  loja: { rotulo: 'Loja',      campo: 'ultimaMexida', campoPor: 'mexidaPor' },
+  ads:  { rotulo: 'Ads',       campo: 'adsMexida',    campoPor: 'adsMexidaPor' },
+  afil: { rotulo: 'Afiliados', campo: 'afilMexida',   campoPor: 'afilMexidaPor' },
+};
+let mexidaPendente = null;
+
+function abrirModalMexida(id, tipo) {
   const a = todosAssessorias[id];
   if (!a) return;
-  const hojeStr = dataLocalHoje();
-  await fetch(`${DB}/assessorias/${id}/ultimaMexida.json`, { method:'PUT', headers:{'Content-Type':'application/json'}, body: JSON.stringify(hojeStr) });
-  todosAssessorias[id].ultimaMexida = hojeStr;
+  mexidaPendente = { id, tipo };
+  document.getElementById('mexida-titulo').textContent = `Quem mexeu em ${MEXIDA_TIPOS[tipo].rotulo}?`;
+  document.getElementById('mexida-sub').textContent = `${a.loja} · hoje`;
+  document.getElementById('modal-mexida').classList.add('open');
+}
+function fecharModalMexida() { document.getElementById('modal-mexida').classList.remove('open'); mexidaPendente = null; }
+
+async function confirmarMexida(quem) {
+  if (!mexidaPendente) return;
+  const { id, tipo } = mexidaPendente;
+  const t = MEXIDA_TIPOS[tipo];
+  const dados = { [t.campo]: dataLocalHoje(), [t.campoPor]: quem };
+  fecharModalMexida();
+  await fetch(`${DB}/assessorias/${id}.json`, { method:'PATCH', headers:{'Content-Type':'application/json'}, body: JSON.stringify(dados) });
+  Object.assign(todosAssessorias[id], dados);
   renderAssessorias();
 }
 
