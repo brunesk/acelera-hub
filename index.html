@@ -787,6 +787,9 @@ body::after {
 .as-acesso { font-family:var(--mono); font-size:11.5px; color:var(--muted2); max-width:190px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
 .as-acesso + .pwd-field { margin-top:3px; }
 /* ── VISÃO FINANCEIRA ─────────────────────────────────── */
+.dash-kpis { grid-template-columns:repeat(6,1fr); }
+@media(max-width:1100px){ .dash-kpis { grid-template-columns:repeat(3,1fr); } }
+@media(max-width:640px){ .dash-kpis { grid-template-columns:1fr 1fr; } }
 .fin-kpis { grid-template-columns:repeat(4,1fr); }
 @media(max-width:900px){ .fin-kpis { grid-template-columns:1fr 1fr; } }
 .fin-acum { display:flex; justify-content:space-between; align-items:center; gap:20px; flex-wrap:wrap; padding:22px 24px; }
@@ -1050,14 +1053,14 @@ input[type="month"]::-webkit-calendar-picker-indicator { filter:invert(.6);curso
   </div>
 
   <!-- ── PÁGINA: DASHBOARD ── -->
-  <div class="page" id="page-dashboard">
-    <div class="container" style="max-width:1100px;">
+  <div class="page g-viz" id="page-dashboard">
+    <div class="container" style="max-width:1160px;">
 
       <!-- Header + atualização -->
-      <div style="display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:24px;flex-wrap:wrap;gap:12px;">
+      <div class="g-head">
         <div>
-          <h2 style="font-size:24px;font-weight:800;margin-bottom:5px;">Dashboard Cursos</h2>
-          <p style="font-size:13.5px;color:var(--muted);" id="dash-periodo">carregando...</p>
+          <h2>Dashboard Cursos</h2>
+          <p id="dash-periodo">carregando...</p>
         </div>
         <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;">
           <select id="dash-mes" onchange="carregarDashboard(this.value)"
@@ -1073,39 +1076,39 @@ input[type="month"]::-webkit-calendar-picker-indicator { filter:invert(.6);curso
       </div>
 
       <!-- KPIs -->
-      <div class="cards-grid-4" id="dash-kpis" style="grid-template-columns:repeat(auto-fit,minmax(140px,1fr));margin-bottom:20px;">
-        <div class="kpi-card c-amber"><div class="kpi-label">Vendas</div><div class="kpi-value c-amber" id="d-vendas">—</div><div class="kpi-sub">mês selecionado</div></div>
-        <div class="kpi-card c-green"><div class="kpi-label">Rec. Líquida</div><div class="kpi-value c-green" style="font-size:20px;" id="d-liq">—</div><div class="kpi-sub">após taxa Hotmart</div></div>
-        <div class="kpi-card c-red"><div class="kpi-label">Gasto Meta</div><div class="kpi-value c-red" style="font-size:20px;" id="d-meta">—</div><div class="kpi-sub">investido</div></div>
-        <div class="kpi-card c-green" style="border:1px solid rgba(39,201,122,.25);"><div class="kpi-label">Lucro Real</div><div class="kpi-value c-green" style="font-size:20px;" id="d-lucro">—</div><div class="kpi-sub" id="d-lucro-dia">por dia</div></div>
-        <div class="kpi-card c-blue"><div class="kpi-label">ROAS Real</div><div class="kpi-value c-blue" id="d-roas">—</div><div class="kpi-sub">líq/gasto</div></div>
-        <div class="kpi-card c-purple"><div class="kpi-label">Ticket Médio</div><div class="kpi-value c-purple" style="font-size:20px;" id="d-ticket">—</div><div class="kpi-sub">por venda</div></div>
+      <div class="g-kpis dash-kpis" id="dash-kpis">
+        <div class="g-kpi"><div class="g-kpi-label">Vendas</div><div class="g-kpi-val" id="d-vendas">—</div><div id="d-vendas-d"></div></div>
+        <div class="g-kpi"><div class="g-kpi-label">Receita líquida</div><div class="g-kpi-val" id="d-liq">—</div><div id="d-liq-d"></div></div>
+        <div class="g-kpi"><div class="g-kpi-label">Gasto Meta</div><div class="g-kpi-val" id="d-meta">—</div><div id="d-meta-d"></div></div>
+        <div class="g-kpi"><div class="g-kpi-label">Lucro do curso</div><div class="g-kpi-val" id="d-lucro">—</div><div id="d-lucro-d"></div><div class="as-k-sub" id="d-lucro-dia"></div></div>
+        <div class="g-kpi"><div class="g-kpi-label">ROAS real</div><div class="g-kpi-val" id="d-roas">—</div><div id="d-roas-d"></div></div>
+        <div class="g-kpi"><div class="g-kpi-label">Ticket médio</div><div class="g-kpi-val" id="d-ticket">—</div><div id="d-ticket-d"></div></div>
       </div>
 
       <!-- Gráfico Diário -->
       <div class="block" id="bloco-chart-dias">
         <div class="block-head">
-          <div class="block-head-title"><span class="bdot" style="background:var(--green)"></span>Evolução Diária</div>
-          <span style="font-size:11px;color:var(--muted);font-family:var(--mono);" id="chart-dias-sub">receita × gasto · dia a dia</span>
+          <div class="block-head-title">Dia a dia no mês</div>
+          <span class="g-hint" id="chart-dias-sub">receita × gasto · dia a dia</span>
+        </div>
+        <div class="g-legend">
+          <span><i style="background:var(--s-ment)"></i>Receita líquida</span>
+          <span><i style="background:#e66767"></i>Gasto Meta</span>
+          <span><i style="background:var(--amber);height:3px;border-radius:2px"></i>Lucro do dia</span>
         </div>
         <div class="chart-wrap" id="chart-dias">
           <div style="padding:30px;text-align:center;color:var(--muted);font-size:12px;">Carregando gráfico...</div>
         </div>
-        <div class="chart-legend">
-          <div class="cl-item"><span class="cl-swatch" style="background:var(--green)"></span>Receita líquida</div>
-          <div class="cl-item"><span class="cl-swatch" style="background:var(--red);opacity:.75"></span>Gasto Meta</div>
-          <div class="cl-item"><span class="cl-line" style="background:var(--amber);box-shadow:0 0 6px rgba(245,166,35,.6)"></span>Lucro acumulado</div>
-        </div>
       </div>
 
       <!-- Criativos + Semanas -->
-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px;">
+      <div class="g-grid-2 g-grid-top">
 
         <!-- Criativos -->
         <div class="block">
           <div class="block-head">
-            <div class="block-head-title"><span class="bdot" style="background:var(--amber)"></span>Criativos</div>
-            <span style="font-size:11px;color:var(--muted);">por investimento</span>
+            <div class="block-head-title">Criativos</div>
+            <span class="g-hint">por investimento · cor = ROAS</span>
           </div>
           <div id="criativos-list" style="padding:8px 0;">
             <div style="padding:20px;text-align:center;color:var(--muted);font-size:12px;">Carregando...</div>
@@ -1115,7 +1118,7 @@ input[type="month"]::-webkit-calendar-picker-indicator { filter:invert(.6);curso
         <!-- Semanas -->
         <div class="block">
           <div class="block-head">
-            <div class="block-head-title"><span class="bdot" style="background:var(--blue)"></span>Por Semana</div>
+            <div class="block-head-title">Por semana</div>
           </div>
           <div style="overflow-x:auto;">
             <table class="tbl" id="semanas-table">
@@ -1133,7 +1136,7 @@ input[type="month"]::-webkit-calendar-picker-indicator { filter:invert(.6);curso
       <!-- Dia a Dia -->
       <div class="block">
         <div class="block-head" style="cursor:pointer;" onclick="toggleDiaDia()">
-          <div class="block-head-title"><span class="bdot" style="background:var(--purple)"></span>Dia a Dia</div>
+          <div class="block-head-title">Tabela dia a dia</div>
           <span id="diadiatoggle" style="font-size:11px;color:var(--muted);">▼ expandir</span>
         </div>
         <div id="diadiabody" style="display:none;overflow-x:auto;">
@@ -2861,8 +2864,7 @@ function renderFinVisual(mk) {
   if (!passos.length) { el.innerHTML = '<div class="g-empty">Sem movimento nesse mês.</div>'; return; }
   const W = 560, H = 360, mL = 46, mR = 10, mT = 24, mB = 40, pw = W-mL-mR, ph = H-mT-mB;
   const minV = Math.min(0, m.lucro);
-  const { passo, topo } = eixoBonito(Math.max(m.receita, 1) - minV);
-  const base = minV < 0 ? -Math.ceil(-minV / passo) * passo : 0;
+  const { passo, base, topo } = eixoFaixa(minV, Math.max(m.receita, 1));
   const y = v => mT + ph - (v - base) / topo * ph;
   const n = passos.length + 1, gw = pw / n, bw = Math.min(gw * .62, 44);
   let g = '', bars = '', hits = '';
@@ -3052,6 +3054,12 @@ function eixoBonito(max) {
   const passo = [1, 2, 2.5, 5, 10].map(x => x * mag).find(x => x >= bruto) || mag * 10;
   return { passo, topo: Math.ceil(max / passo) * passo || passo };
 }
+// Eixo que pode ter valores negativos: base (≤0) e altura total cobrindo do mínimo ao máximo
+function eixoFaixa(minV, maxV) {
+  const { passo } = eixoBonito(Math.max(maxV - minV, 1));
+  const base = minV < 0 ? -Math.ceil(-minV / passo) * passo : 0;
+  return { passo, base, topo: Math.ceil((maxV - base) / passo) * passo || passo };
+}
 
 function renderGeralReceita(meses) {
   const usadas = FRENTES.filter(fr => meses.some(m => m[fr.k] > 0));
@@ -3097,8 +3105,7 @@ function renderGeralLucro(meses, proj) {
   document.getElementById('g-lucro-hint').textContent = 'linha tracejada = meta';
   const W = 560, H = 270, mL = 46, mR = 14, mT = 22, mB = 28, pw = W-mL-mR, ph = H-mT-mB;
   const minV = Math.min(0, ...pts.map(p => p.v));
-  const { passo, topo } = eixoBonito(Math.max(META_LUCRO * 1.08, ...pts.map(p => p.v)) - minV);
-  const base = minV < 0 ? -Math.ceil(-minV / passo) * passo : 0;
+  const { passo, base, topo } = eixoFaixa(minV, Math.max(META_LUCRO * 1.08, ...pts.map(p => p.v)));
   const y = v => mT + ph - (v - base) / (topo) * ph;
   const x = i => mL + (pts.length === 1 ? pw/2 : pw * i / (pts.length-1));
   let g = '';
@@ -3345,71 +3352,71 @@ function kfmt(v) {
   return Math.round(v).toString();
 }
 
-// rows: [{label, liq, gasto, lucro, linha, tip}] — linha em escala própria (direita)
-function renderComboChart(elId, rows, opts) {
+// rows: [{label, liq, gasto, linha, tip}] — barras e linha na MESMA escala (um eixo só)
+function renderComboChart(elId, rows) {
   const el = document.getElementById(elId);
   if (!el || !rows.length) { if (el) el.innerHTML = '<div style="padding:30px;text-align:center;color:var(--muted);font-size:12px;">Sem dados para este período</div>'; return; }
-  const W = 1000, H = 250, mL = 48, mR = 52, mT = 14, mB = 26;
+  const W = 1000, H = 270, mL = 50, mR = 12, mT = 16, mB = 28;
   const pw = W - mL - mR, ph = H - mT - mB;
   const n = rows.length;
-
-  const maxBar = Math.max(...rows.map(r => Math.max(r.liq, r.gasto)), 1) * 1.08;
-  const lv = rows.map(r => r.linha);
-  let lMin = Math.min(...lv, 0), lMax = Math.max(...lv, 0);
-  if (lMax === lMin) lMax = lMin + 1;
-  const pad = (lMax - lMin) * .1; lMin -= pad; lMax += pad;
-
-  const yBar  = v => mT + ph - (v / maxBar) * ph;
-  const yLine = v => mT + ph - ((v - lMin) / (lMax - lMin)) * ph;
+  const minV = Math.min(0, ...rows.map(r => r.linha));
+  const maxV = Math.max(1, ...rows.map(r => Math.max(r.liq, r.gasto, r.linha)));
+  const { passo, base, topo } = eixoFaixa(minV, maxV);
+  const y = v => mT + ph - (v - base) / topo * ph;
   const gw = pw / n;
-  const bw = Math.min(gw * .3, 26);
+  const bw = Math.max(Math.min(gw * .32, 24), 2);
   const cx = i => mL + gw * i + gw / 2;
 
-  // grid + eixos
   let g = '';
-  for (let i = 0; i <= 4; i++) {
-    const y = mT + ph * i / 4, vb = maxBar * (4 - i) / 4, vl = lMax - (lMax - lMin) * i / 4;
-    g += `<line x1="${mL}" y1="${y}" x2="${W-mR}" y2="${y}" stroke="var(--border)" stroke-dasharray="3 5" stroke-width="1"/>`;
-    g += `<text x="${mL-8}" y="${y+3.5}" text-anchor="end" font-size="9.5" fill="var(--muted)" font-family="var(--mono)">${kfmt(vb)}</text>`;
-    g += `<text x="${W-mR+8}" y="${y+3.5}" text-anchor="start" font-size="9.5" fill="rgba(245,166,35,.55)" font-family="var(--mono)">${kfmt(vl)}</text>`;
-  }
-  // linha do zero da escala da linha (se cruza negativo)
-  if (lMin < 0 && lMax > 0) {
-    const y0 = yLine(0);
-    g += `<line x1="${mL}" y1="${y0}" x2="${W-mR}" y2="${y0}" stroke="rgba(245,166,35,.25)" stroke-dasharray="2 4" stroke-width="1"/>`;
-  }
+  for (let v = base; v <= base + topo + 1; v += passo)
+    g += `<line x1="${mL}" y1="${y(v)}" x2="${W-mR}" y2="${y(v)}" stroke="${v === 0 ? 'var(--axis)' : 'var(--grid)'}" stroke-width="1"/>`
+       + `<text x="${mL-8}" y="${y(v)+3.5}" text-anchor="end" font-size="10" fill="var(--muted)" font-family="var(--mono)">${kfmt(v)}</text>`;
 
-  // barras
   let bars = '', hits = '', labels = '';
   const labelStep = Math.ceil(n / 16);
   rows.forEach((r, i) => {
-    const c = cx(i), dly = (i * .018).toFixed(3);
-    if (r.liq > 0)   bars += `<rect class="bar-anim bar-liq" style="animation-delay:${dly}s" x="${c-bw-1.5}" y="${yBar(r.liq)}" width="${bw}" height="${Math.max(ph+mT-yBar(r.liq),1.5)}" rx="2.5" fill="url(#gradLiq)"/>`;
-    if (r.gasto > 0) bars += `<rect class="bar-anim" style="animation-delay:${dly}s" x="${c+1.5}" y="${yBar(r.gasto)}" width="${bw}" height="${Math.max(ph+mT-yBar(r.gasto),1.5)}" rx="2.5" fill="url(#gradGasto)" opacity=".8"/>`;
-    if (i % labelStep === 0) labels += `<text x="${c}" y="${H-8}" text-anchor="middle" font-size="9.5" fill="var(--muted)" font-family="var(--mono)">${r.label}</text>`;
-    hits += `<rect class="bar-hit" x="${mL+gw*i}" y="${mT}" width="${gw}" height="${ph}" fill="transparent"
+    const c = cx(i);
+    if (r.liq > 0)   bars += `<rect x="${c-bw-1}" y="${y(r.liq)}" width="${bw}" height="${Math.max(y(0)-y(r.liq),1.5)}" rx="${Math.min(3, bw/2)}" fill="var(--s-ment)"/>`;
+    if (r.gasto > 0) bars += `<rect x="${c+1}" y="${y(r.gasto)}" width="${bw}" height="${Math.max(y(0)-y(r.gasto),1.5)}" rx="${Math.min(3, bw/2)}" fill="#e66767"/>`;
+    if (i % labelStep === 0) labels += `<text x="${c}" y="${H-9}" text-anchor="middle" font-size="10" fill="var(--muted)" font-family="var(--mono)">${r.label}</text>`;
+    hits += `<rect x="${mL+gw*i}" y="${mT}" width="${gw}" height="${ph}" fill="transparent"
       onmousemove='tipShow(event, ${JSON.stringify(r.tip).replace(/'/g,"&#39;")})' onmouseleave="tipHide()"/>`;
   });
 
-  // linha
-  const pts = rows.map((r, i) => `${cx(i)},${yLine(r.linha).toFixed(1)}`).join(' ');
+  const pts = rows.map((r, i) => `${cx(i)},${y(r.linha).toFixed(1)}`).join(' ');
   const dots = n <= 40 ? rows.map((r, i) =>
-    `<circle cx="${cx(i)}" cy="${yLine(r.linha).toFixed(1)}" r="2.6" fill="var(--bg)" stroke="var(--amber)" stroke-width="1.6"/>`).join('') : '';
+    `<circle cx="${cx(i)}" cy="${y(r.linha).toFixed(1)}" r="4" fill="var(--amber)" stroke="var(--surface)" stroke-width="2"/>`).join('') : '';
 
-  el.innerHTML = `<svg viewBox="0 0 ${W} ${H}" preserveAspectRatio="xMidYMid meet">
-    <defs>
-      <linearGradient id="gradLiq" x1="0" y1="0" x2="0" y2="1">
-        <stop offset="0%" stop-color="#00e87a"/><stop offset="100%" stop-color="rgba(0,232,122,.25)"/>
-      </linearGradient>
-      <linearGradient id="gradGasto" x1="0" y1="0" x2="0" y2="1">
-        <stop offset="0%" stop-color="#ff4757"/><stop offset="100%" stop-color="rgba(255,71,87,.22)"/>
-      </linearGradient>
-    </defs>
+  el.innerHTML = `<svg viewBox="0 0 ${W} ${H}" preserveAspectRatio="xMidYMid meet" role="img" aria-label="Receita, gasto e lucro">
     ${g}${bars}
-    <polyline points="${pts}" fill="none" stroke="rgba(245,166,35,.22)" stroke-width="6" stroke-linejoin="round" stroke-linecap="round"/>
     <polyline points="${pts}" fill="none" stroke="var(--amber)" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>
     ${dots}${labels}${hits}
   </svg>`;
+}
+
+// Indicadores do curso comparados ao mês anterior. No mês em andamento compara o
+// ritmo por dia (senão um mês pela metade sempre "cairia" contra um mês cheio).
+function deltasCursos(d) {
+  const ant = (d.historico || []).find(h => h.mes_key === mesAnt(d.mes_key));
+  const ids = ['d-vendas-d','d-liq-d','d-meta-d','d-lucro-d','d-roas-d','d-ticket-d'];
+  if (!ant) { ids.forEach(id => { const el = document.getElementById(id); if (el) el.innerHTML = ''; }); return; }
+  const k = d.kpis;
+  const [ay, am] = ant.mes_key.split('-').map(Number);
+  const diasAnt = new Date(ay, am, 0).getDate();
+  const emAndamento = d.mes_key === mesKeyAtual();
+  const diasAtual = emAndamento ? Math.max(1, new Date().getDate()) : diasAnt;
+  const f = emAndamento ? diasAnt / diasAtual : 1;   // escala o mês atual para comparar ritmo
+  const rotulo = `<small class="as-k-sub"> ${emAndamento ? 'no ritmo' : 'vs'} ${nomeMesLongo(ant.mes_key)}</small>`;
+  const inverte = h => h.replace('g-delta up', 'g-delta tmp').replace('g-delta down', 'g-delta up').replace('g-delta tmp', 'g-delta down');
+  const antTicket = ant.vendas ? ant.liq / ant.vendas : 0;
+  const pares = [
+    [k.vendas * f, ant.vendas], [k.liq * f, ant.liq], [k.gasto_meta * f, ant.gasto_meta, true],
+    [k.lucro * f, ant.lucro], [k.roas, ant.roas], [k.ticket, antTicket],
+  ];
+  pares.forEach(([v, a, inv], i) => {
+    const el = document.getElementById(ids[i]);
+    if (el) el.innerHTML = (inv ? inverte(deltaHtml(v, a)) : deltaHtml(v, a)) + rotulo;
+  });
 }
 
 function renderChartDias(dias) {
@@ -3417,7 +3424,7 @@ function renderChartDias(dias) {
   const rows = (dias || []).map(d => {
     acum += d.lucro;
     return {
-      label: d.dia, liq: d.liq, gasto: d.gasto_meta, linha: acum,
+      label: d.dia, liq: d.liq, gasto: d.gasto_meta, linha: d.lucro,
       tip: `<div class="tt-title">Dia ${d.dia}</div>` +
         `<span style="color:var(--green)">▮</span> Receita: <b>${brl(d.liq)}</b> · ${d.vendas} venda${d.vendas!==1?'s':''}<br>` +
         `<span style="color:var(--red)">▮</span> Gasto Meta: <b>${d.gasto_meta>0?brl(d.gasto_meta):'—'}</b><br>` +
@@ -3492,7 +3499,8 @@ async function carregarDashboard(mes) {
   countUp('d-lucro',  k.lucro,  v => brlS(k.lucro >= 0 ? v : -Math.abs(v)));
   countUp('d-roas',   k.roas,   v => roas_fmt(v));
   countUp('d-ticket', k.ticket, v => brl(v));
-  document.getElementById('d-lucro-dia').textContent = brlS(k.lucro / diasNoMes) + '/dia';
+  document.getElementById('d-lucro-dia').textContent = brlS(k.lucro / diasNoMes) + ' por dia';
+  deltasCursos(d);
   ['d-vendas','d-liq','d-meta','d-lucro','d-roas','d-ticket'].forEach(id => {
     const el = document.getElementById(id);
     if (el) el.style.opacity = '1';
@@ -3504,7 +3512,7 @@ async function carregarDashboard(mes) {
 
   // Criativos
   if (d.criativos && d.criativos.length) {
-    const medals = ['🥇','🥈','🥉','4º','5º','6º','7º','8º'];
+    const medals = ['1º','2º','3º','4º','5º','6º','7º','8º','9º','10º'];
     const maxG = d.criativos[0].gasto || 1;
     document.getElementById('criativos-list').innerHTML = d.criativos.map((c, i) => {
       const pct = Math.round((c.gasto / maxG) * 100);
@@ -3512,9 +3520,9 @@ async function carregarDashboard(mes) {
       return `
         <div style="padding:12px 14px;border-bottom:1px solid var(--border);">
           <div style="display:flex;align-items:center;gap:10px;margin-bottom:7px;">
-            <span style="font-size:15px;width:22px;flex-shrink:0;text-align:center;">${medals[i]||'·'}</span>
+            <span class="g-idea-n">${medals[i]||'·'}</span>
             <div style="flex:1;min-width:0;">
-              <div style="font-size:13px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${c.nome}</div>
+              <div style="font-size:13px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;" title="${esc(c.nome)}">${esc(c.nome)}</div>
             </div>
             <div style="text-align:right;flex-shrink:0;">
               <div style="font-family:var(--mono);font-size:14px;font-weight:800;color:${rc(rv)};">${roas_fmt(rv)}</div>
@@ -3587,41 +3595,27 @@ async function carregarDashboard(mes) {
     bloco.id = 'bloco-historico';
     bloco.style.marginTop = '16px';
     bloco.innerHTML = `
-      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:16px;">
-        <div class="kpi-card" style="border:1px solid var(--border2);">
-          <div class="kpi-label">Média Mensal</div>
-          <div style="font-size:clamp(15px,1.6vw,22px);font-weight:800;color:var(--amber);font-family:var(--mono);margin:6px 0;">${brl(mediaLiqMensal)}</div>
-          <div class="kpi-sub">receita líq. · ${nMeses} meses</div>
-          <div style="margin-top:6px;font-size:11px;color:var(--muted);font-family:var(--mono);">lucro médio ${brl(mediaLucroMensal)}/mês</div>
-        </div>
-        <div class="kpi-card" style="border:1px solid var(--border2);">
-          <div class="kpi-label">Média Diária</div>
-          <div style="font-size:clamp(15px,1.6vw,22px);font-weight:800;color:var(--blue);font-family:var(--mono);margin:6px 0;">${brl(mediaLiqDiaria)}</div>
-          <div class="kpi-sub">receita líq. por dia · ${totalDias} dias</div>
-          <div style="margin-top:6px;font-size:11px;color:var(--muted);font-family:var(--mono);">lucro médio ${brl(mediaLucroDiaria)}/dia</div>
-        </div>
-        <div class="kpi-card" style="border:1px solid var(--border2);">
-          <div class="kpi-label">ROAS Médio Geral</div>
-          <div style="font-size:clamp(15px,1.6vw,22px);font-weight:800;color:${rc(mediaRoas)};font-family:var(--mono);margin:6px 0;">${roas_fmt(mediaRoas)}</div>
-          <div class="kpi-sub">média dos ${nMeses} meses</div>
-          <div style="margin-top:6px;font-size:11px;color:var(--muted);font-family:var(--mono);">meta: ≥1.5x para lucro saudável</div>
-        </div>
+      <div class="g-sec-title">Histórico do curso <span class="g-sec-hint">${nMeses} meses com anúncios</span></div>
+      <div class="g-kpis" style="grid-template-columns:repeat(auto-fit,minmax(200px,1fr));">
+        <div class="g-kpi"><div class="g-kpi-label">Média por mês</div><div class="g-kpi-val">${brl(mediaLiqMensal)}</div><div class="as-k-sub">receita líquida · lucro ${brl(mediaLucroMensal)}/mês</div></div>
+        <div class="g-kpi"><div class="g-kpi-label">Média por dia</div><div class="g-kpi-val">${brl(mediaLiqDiaria)}</div><div class="as-k-sub">receita líquida · lucro ${brl(mediaLucroDiaria)}/dia</div></div>
+        <div class="g-kpi"><div class="g-kpi-label">ROAS médio</div><div class="g-kpi-val" style="color:${rc(mediaRoas)}">${roas_fmt(mediaRoas)}</div><div class="as-k-sub">saudável a partir de 1,5x</div></div>
       </div>
       <div class="block">
         <div class="block-head">
-          <div class="block-head-title"><span class="bdot" style="background:var(--amber)"></span>Evolução Mensal</div>
-          <span style="font-size:11px;color:var(--muted);font-family:var(--mono);">receita × gasto · lucro por mês</span>
+          <div class="block-head-title">Mês a mês</div>
+          <span class="g-hint">passe o mouse nas barras</span>
+        </div>
+        <div class="g-legend">
+          <span><i style="background:var(--s-ment)"></i>Receita líquida</span>
+          <span><i style="background:#e66767"></i>Gasto Meta</span>
+          <span><i style="background:var(--amber);height:3px;border-radius:2px"></i>Lucro do mês</span>
         </div>
         <div class="chart-wrap" id="chart-mensal"></div>
-        <div class="chart-legend">
-          <div class="cl-item"><span class="cl-swatch" style="background:var(--green)"></span>Receita líquida</div>
-          <div class="cl-item"><span class="cl-swatch" style="background:var(--red);opacity:.75"></span>Gasto Meta</div>
-          <div class="cl-item"><span class="cl-line" style="background:var(--amber);box-shadow:0 0 6px rgba(245,166,35,.6)"></span>Lucro mensal</div>
-        </div>
       </div>
       <div class="block">
         <div class="block-head">
-          <div class="block-head-title"><span class="bdot" style="background:var(--muted2)"></span>Fechamento Mensal</div>
+          <div class="block-head-title">Fechamento mensal</div>
         </div>
         <div style="overflow-x:auto;">
           <table class="tbl">
