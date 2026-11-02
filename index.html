@@ -663,6 +663,90 @@ body::after {
 .empty-state .icon { font-size:40px;margin-bottom:12px; }
 .empty-state p { font-size:14px;line-height:1.6; }
 
+/* ── ÍCONES DO MENU ───────────────────────────────────── */
+.nav-icon svg { width: 15px; height: 15px; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+
+/* ── VISÃO GERAL ──────────────────────────────────────── */
+.g-viz {
+  --s-cursos: #3987e5; --s-assess: #d95926; --s-ment: #199e70; --s-saas: #c98500; --s-extra: #d55181;
+  --st-good: #0ca30c; --st-warning: #fab219; --st-serious: #ec835a; --st-critical: #d03b3b;
+  --grid: #2a2e40; --axis: #3b4057;
+}
+.g-head { display:flex; align-items:flex-end; justify-content:space-between; gap:14px; flex-wrap:wrap; margin-bottom:20px; }
+.g-head h2 { font-size:26px; font-weight:800; letter-spacing:-.02em; margin-bottom:5px; }
+.g-head p { font-size:13.5px; color:var(--muted); }
+.g-legenda-status { display:flex; gap:14px; font-size:11.5px; color:var(--muted); }
+.g-legenda-status span { display:flex; align-items:center; gap:6px; }
+.g-st { width:18px; height:18px; border-radius:50%; display:inline-flex; align-items:center; justify-content:center;
+  font-style:normal; font-size:11px; font-weight:800; color:#fff; flex-shrink:0; }
+.g-st-critical { background:var(--st-critical); }
+.g-st-warning  { background:var(--st-warning); color:#0b0b0b; }
+.g-st-serious  { background:var(--st-serious); color:#0b0b0b; }
+.g-st-good     { background:var(--st-good); }
+.g-st-info     { background:var(--border2); }
+
+.g-meta { padding:22px 24px 18px; margin-bottom:22px; }
+.g-meta-top { display:flex; justify-content:space-between; gap:20px; flex-wrap:wrap; margin-bottom:18px; }
+.g-eyebrow { font-size:11px; font-weight:600; letter-spacing:.12em; text-transform:uppercase; color:var(--muted); margin-bottom:8px; }
+.g-meta-val { font-size:34px; font-weight:700; letter-spacing:-.03em; line-height:1.1; }
+.g-meta-de { font-size:15px; font-weight:500; color:var(--muted); letter-spacing:0; }
+.g-meta-sub { font-size:12.5px; color:var(--muted2); margin-top:6px; }
+.g-meta-proj { text-align:right; }
+.g-proj-val { font-size:24px; font-weight:700; letter-spacing:-.02em; }
+.g-bar { position:relative; height:14px; border-radius:7px; background:var(--surface2); border:1px solid var(--border); overflow:hidden; }
+.g-bar-fill { position:absolute; inset:0 auto 0 0; width:0; border-radius:7px; background:var(--amber); z-index:2; transition:width .9s cubic-bezier(.22,1,.36,1); }
+.g-bar-proj { position:absolute; inset:0 auto 0 0; width:0; border-radius:7px; z-index:1; transition:width .9s cubic-bezier(.22,1,.36,1);
+  background:repeating-linear-gradient(135deg, rgba(245,166,35,.45) 0 4px, rgba(245,166,35,.15) 4px 8px); }
+.g-bar-scale { display:flex; justify-content:space-between; font-size:10.5px; color:var(--muted); font-family:var(--mono); margin-top:6px; }
+
+.g-sec-title { display:flex; align-items:baseline; gap:10px; font-size:15px; font-weight:700; margin:4px 0 12px; }
+.g-sec-hint, .g-hint { font-size:11.5px; font-weight:400; color:var(--muted); }
+.g-kpis { display:grid; grid-template-columns:repeat(auto-fit,minmax(160px,1fr)); gap:14px; margin-bottom:22px; }
+.g-kpi { background:var(--card-grad), var(--surface); border:1px solid var(--border); border-radius:var(--radius); padding:16px 18px; }
+.g-kpi-label { font-size:11.5px; color:var(--muted); margin-bottom:10px; }
+.g-kpi-val { font-size:23px; font-weight:700; letter-spacing:-.02em; line-height:1; margin-bottom:8px; }
+.g-delta { display:inline-flex; align-items:center; gap:4px; font-size:12px; font-weight:600; }
+.g-delta.up { color:var(--st-good); } .g-delta.down { color:#ff6b6b; } .g-delta.flat { color:var(--muted); }
+.g-delta small { font-weight:400; color:var(--muted); }
+
+.g-grid-2 { display:grid; grid-template-columns:repeat(auto-fit,minmax(min(100%,460px),1fr)); gap:18px; margin-bottom:18px; }
+.g-grid-2 > .block { margin-bottom:0; }
+.g-grid-top { align-items:start; }
+.g-legend { display:flex; flex-wrap:wrap; gap:6px 16px; padding:14px 20px 0; font-size:12px; color:var(--muted2); }
+.g-legend span { display:flex; align-items:center; gap:6px; }
+.g-legend i { width:10px; height:10px; border-radius:3px; display:inline-block; }
+
+.g-mix-bar { display:flex; height:26px; gap:2px; border-radius:6px; overflow:hidden; margin-bottom:16px; }
+.g-mix-bar div { min-width:3px; }
+.g-mix-row { display:flex; align-items:center; gap:10px; font-size:13px; padding:7px 0; border-bottom:1px solid var(--border); }
+.g-mix-row:last-child { border-bottom:none; }
+.g-mix-row i { width:10px; height:10px; border-radius:3px; flex-shrink:0; }
+.g-mix-row .nm { flex:1; }
+.g-mix-row .vl { font-family:var(--mono); font-variant-numeric:tabular-nums; }
+.g-mix-row .pc { font-family:var(--mono); color:var(--muted); width:44px; text-align:right; font-variant-numeric:tabular-nums; }
+
+.g-list { padding:6px 0; }
+.g-item { display:flex; gap:12px; padding:13px 20px; border-bottom:1px solid var(--border); }
+.g-item:last-child { border-bottom:none; }
+.g-item .g-st { margin-top:1px; }
+.g-item-t { font-size:13.5px; font-weight:600; margin-bottom:3px; }
+.g-item-d { font-size:12.5px; color:var(--muted2); line-height:1.5; }
+.g-item-a { margin-top:6px; font-size:12px; color:var(--amber); cursor:pointer; background:none; border:none; padding:0; font-family:inherit; }
+.g-item-a:hover { text-decoration:underline; }
+.g-idea-n { width:22px; height:22px; border-radius:7px; background:var(--amber-dim); color:var(--amber); font-size:12px; font-weight:700;
+  display:flex; align-items:center; justify-content:center; flex-shrink:0; }
+.g-rodape { font-size:11.5px; color:var(--muted); margin-top:8px; line-height:1.6; }
+.g-empty { padding:24px 20px; color:var(--muted); font-size:13px; }
+@media(max-width:640px){
+  .g-meta-proj { text-align:left; }
+  .g-meta-val { font-size:28px; }
+  .g-legenda-status { display:none; }
+  .g-kpis { grid-template-columns:1fr 1fr; gap:10px; }
+  .g-kpi { padding:13px 14px; }
+  .g-kpi-val { font-size:19px; }
+  .g-meta { padding:18px 16px 14px; }
+}
+
 ::-webkit-scrollbar { width:5px; height:5px; }
 ::-webkit-scrollbar-thumb { background:var(--border2);border-radius:3px; }
 input[type="date"]::-webkit-calendar-picker-indicator,
@@ -731,29 +815,36 @@ input[type="month"]::-webkit-calendar-picker-indicator { filter:invert(.6);curso
   </div>
 
   <nav class="sidebar-nav">
-    <div class="nav-section-label">Gestão</div>
-    <div class="nav-item active" onclick="showPage('dashboard')" id="nav-dashboard">
-      <span class="nav-icon">📊</span>
+    <div class="nav-section-label">Negócio</div>
+    <div class="nav-item active" onclick="showPage('geral')" id="nav-geral">
+      <span class="nav-icon"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="9" rx="1.5"/><rect x="14" y="3" width="7" height="5" rx="1.5"/><rect x="14" y="12" width="7" height="9" rx="1.5"/><rect x="3" y="16" width="7" height="5" rx="1.5"/></svg></span>
+      <span>Visão Geral</span>
+      <span class="nav-badge" id="nb-geral" style="display:none;background:var(--red);color:#fff">0</span>
+    </div>
+
+    <div class="nav-section-label" style="margin-top:8px">Gestão</div>
+    <div class="nav-item" onclick="showPage('dashboard')" id="nav-dashboard">
+      <span class="nav-icon"><svg viewBox="0 0 24 24"><path d="M3 3v18h18"/><path d="M7 15l4-4 3 3 5-6"/></svg></span>
       <span>Dashboard Cursos</span>
     </div>
     <div class="nav-item" onclick="showPage('mentorias')" id="nav-mentorias">
-      <span class="nav-icon">📅</span>
+      <span class="nav-icon"><svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/></svg></span>
       <span>Agenda Mentorias</span>
       <span class="nav-badge" id="nb-disp" style="display:none">0</span>
     </div>
     <div class="nav-item" onclick="showPage('assessorias')" id="nav-assessorias">
-      <span class="nav-icon">🏪</span>
+      <span class="nav-icon"><svg viewBox="0 0 24 24"><path d="M4 10l1.5-5h13L20 10"/><path d="M4 10a2.7 2.7 0 0 0 5.3 0 2.7 2.7 0 0 0 5.4 0 2.7 2.7 0 0 0 5.3 0"/><path d="M5 12v8h14v-8M10 20v-5h4v5"/></svg></span>
       <span>Assessorias de Loja</span>
       <span class="nav-badge" id="nb-assess" style="display:none;background:var(--red);color:#fff">0</span>
     </div>
     <div class="nav-item" onclick="showPage('saas')" id="nav-saas">
-      <span class="nav-icon">💻</span>
+      <span class="nav-icon"><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="12" rx="2"/><path d="M8 20h8M12 16v4"/></svg></span>
       <span>SaaS Gestão</span>
     </div>
 
     <div class="nav-section-label" style="margin-top:8px">Financeiro</div>
     <div class="nav-item" onclick="showPage('financeiro')" id="nav-financeiro">
-      <span class="nav-icon">💰</span>
+      <span class="nav-icon"><svg viewBox="0 0 24 24"><rect x="2" y="6" width="20" height="13" rx="2"/><circle cx="12" cy="12.5" r="2.5"/><path d="M6 9.5v.01M18 15.5v.01"/></svg></span>
       <span>Visão Financeira</span>
     </div>
   </nav>
@@ -772,16 +863,115 @@ input[type="month"]::-webkit-calendar-picker-indicator { filter:invert(.6);curso
   <!-- TOP BAR -->
   <div class="topbar">
     <div>
-      <div class="topbar-title" id="page-title">Dashboard Cursos</div>
-      <div class="topbar-sub" id="page-sub">Meta Ads + Hotmart · atualização automática via GitHub Actions</div>
+      <div class="topbar-title" id="page-title">Visão Geral</div>
+      <div class="topbar-sub" id="page-sub">Todas as frentes do negócio · progresso, alertas e ideias</div>
     </div>
     <div class="topbar-right">
       <div class="topbar-date" id="topbar-date"></div>
     </div>
   </div>
 
+  <!-- ── PÁGINA: VISÃO GERAL ── -->
+  <div class="page active g-viz" id="page-geral">
+    <div class="container" style="max-width:1160px;">
+
+      <div class="g-head">
+        <div>
+          <h2 id="g-saudacao">Visão Geral</h2>
+          <p id="g-head-sub">carregando seus números...</p>
+        </div>
+        <div class="g-legenda-status" aria-hidden="true">
+          <span><i class="g-st g-st-critical">!</i>urgente</span>
+          <span><i class="g-st g-st-warning">!</i>atenção</span>
+          <span><i class="g-st g-st-good">✓</i>indo bem</span>
+        </div>
+      </div>
+
+      <!-- Meta -->
+      <div class="block g-meta">
+        <div class="g-meta-top">
+          <div>
+            <div class="g-eyebrow">Meta de lucro limpo</div>
+            <div class="g-meta-val"><span id="g-meta-atual">—</span><span class="g-meta-de"> de <span id="g-meta-alvo">R$50.000</span>/mês</span></div>
+            <div class="g-meta-sub" id="g-meta-sub">—</div>
+          </div>
+          <div class="g-meta-proj">
+            <div class="g-eyebrow" id="g-proj-titulo">Projeção do mês atual</div>
+            <div class="g-proj-val" id="g-proj-val">—</div>
+            <div class="g-meta-sub" id="g-proj-sub">—</div>
+          </div>
+        </div>
+        <div class="g-bar" role="img" id="g-meta-bar-wrap">
+          <div class="g-bar-fill" id="g-meta-bar"></div>
+          <div class="g-bar-proj" id="g-proj-bar"></div>
+        </div>
+        <div class="g-bar-scale"><span>R$0</span><span>R$25 mil</span><span>R$50 mil</span></div>
+      </div>
+
+      <!-- KPIs do último mês fechado -->
+      <div class="g-sec-title"><span id="g-kpi-titulo">Último mês fechado</span><span class="g-sec-hint" id="g-kpi-hint">comparado com o mês anterior</span></div>
+      <div class="g-kpis" id="g-kpis"></div>
+
+      <!-- Progressão -->
+      <div class="g-grid-2">
+        <div class="block">
+          <div class="block-head">
+            <div class="block-head-title">Receita por frente, mês a mês</div>
+            <span class="g-hint">passe o mouse nas barras</span>
+          </div>
+          <div class="g-legend" id="g-legend-receita"></div>
+          <div class="chart-wrap" id="g-chart-receita"></div>
+        </div>
+        <div class="block">
+          <div class="block-head">
+            <div class="block-head-title">Lucro limpo vs. meta</div>
+            <span class="g-hint" id="g-lucro-hint"></span>
+          </div>
+          <div class="chart-wrap" id="g-chart-lucro"></div>
+        </div>
+      </div>
+
+      <div class="g-grid-2">
+        <div class="block">
+          <div class="block-head">
+            <div class="block-head-title">De onde vem seu dinheiro</div>
+            <span class="g-hint" id="g-mix-hint"></span>
+          </div>
+          <div class="block-body" id="g-mix"></div>
+        </div>
+        <div class="block">
+          <div class="block-head">
+            <div class="block-head-title">Carteira de assessorias</div>
+            <span class="g-hint">lojas que pagaram em cada mês</span>
+          </div>
+          <div class="chart-wrap" id="g-chart-lojas"></div>
+        </div>
+      </div>
+
+      <!-- Atenção + ideias -->
+      <div class="g-grid-2 g-grid-top">
+        <div class="block">
+          <div class="block-head">
+            <div class="block-head-title">Pontos de atenção</div>
+            <span class="g-hint" id="g-alertas-hint"></span>
+          </div>
+          <div class="g-list" id="g-alertas"></div>
+        </div>
+        <div class="block">
+          <div class="block-head">
+            <div class="block-head-title">Ideias pra crescer</div>
+            <span class="g-hint">calculadas com os seus números</span>
+          </div>
+          <div class="g-list" id="g-ideias"></div>
+        </div>
+      </div>
+
+      <p class="g-rodape" id="g-rodape"></p>
+    </div>
+  </div>
+
   <!-- ── PÁGINA: DASHBOARD ── -->
-  <div class="page active" id="page-dashboard">
+  <div class="page" id="page-dashboard">
     <div class="container" style="max-width:1100px;">
 
       <!-- Header + atualização -->
@@ -1394,6 +1584,7 @@ let dadosCursos   = null;   // último JSON carregado do dashboard (alimenta o F
 // NAV
 // ══════════════════════════════════════════════════════════════
 const pageTitles = {
+  geral:        ['Visão Geral', 'Todas as frentes do negócio · progresso, alertas e ideias'],
   dashboard:    ['Dashboard Cursos', 'Meta Ads + Hotmart · atualização automática via GitHub Actions'],
   mentorias:    ['Agenda de Mentorias', 'Gestão de slots e agendamentos · Firebase Realtime DB'],
   assessorias:  ['Assessorias de Loja', 'Clientes recorrentes · login, renovação e pagamentos'],
@@ -1410,6 +1601,7 @@ function showPage(page) {
   document.getElementById('page-title').textContent = title;
   document.getElementById('page-sub').textContent = sub;
   if (page === 'financeiro') calcFinanceiro();
+  if (page === 'geral') renderGeral();
 }
 
 // ══════════════════════════════════════════════════════════════
@@ -1453,6 +1645,7 @@ async function carregarSlots() {
     liberarHoldsExpirados();
     renderMentorias();
     atualizarBadgeMent();
+    atualizarGeral();
   } catch(e) {}
 }
 
@@ -1811,6 +2004,7 @@ async function carregarAssessorias() {
     todosAssessorias = r.ok ? ((await r.json()) || {}) : {};
   } catch(e) { todosAssessorias = {}; }
   renderAssessorias();
+  atualizarGeral();
 }
 
 function mesKeyAtual() {
@@ -2463,6 +2657,385 @@ function calcFinanceiro() {
   set('fin-geral-meta',  br(Math.round(somaMeta)));
   set('fin-geral-lucro', sinal(Math.round(geralLucro)));
   set('fin-geral-sub',   `${meses.length} meses de cursos · histórico de assessorias · ${slots.filter(s=>!s.disponivel).length} mentorias realizadas${extraRecTotal ? ' · receitas manuais incluídas' : ''}`);
+  atualizarGeral();
+}
+
+// ══════════════════════════════════════════════════════════════
+// VISÃO GERAL — junta todas as frentes mês a mês. Só lê, nunca grava.
+// ══════════════════════════════════════════════════════════════
+const META_LUCRO = 50000;
+const FRENTES = [
+  { k:'cursos', nome:'Cursos (Hotmart)', cor:'var(--s-cursos)' },
+  { k:'assess', nome:'Assessorias',      cor:'var(--s-assess)' },
+  { k:'ment',   nome:'Mentorias',        cor:'var(--s-ment)'   },
+  { k:'saas',   nome:'SaaS Gestão',      cor:'var(--s-saas)'   },
+  { k:'extra',  nome:'Outras receitas',  cor:'var(--s-extra)'  },
+];
+const mkDe = d => `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}`;
+const mesAnt = mk => { const [y,m] = mk.split('-').map(Number); return mkDe(new Date(y, m-2, 1)); };
+const nomeMes = mk => MESES_PT[mk];
+const nomeMesLongo = mk => ['janeiro','fevereiro','março','abril','maio','junho','julho','agosto','setembro','outubro','novembro','dezembro'][+mk.split('-')[1]-1];
+const pagou = (a, mk) => !!(a.pagamentos && a.pagamentos[mk]);
+const diasDesde = d => d ? Math.floor((new Date().setHours(0,0,0,0) - new Date(d + 'T00:00:00')) / 86400000) : Infinity;
+
+function numerosDoMes(mk) {
+  const c = mesesFinanceiro().find(x => x.mes_key === mk);
+  const preco = parseFloat(configAtual.preco) || 0;
+  const assessArr = getAssessorias();
+  const mentQtd = Object.values(todosSlots).filter(s => !s.disponivel && s.data.startsWith(mk)).length;
+  const v = {
+    mk,
+    cursos: c ? (c.liq || 0) : 0,
+    assess: assessArr.reduce((s, a) => s + (parseFloat(a.pagamentos?.[mk]?.valor) || 0), 0),
+    ment:   mentQtd * preco,
+    saas:   saasLicencas.reduce((s, l) => s + ((l.status !== 'cancelada' && l.pagoEm && mkDe(l.pagoEm) === mk) ? (l.valor || 0) : 0), 0),
+    extra:  somaLancamentos('receita', mk),
+    meta:   c ? (c.gasto_meta || 0) : 0,
+    fixos:  totalFixosMes(),
+    despesa: somaLancamentos('despesa', mk),
+    lojas:  assessArr.filter(a => pagou(a, mk)).length,
+    mentQtd,
+    vendasCurso: c ? (c.vendas || 0) : 0,
+    roas:   c ? (c.roas || 0) : 0,
+  };
+  v.receita = v.cursos + v.assess + v.ment + v.saas + v.extra;
+  v.custos  = v.meta + v.fixos + v.despesa;
+  v.lucro   = v.receita - v.custos;
+  return v;
+}
+
+// Mês atual em andamento: assessoria conta quem pagou + quem pagou mês passado e
+// ainda vai renovar; cursos seguem o ritmo do mês (ou o mês passado, no comecinho).
+function projecaoMesAtual(atual, anterior) {
+  const hoje = new Date(), dia = hoje.getDate();
+  const diasMes = new Date(hoje.getFullYear(), hoje.getMonth()+1, 0).getDate();
+  const p = { ...atual };
+  const faltaRenovar = getAssessorias().filter(a => !pagou(a, atual.mk) && pagou(a, anterior.mk));
+  p.assess = atual.assess + faltaRenovar.reduce((s, a) => s + (parseFloat(a.valor) || 0), 0);
+  if (dia < 7) { p.cursos = anterior.cursos; p.meta = anterior.meta; }
+  else { p.cursos = atual.cursos * diasMes / dia; p.meta = atual.meta * diasMes / dia; }
+  p.receita = p.cursos + p.assess + p.ment + p.saas + p.extra;
+  p.custos  = p.meta + p.fixos + p.despesa;
+  p.lucro   = p.receita - p.custos;
+  p.faltaRenovar = faltaRenovar;
+  return p;
+}
+
+let geralTimer = null;
+function atualizarGeral() { clearTimeout(geralTimer); geralTimer = setTimeout(renderGeral, 150); }
+
+function renderGeral() {
+  const atualMk = mesKeyAtual();
+  const fechadoMk = mesAnt(atualMk);
+  const meses = [];
+  for (let mk = atualMk, i = 0; i < 8; i++, mk = mesAnt(mk)) meses.unshift(numerosDoMes(mk));
+  while (meses.length > 2 && meses[0].receita === 0) meses.shift();
+  const atual = meses[meses.length-1];
+  const fechado = meses[meses.length-2] || numerosDoMes(fechadoMk);
+  const antes = meses[meses.length-3] || numerosDoMes(mesAnt(fechadoMk));
+  const proj = projecaoMesAtual(atual, fechado);
+
+  const h = new Date().getHours();
+  document.getElementById('g-saudacao').textContent = (h < 12 ? 'Bom dia' : h < 18 ? 'Boa tarde' : 'Boa noite') + ', Bruno';
+  document.getElementById('g-head-sub').textContent = dbAuth.currentUser
+    ? `Resumo de todas as frentes · ${nomeMesLongo(fechadoMk)} fechado e ${nomeMesLongo(atualMk)} em andamento`
+    : 'Entre com Google (canto da tela) para ver assessorias e o financeiro completo';
+
+  renderGeralMeta(fechado, proj);
+  renderGeralKpis(fechado, antes);
+  renderGeralReceita(meses);
+  renderGeralLucro(meses, proj);
+  renderGeralMix(fechado);
+  renderGeralLojas(meses);
+  const alertas = renderGeralAlertas(atual, fechado, antes, proj);
+  renderGeralIdeias(fechado, antes);
+
+  const urg = alertas.filter(a => a.nivel === 'critical' || a.nivel === 'serious').length;
+  const nb = document.getElementById('nb-geral');
+  nb.textContent = urg; nb.style.display = urg ? '' : 'none';
+
+  const preco = parseFloat(configAtual.preco) || 0;
+  document.getElementById('g-rodape').textContent =
+    `Como é calculado: cursos = receita líquida da Hotmart; assessorias = pagamentos registrados no mês; mentorias = horários ocupados × R$${preco.toLocaleString('pt-BR')} (preço atual); `
+    + `lucro limpo = receitas − Meta Ads − custos fixos − gastos lançados.${saasLicencas.length ? '' : ' SaaS só entra depois de entrar na aba SaaS Gestão.'}`;
+}
+
+function renderGeralMeta(fechado, proj) {
+  const pct = v => Math.max(0, Math.min(100, v / META_LUCRO * 100));
+  document.getElementById('g-meta-atual').textContent = brl(fechado.lucro);
+  document.getElementById('g-meta-alvo').textContent = brl(META_LUCRO);
+  const falta = META_LUCRO - fechado.lucro;
+  document.getElementById('g-meta-sub').textContent = falta > 0
+    ? `${nomeMesLongo(fechado.mk)}: ${Math.round(pct(fechado.lucro))}% da meta · faltam ${brl(falta)} por mês`
+    : `${nomeMesLongo(fechado.mk)}: meta batida, +${brl(-falta)} acima`;
+  document.getElementById('g-proj-titulo').textContent = `Projeção de ${nomeMesLongo(proj.mk)}`;
+  document.getElementById('g-proj-val').textContent = brl(proj.lucro);
+  document.getElementById('g-proj-sub').textContent = proj.faltaRenovar.length
+    ? `se ${proj.faltaRenovar.length} loja${proj.faltaRenovar.length>1?'s':''} renovar${proj.faltaRenovar.length>1?'em':''} · ${Math.round(pct(proj.lucro))}% da meta`
+    : `${Math.round(pct(proj.lucro))}% da meta`;
+  document.getElementById('g-meta-bar').style.width = pct(fechado.lucro) + '%';
+  document.getElementById('g-proj-bar').style.width = pct(proj.lucro) + '%';
+  document.getElementById('g-meta-bar-wrap').setAttribute('aria-label',
+    `Lucro de ${nomeMesLongo(fechado.mk)} ${brl(fechado.lucro)}, projeção ${brl(proj.lucro)}, meta ${brl(META_LUCRO)}`);
+}
+
+function deltaHtml(atual, antes, fmtFn) {
+  if (!antes) return `<span class="g-delta flat">— <small>sem mês anterior</small></span>`;
+  const d = atual - antes, p = Math.round(d / Math.abs(antes) * 100);
+  if (Math.abs(p) < 1) return `<span class="g-delta flat">= estável</span>`;
+  return `<span class="g-delta ${d > 0 ? 'up' : 'down'}">${d > 0 ? '▲' : '▼'} ${Math.abs(p)}% <small>${fmtFn ? fmtFn(Math.abs(d)) : ''}</small></span>`;
+}
+
+function renderGeralKpis(f, a) {
+  document.getElementById('g-kpi-titulo').textContent = `${nomeMesLongo(f.mk)[0].toUpperCase() + nomeMesLongo(f.mk).slice(1)} fechado`;
+  document.getElementById('g-kpi-hint').textContent = `comparado com ${nomeMesLongo(a.mk)}`;
+  const margem = v => v.receita > 0 ? Math.round(v.lucro / v.receita * 100) : 0;
+  const ticket = v => v.lojas ? v.assess / v.lojas : 0;
+  const cards = [
+    ['Receita total',      brl(f.receita), deltaHtml(f.receita, a.receita, brl)],
+    ['Lucro limpo',        brl(f.lucro),   deltaHtml(f.lucro, a.lucro, brl)],
+    ['Margem',             margem(f) + '%', deltaHtml(margem(f), margem(a))],
+    ['Lojas pagando',      f.lojas,        deltaHtml(f.lojas, a.lojas, v => '+' + v)],
+    ['Ticket por loja',    brl(ticket(f)), deltaHtml(ticket(f), ticket(a), brl)],
+    ['Mentorias',          f.mentQtd,      deltaHtml(f.mentQtd, a.mentQtd)],
+  ];
+  document.getElementById('g-kpis').innerHTML = cards.map(([l, v, d]) =>
+    `<div class="g-kpi"><div class="g-kpi-label">${l}</div><div class="g-kpi-val">${v}</div>${d}</div>`).join('');
+}
+
+// Eixo com passos "bonitos" (0, 10k, 20k...)
+function eixoBonito(max) {
+  const bruto = max / 4, mag = Math.pow(10, Math.floor(Math.log10(bruto || 1)));
+  const passo = [1, 2, 2.5, 5, 10].map(x => x * mag).find(x => x >= bruto) || mag * 10;
+  return { passo, topo: Math.ceil(max / passo) * passo || passo };
+}
+
+function renderGeralReceita(meses) {
+  const usadas = FRENTES.filter(fr => meses.some(m => m[fr.k] > 0));
+  document.getElementById('g-legend-receita').innerHTML = usadas.map(fr =>
+    `<span><i style="background:${fr.cor}"></i>${fr.nome}</span>`).join('');
+  const W = 560, H = 270, mL = 46, mR = 10, mT = 22, mB = 28, pw = W-mL-mR, ph = H-mT-mB;
+  const { passo, topo } = eixoBonito(Math.max(...meses.map(m => m.receita), 1));
+  const y = v => mT + ph - v / topo * ph;
+  const gw = pw / meses.length, bw = Math.min(gw * .56, 46);
+  let g = '';
+  for (let v = 0; v <= topo; v += passo) {
+    g += `<line x1="${mL}" x2="${W-mR}" y1="${y(v)}" y2="${y(v)}" stroke="${v ? 'var(--grid)' : 'var(--axis)'}" stroke-width="1"/>`
+       + `<text x="${mL-8}" y="${y(v)+3.5}" text-anchor="end" font-size="10" fill="var(--muted)" font-family="var(--mono)">${kfmt(v)}</text>`;
+  }
+  let bars = '', hits = '';
+  meses.forEach((m, i) => {
+    const x = mL + gw*i + (gw-bw)/2, parcial = i === meses.length-1;
+    let base = 0;
+    const segs = usadas.filter(fr => m[fr.k] > 0);
+    segs.forEach((fr, j) => {
+      const y0 = y(base), y1 = y(base + m[fr.k]);
+      const topoSeg = j === segs.length-1;
+      const hgt = Math.max(y0 - y1 - (j ? 2 : 0), 1);
+      bars += `<rect x="${x}" y="${y1}" width="${bw}" height="${hgt}" rx="${topoSeg ? 4 : 0}" fill="${fr.cor}" opacity="${parcial ? .45 : 1}"/>`;
+      if (topoSeg && hgt > 4) bars += `<rect x="${x}" y="${y1+4}" width="${bw}" height="${hgt-4}" fill="${fr.cor}" opacity="${parcial ? .45 : 1}"/>`;
+      base += m[fr.k];
+    });
+    bars += `<text x="${x+bw/2}" y="${y(m.receita)-7}" text-anchor="middle" font-size="10.5" font-weight="600" fill="var(--muted2)" font-family="var(--mono)">${m.receita ? kfmt(m.receita) : ''}</text>`
+          + `<text x="${x+bw/2}" y="${H-10}" text-anchor="middle" font-size="10.5" fill="var(--muted)" font-family="var(--mono)">${nomeMes(m.mk).replace('/20','/')}${parcial ? '*' : ''}</text>`;
+    const tip = `<div class="tt-title">${nomeMes(m.mk)}${parcial ? ' (em andamento)' : ''}</div>`
+      + segs.slice().reverse().map(fr => `<span style="color:${fr.cor}">■</span> ${fr.nome}: <b>${brl(m[fr.k])}</b>`).join('<br>')
+      + `<br>━━━━━━━━━━━━<br>Receita: <b>${brl(m.receita)}</b><br>Custos: <b>−${brl(m.custos)}</b><br>Lucro limpo: <b style="color:${lc(m.lucro)}">${brlS(m.lucro)}</b>`;
+    hits += `<rect x="${mL+gw*i}" y="${mT}" width="${gw}" height="${ph}" fill="transparent" onmousemove='tipShow(event, ${JSON.stringify(tip).replace(/'/g,"&#39;")})' onmouseleave="tipHide()"/>`;
+  });
+  document.getElementById('g-chart-receita').innerHTML =
+    `<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="Receita por frente nos últimos ${meses.length} meses">${g}${bars}${hits}</svg>`
+    + `<div class="g-hint" style="padding:2px 0 4px;">* mês em andamento</div>`;
+}
+
+function renderGeralLucro(meses, proj) {
+  const fechados = meses.slice(0, -1);
+  const pts = [...fechados.map(m => ({ mk: m.mk, v: m.lucro, m })), { mk: proj.mk, v: proj.lucro, m: proj, proj: true }];
+  document.getElementById('g-lucro-hint').textContent = 'linha tracejada = meta';
+  const W = 560, H = 270, mL = 46, mR = 14, mT = 22, mB = 28, pw = W-mL-mR, ph = H-mT-mB;
+  const minV = Math.min(0, ...pts.map(p => p.v));
+  const { passo, topo } = eixoBonito(Math.max(META_LUCRO * 1.08, ...pts.map(p => p.v)) - minV);
+  const base = minV < 0 ? -Math.ceil(-minV / passo) * passo : 0;
+  const y = v => mT + ph - (v - base) / (topo) * ph;
+  const x = i => mL + (pts.length === 1 ? pw/2 : pw * i / (pts.length-1));
+  let g = '';
+  for (let v = base; v <= base + topo + 1; v += passo) {
+    g += `<line x1="${mL}" x2="${W-mR}" y1="${y(v)}" y2="${y(v)}" stroke="${v === 0 ? 'var(--axis)' : 'var(--grid)'}" stroke-width="1"/>`
+       + `<text x="${mL-8}" y="${y(v)+3.5}" text-anchor="end" font-size="10" fill="var(--muted)" font-family="var(--mono)">${kfmt(v)}</text>`;
+  }
+  g += `<line x1="${mL}" x2="${W-mR}" y1="${y(META_LUCRO)}" y2="${y(META_LUCRO)}" stroke="var(--amber)" stroke-width="1.5" stroke-dasharray="6 5"/>`
+     + `<text x="${W-mR}" y="${y(META_LUCRO)-7}" text-anchor="end" font-size="10.5" font-weight="600" fill="var(--amber)">Meta ${kfmt(META_LUCRO)}</text>`;
+  const real = pts.filter(p => !p.proj);
+  const linha = real.map((p, i) => `${x(i)},${y(p.v).toFixed(1)}`).join(' ');
+  const ult = real.length - 1;
+  let marks = `<polyline points="${linha}" fill="none" stroke="var(--s-ment)" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>`;
+  if (ult >= 0) marks += `<line x1="${x(ult)}" y1="${y(real[ult].v)}" x2="${x(pts.length-1)}" y2="${y(proj.lucro)}" stroke="var(--s-ment)" stroke-width="2" stroke-dasharray="4 4"/>`;
+  let hits = '', labels = '';
+  const gw = pts.length > 1 ? pw / (pts.length - 1) : pw;
+  pts.forEach((p, i) => {
+    marks += p.proj
+      ? `<circle cx="${x(i)}" cy="${y(p.v)}" r="5" fill="var(--surface)" stroke="var(--s-ment)" stroke-width="2" stroke-dasharray="2 2"/>`
+      : `<circle cx="${x(i)}" cy="${y(p.v)}" r="4.5" fill="var(--s-ment)" stroke="var(--surface)" stroke-width="2"/>`;
+    if (i === ult || p.proj) labels += `<text x="${x(i)}" y="${y(p.v)-11}" text-anchor="middle" font-size="10.5" font-weight="600" fill="var(--muted2)" font-family="var(--mono)">${kfmt(p.v)}</text>`;
+    labels += `<text x="${x(i)}" y="${H-10}" text-anchor="middle" font-size="10.5" fill="var(--muted)" font-family="var(--mono)">${nomeMes(p.mk).replace('/20','/')}${p.proj ? '*' : ''}</text>`;
+    const tip = `<div class="tt-title">${nomeMes(p.mk)}${p.proj ? ' (projeção)' : ''}</div>`
+      + `Receita: <b>${brl(p.m.receita)}</b><br>Custos: <b>−${brl(p.m.custos)}</b><br>Lucro limpo: <b style="color:${lc(p.v)}">${brlS(p.v)}</b><br>`
+      + `${Math.round(p.v / META_LUCRO * 100)}% da meta`;
+    hits += `<rect x="${x(i)-gw/2}" y="${mT}" width="${gw}" height="${ph}" fill="transparent" onmousemove='tipShow(event, ${JSON.stringify(tip).replace(/'/g,"&#39;")})' onmouseleave="tipHide()"/>`;
+  });
+  document.getElementById('g-chart-lucro').innerHTML =
+    `<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="Lucro limpo mês a mês comparado com a meta">${g}${marks}${labels}${hits}</svg>`
+    + `<div class="g-hint" style="padding:2px 0 4px;">* projeção do mês em andamento</div>`;
+}
+
+function renderGeralMix(f) {
+  document.getElementById('g-mix-hint').textContent = nomeMesLongo(f.mk);
+  const el = document.getElementById('g-mix');
+  if (!f.receita) { el.innerHTML = '<div class="g-empty">Sem receita registrada nesse mês.</div>'; return; }
+  const itens = FRENTES.filter(fr => f[fr.k] > 0).sort((a, b) => f[b.k] - f[a.k]);
+  el.innerHTML = `<div class="g-mix-bar" role="img" aria-label="Divisão da receita por frente">`
+    + itens.map(fr => `<div style="flex:${f[fr.k]};background:${fr.cor}" title="${fr.nome}"></div>`).join('') + `</div>`
+    + itens.map(fr => `<div class="g-mix-row"><i style="background:${fr.cor}"></i><span class="nm">${fr.nome}</span>`
+      + `<span class="vl">${brl(f[fr.k])}</span><span class="pc">${Math.round(f[fr.k] / f.receita * 100)}%</span></div>`).join('');
+}
+
+function renderGeralLojas(meses) {
+  const assess = getAssessorias();
+  const rows = meses.map((m, i) => {
+    const ant = mesAnt(m.mk);
+    return { m, novas: assess.filter(a => pagou(a, m.mk) && !pagou(a, ant)).length,
+             sairam: i === meses.length-1 ? null : assess.filter(a => pagou(a, ant) && !pagou(a, m.mk)).length };
+  });
+  const W = 560, H = 230, mL = 36, mR = 10, mT = 22, mB = 28, pw = W-mL-mR, ph = H-mT-mB;
+  const { passo, topo } = eixoBonito(Math.max(...rows.map(r => r.m.lojas), 4));
+  const y = v => mT + ph - v / topo * ph;
+  const gw = pw / rows.length, bw = Math.min(gw * .5, 40);
+  let g = '', bars = '', hits = '';
+  for (let v = 0; v <= topo; v += passo)
+    g += `<line x1="${mL}" x2="${W-mR}" y1="${y(v)}" y2="${y(v)}" stroke="${v ? 'var(--grid)' : 'var(--axis)'}" stroke-width="1"/>`
+       + `<text x="${mL-8}" y="${y(v)+3.5}" text-anchor="end" font-size="10" fill="var(--muted)" font-family="var(--mono)">${v}</text>`;
+  rows.forEach((r, i) => {
+    const x = mL + gw*i + (gw-bw)/2, parcial = i === rows.length-1, hgt = y(0) - y(r.m.lojas);
+    if (r.m.lojas) bars += `<rect x="${x}" y="${y(r.m.lojas)}" width="${bw}" height="${hgt}" rx="4" fill="var(--s-assess)" opacity="${parcial ? .45 : 1}"/>`
+      + (hgt > 4 ? `<rect x="${x}" y="${y(r.m.lojas)+4}" width="${bw}" height="${hgt-4}" fill="var(--s-assess)" opacity="${parcial ? .45 : 1}"/>` : '');
+    bars += `<text x="${x+bw/2}" y="${y(r.m.lojas)-7}" text-anchor="middle" font-size="10.5" font-weight="600" fill="var(--muted2)" font-family="var(--mono)">${r.m.lojas || ''}</text>`
+          + `<text x="${x+bw/2}" y="${H-10}" text-anchor="middle" font-size="10.5" fill="var(--muted)" font-family="var(--mono)">${nomeMes(r.m.mk).replace('/20','/')}${parcial ? '*' : ''}</text>`;
+    const tip = `<div class="tt-title">${nomeMes(r.m.mk)}${parcial ? ' (até agora)' : ''}</div>`
+      + `Lojas pagando: <b>${r.m.lojas}</b><br>Entraram: <b style="color:var(--st-good)">+${r.novas}</b>`
+      + (r.sairam !== null ? `<br>Não renovaram: <b style="color:#ff6b6b">−${r.sairam}</b>` : '')
+      + `<br>Recebido: <b>${brl(r.m.assess)}</b>`;
+    hits += `<rect x="${mL+gw*i}" y="${mT}" width="${gw}" height="${ph}" fill="transparent" onmousemove='tipShow(event, ${JSON.stringify(tip).replace(/'/g,"&#39;")})' onmouseleave="tipHide()"/>`;
+  });
+  document.getElementById('g-chart-lojas').innerHTML =
+    `<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="Quantidade de lojas de assessoria pagando por mês">${g}${bars}${hits}</svg>`;
+}
+
+function itemHtml(nivel, titulo, desc, acao) {
+  const icone = { critical:'!', serious:'!', warning:'!', good:'✓', info:'i' }[nivel];
+  return `<div class="g-item"><i class="g-st g-st-${nivel}" aria-label="${{critical:'urgente',serious:'importante',warning:'atenção',good:'indo bem',info:'aviso'}[nivel]}">${icone}</i><div>`
+    + `<div class="g-item-t">${titulo}</div><div class="g-item-d">${desc}</div>`
+    + (acao ? `<button class="g-item-a" onclick="showPage('${acao[1]}')">${acao[0]} →</button>` : '') + `</div></div>`;
+}
+
+const nomesLista = (arr, max = 5) => arr.slice(0, max).map(a => esc(a.nome) + (a.loja ? ` <span style="color:var(--muted)">(${esc(a.loja)})</span>` : '')).join(', ')
+  + (arr.length > max ? ` e mais ${arr.length - max}` : '');
+
+function renderGeralAlertas(atual, fechado, antes, proj) {
+  const al = [];
+  const assess = getAssessorias();
+  const ativas = assess.filter(a => pagou(a, atual.mk) || pagou(a, fechado.mk));
+  const hoje = new Date(); hoje.setHours(0,0,0,0);
+
+  if (dbAuth.currentUser) {
+    const atrasadas = ativas.filter(a => statusAssessMes(a, atual.mk) === 'atrasado');
+    if (atrasadas.length) al.push({ nivel:'critical', t:`${atrasadas.length} loja${atrasadas.length>1?'s':''} com renovação vencida`,
+      d:`${nomesLista(atrasadas)}. Somam ${brl(atrasadas.reduce((s,a)=>s+(parseFloat(a.valor)||0),0))}/mês. Cobre hoje.`, a:['Ver assessorias','assessorias'] });
+
+    const sairam = assess.filter(a => pagou(a, antes.mk) && !pagou(a, fechado.mk));
+    if (sairam.length) al.push({ nivel:'serious', t:`${sairam.length} loja${sairam.length>1?'s':''} não renovou em ${nomeMesLongo(fechado.mk)}`,
+      d:`${nomesLista(sairam)}. São ${brl(sairam.reduce((s,a)=>s+(parseFloat(a.pagamentos?.[antes.mk]?.valor)||parseFloat(a.valor)||0),0))}/mês que pararam de entrar. Vale uma conversa pra entender o motivo.`, a:['Ver assessorias','assessorias'] });
+
+    const paradas = ativas.filter(a => diasDesde(a.ultimaMexida) > 14);
+    if (paradas.length) al.push({ nivel:'warning', t:`${paradas.length} loja${paradas.length>1?'s':''} sem mexida há mais de 14 dias`,
+      d:`${nomesLista(paradas)}. Cliente que não vê movimento é o primeiro a cancelar.`, a:['Ver assessorias','assessorias'] });
+
+    const adsParados = ativas.filter(a => a.adsMexida !== undefined && diasDesde(a.adsMexida) > 14);
+    if (adsParados.length) al.push({ nivel:'warning', t:`${adsParados.length} loja${adsParados.length>1?'s':''} sem ajuste de Ads há mais de 14 dias`,
+      d:nomesLista(adsParados), a:['Ver assessorias','assessorias'] });
+
+    const breve = ativas.filter(a => {
+      if (pagou(a, atual.mk)) return false;
+      const dd = Math.ceil((new Date(hoje.getFullYear(), hoje.getMonth(), a.renovDia || 1) - hoje) / 86400000);
+      return dd >= 0 && dd <= 7;
+    });
+    if (breve.length) al.push({ nivel:'info', t:`${breve.length} renovação${breve.length>1?'ões':''} nos próximos 7 dias`,
+      d:`${nomesLista(breve)} · ${brl(breve.reduce((s,a)=>s+(parseFloat(a.valor)||0),0))} a receber.` });
+  }
+
+  if (fechado.vendasCurso || antes.vendasCurso) {
+    const queda = antes.vendasCurso ? Math.round((1 - fechado.vendasCurso / antes.vendasCurso) * 100) : 0;
+    if (queda >= 20) al.push({ nivel:'warning', t:`Vendas do curso caíram ${queda}%`,
+      d:`${antes.vendasCurso} em ${nomeMesLongo(antes.mk)} → ${fechado.vendasCurso} em ${nomeMesLongo(fechado.mk)}. O curso depende só do Meta Ads: hoje ele é a frente mais frágil.`, a:['Ver cursos','dashboard'] });
+    if (fechado.meta > 0 && fechado.roas < 1.5) al.push({ nivel:'warning', t:`ROAS do curso em ${fechado.roas.toFixed(2)}x`,
+      d:`Abaixo de 1,5x a margem do curso fica apertada: de cada R$100 no Meta voltam ${brl(fechado.roas*100)} líquidos.`, a:['Ver cursos','dashboard'] });
+  }
+
+  const em14 = new Date(hoje); em14.setDate(em14.getDate() + 14);
+  const livres = Object.values(todosSlots).filter(s => s.disponivel && new Date(s.data + 'T00:00:00') >= hoje && new Date(s.data + 'T00:00:00') <= em14);
+  if (livres.length) al.push({ nivel:'warning', t:`${livres.length} horário${livres.length>1?'s':''} de mentoria livre${livres.length>1?'s':''} nos próximos 14 dias`,
+    d:`Vale ${brl(livres.length * (parseFloat(configAtual.preco)||0))} se lotar. Divulgue o link da agenda nos stories.`, a:['Ver agenda','mentorias'] });
+
+  if (fechado.receita) {
+    const maior = FRENTES.map(fr => ({ fr, v: fechado[fr.k] })).sort((a, b) => b.v - a.v)[0];
+    const share = Math.round(maior.v / fechado.receita * 100);
+    if (share >= 55) al.push({ nivel:'warning', t:`${share}% da receita vem de ${maior.fr.nome}`,
+      d:'Muita dependência de uma frente só: se ela tropeçar, o mês inteiro sente.' });
+  }
+
+  if (dadosCursos?.gerado_em) {
+    const m = dadosCursos.gerado_em.match(/(\d{2})\/(\d{2})\/(\d{4})/);
+    if (m && (Date.now() - new Date(+m[3], +m[2]-1, +m[1])) / 86400000 > 2)
+      al.push({ nivel:'warning', t:'Dados dos cursos desatualizados', d:`Última atualização: ${esc(dadosCursos.gerado_em)}.`, a:['Ir para Dashboard Cursos','dashboard'] });
+  }
+
+  if (fechado.lucro > antes.lucro && antes.lucro) al.push({ nivel:'good', t:`Lucro cresceu ${Math.round((fechado.lucro/antes.lucro-1)*100)}% em ${nomeMesLongo(fechado.mk)}`,
+    d:`${brl(antes.lucro)} → ${brl(fechado.lucro)}.` });
+  if (fechado.lojas > antes.lojas) al.push({ nivel:'good', t:`Carteira de assessoria cresceu: ${antes.lojas} → ${fechado.lojas} lojas`,
+    d:`+${brl(fechado.assess - antes.assess)} por mês em receita recorrente.` });
+
+  const ordem = { critical:0, serious:1, warning:2, info:3, good:4 };
+  al.sort((a, b) => ordem[a.nivel] - ordem[b.nivel]);
+  const urg = al.filter(a => a.nivel === 'critical' || a.nivel === 'serious').length;
+  document.getElementById('g-alertas-hint').textContent = urg ? `${urg} pede${urg>1?'m':''} ação` : 'nada urgente';
+  document.getElementById('g-alertas').innerHTML = al.length
+    ? al.map(a => itemHtml(a.nivel, a.t, a.d, a.a)).join('')
+    : '<div class="g-empty">Nada pedindo atenção agora.</div>';
+  return al;
+}
+
+function renderGeralIdeias(f, a) {
+  const ideias = [];
+  const ticket = f.lojas ? f.assess / f.lojas : 0;
+  const preco = parseFloat(configAtual.preco) || 0;
+  const falta = META_LUCRO - f.lucro;
+
+  if (falta > 0 && ticket) ideias.push(['Quanto falta pra meta, em lojas',
+    `Faltam ${brl(falta)}/mês de lucro. No ticket atual (${brl(ticket)}), isso são <b>${Math.ceil(falta / ticket)} lojas a mais</b>`
+    + (ticket < 600 ? `, ou <b>${Math.ceil(falta / 600)}</b> se as novas entrarem a R$600.` : '.')]);
+  if (ticket && ticket < 600) ideias.push(['Preço novo só para clientes novos',
+    `Seu ticket médio é ${brl(ticket)}. A cada 10 lojas novas a R$600, entram ${brl(10 * (600 - ticket))}/mês a mais do que no preço de hoje, sem mexer com quem já é cliente.`]);
+  if (f.mentQtd) ideias.push(['Mentoria como porta da assessoria',
+    `Foram ${f.mentQtd} mentorias em ${nomeMesLongo(f.mk)}. Se 1 em cada 5 virar assessoria, são <b>+${Math.max(1, Math.round(f.mentQtd / 5))} lojas</b> ≈ ${brl(Math.max(1, Math.round(f.mentQtd / 5)) * (ticket || 500))}/mês. Termine toda mentoria com essa oferta.`]);
+  if (f.lojas >= 30) ideias.push(['Capacidade antes de crescer',
+    `Com ${f.lojas} lojas, o gargalo vira o seu tempo. Anote quantas horas cada loja leva: se passar de ~40 lojas sozinho, a próxima contratação (ex.: a Mylene na parte repetitiva) se paga com 2-3 lojas.`]);
+  if (f.lojas) ideias.push(['Gestão Financeira dentro da assessoria',
+    `Oferecer o sistema às ${f.lojas} lojas da carteira: se metade aderir ao Essencial, são ${brl(Math.round(f.lojas / 2) * 149.9)} extras (licença anual), e o cliente fica mais preso ao seu trabalho.`]);
+  if (f.cursos && a.cursos && f.cursos < a.cursos) ideias.push(['Curso como entrada, não como motor',
+    `O curso rendeu ${brl(f.cursos)} (era ${brl(a.cursos)}). Use os compradores como lista quente para mentoria e assessoria, em vez de brigar com o custo do Meta.`]);
+
+  document.getElementById('g-ideias').innerHTML = ideias.length
+    ? ideias.slice(0, 5).map(([t, d], i) => `<div class="g-item"><span class="g-idea-n">${i+1}</span><div><div class="g-item-t">${t}</div><div class="g-item-d">${d}</div></div></div>`).join('')
+    : '<div class="g-empty">Entre com Google para ver ideias com base nas assessorias.</div>';
 }
 
 // ══════════════════════════════════════════════════════════════
