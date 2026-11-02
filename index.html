@@ -786,7 +786,25 @@ body::after {
 .as-mex button:hover { border-color:var(--amber); color:var(--amber); }
 .as-acesso { font-family:var(--mono); font-size:11.5px; color:var(--muted2); max-width:190px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
 .as-acesso + .pwd-field { margin-top:3px; }
-/* ── MENTORIAS ────────────────────────────────────────── */
+/* ── VISÃO FINANCEIRA ─────────────────────────────────── */
+.fin-kpis { grid-template-columns:repeat(4,1fr); }
+@media(max-width:900px){ .fin-kpis { grid-template-columns:1fr 1fr; } }
+.fin-acum { display:flex; justify-content:space-between; align-items:center; gap:20px; flex-wrap:wrap; padding:22px 24px; }
+.fin-acum-val { font-size:30px; font-weight:700; letter-spacing:-.02em; }
+.fin-acum-lado { display:flex; gap:32px; }
+.fin-acum-num { font-size:19px; font-weight:700; font-variant-numeric:tabular-nums; }
+.fin-comp-sec { font-size:11.5px; font-weight:700; letter-spacing:.08em; text-transform:uppercase; color:var(--muted); margin:2px 0 8px; }
+.fin-comp-sec:not(:first-child) { margin-top:20px; }
+.fin-comp-row { display:grid; grid-template-columns:minmax(110px,1fr) 1.2fr 78px; align-items:center; gap:12px; padding:7px 0; font-size:13px; }
+.fin-comp-row .nm { color:var(--muted2); display:flex; align-items:center; gap:8px; min-width:0; }
+.fin-comp-row .nm i { width:9px; height:9px; border-radius:3px; flex-shrink:0; }
+.fin-comp-row .tr { height:8px; border-radius:4px; background:var(--surface2); overflow:hidden; }
+.fin-comp-row .tr div { height:100%; border-radius:4px; }
+.fin-comp-row .vl { text-align:right; font-family:var(--mono); font-variant-numeric:tabular-nums; }
+.fin-comp-tot { display:flex; justify-content:space-between; padding-top:9px; margin-top:4px; border-top:1px solid var(--border); font-weight:700; font-size:13.5px; }
+.fin-comp-tot span:last-child { font-family:var(--mono); }
+
+/* ── MENTORIAS (agenda) ───────────────────────────────── */
 .mt-top { display:grid; grid-template-columns:minmax(280px,1.1fr) 2fr; gap:14px; margin-bottom:18px; }
 .mt-top > .block { margin-bottom:0; }
 .mt-top .as-kpis { grid-template-columns:repeat(3,1fr); }
@@ -1282,77 +1300,41 @@ input[type="month"]::-webkit-calendar-picker-indicator { filter:invert(.6);curso
   </div>
 
   <!-- ── PÁGINA: FINANCEIRO ── -->
-  <div class="page" id="page-financeiro">
-    <div class="container">
-      <div class="section-header" style="display:flex;align-items:flex-start;justify-content:space-between;flex-wrap:wrap;gap:12px;">
+  <div class="page g-viz" id="page-financeiro">
+    <div class="container" style="max-width:1160px;">
+      <div class="g-head">
         <div>
           <h2>Visão Financeira</h2>
           <p id="fin-sub-mes">Consolidado de todas as fontes de receita</p>
         </div>
-        <select id="fin-mes" onchange="calcFinanceiro()"
-          style="background:var(--surface2);border:1px solid var(--border2);border-radius:10px;padding:8px 14px;color:var(--text);font-family:var(--sans);font-size:12px;font-weight:600;outline:none;cursor:pointer;box-shadow:inset 0 1px 0 rgba(255,255,255,.03);">
+        <select id="fin-mes" onchange="calcFinanceiro()" aria-label="Mês"
+          style="background:var(--surface2);border:1px solid var(--border2);border-radius:10px;padding:9px 14px;color:var(--text);font-family:var(--sans);font-size:13px;font-weight:600;outline:none;cursor:pointer;">
         </select>
       </div>
 
-      <!-- Faturamento geral total (todos os meses) -->
-      <div class="block" style="border-color:rgba(245,166,35,.25);">
-        <div class="block-body" style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:16px;padding:22px 24px;">
-          <div>
-            <div class="kpi-label" style="margin-bottom:8px;">Faturamento Geral Acumulado</div>
-            <div style="font-family:var(--mono);font-size:34px;font-weight:600;color:var(--amber);text-shadow:0 0 24px rgba(245,166,35,.35);" id="fin-geral-total">—</div>
-            <div class="kpi-sub" style="margin-top:6px;" id="fin-geral-sub">todos os meses · cursos + assessorias + mentorias</div>
-          </div>
-          <div style="display:flex;gap:28px;">
-            <div style="text-align:right;">
-              <div class="kpi-sub">gasto Meta total</div>
-              <div style="font-family:var(--mono);font-size:18px;color:var(--red);margin-top:4px;" id="fin-geral-meta">—</div>
-            </div>
-            <div style="text-align:right;">
-              <div class="kpi-sub">lucro total</div>
-              <div style="font-family:var(--mono);font-size:18px;color:var(--green);margin-top:4px;" id="fin-geral-lucro">—</div>
-            </div>
-          </div>
-        </div>
-      </div>
-
       <!-- KPIs do mês selecionado -->
-      <div class="cards-grid-4">
-        <div class="kpi-card c-green"><div class="kpi-icon">💰</div><div class="kpi-label">Receita Total</div><div class="kpi-value c-green" id="fin-receita">—</div><div class="kpi-sub" id="fin-receita-sub">4 fontes</div></div>
-        <div class="kpi-card c-red"><div class="kpi-icon">📣</div><div class="kpi-label">Gasto Meta</div><div class="kpi-value c-red" id="fin-meta">—</div><div class="kpi-sub" id="fin-meta-sub">mês selecionado</div></div>
-        <div class="kpi-card c-blue"><div class="kpi-icon">🔧</div><div class="kpi-label">Custos Fixos</div><div class="kpi-value c-blue" id="fin-fixos-val">—</div><div class="kpi-sub" id="fin-fixos-sub">todo mês</div></div>
-        <div class="kpi-card c-amber"><div class="kpi-icon">✦</div><div class="kpi-label">Lucro Líquido</div><div class="kpi-value c-amber" id="fin-lucro">—</div><div class="kpi-sub" id="fin-lucro-sub">calculando...</div></div>
-      </div>
+      <div class="g-kpis fin-kpis" id="fin-kpis"></div>
 
-      <!-- Receitas + Custos -->
-      <div class="cards-grid-2">
+      <!-- Resultado + composição -->
+      <div class="g-grid-2">
         <div class="block">
           <div class="block-head">
-            <div class="block-head-title"><span class="bdot" style="background:var(--green)"></span>Receitas por Fonte</div>
+            <div class="block-head-title" id="fin-res-titulo">Resultado do mês</div>
+            <span class="g-hint">de onde veio e para onde foi</span>
           </div>
-          <div class="block-body">
-            <div class="fin-row"><span class="lbl">🎓 Cursos — Hotmart</span><span style="color:var(--green);font-family:var(--mono);" id="fin-hm-val">—</span></div>
-            <div class="fin-row"><span class="lbl">🏪 Assessorias de Loja</span><span style="color:var(--purple);font-family:var(--mono);" id="fin-assess-val">+R$0</span></div>
-            <div class="fin-row"><span class="lbl">🤝 Mentorias</span><span style="color:var(--blue);font-family:var(--mono);" id="fin-ment-val">+R$0</span></div>
-            <div class="fin-row"><span class="lbl">💻 SaaS Gestão</span><span style="color:var(--orange);font-family:var(--mono);" id="fin-saas-val">+R$0</span></div>
-            <div class="fin-row"><span class="lbl">✍️ Outras receitas</span><span style="color:var(--green);font-family:var(--mono);" id="fin-extra-rec">+R$0</span></div>
-            <div class="fin-row fin-total"><span class="lbl">Total Receitas</span><span style="color:var(--green);font-family:var(--mono);font-size:18px;" id="fin-total-rec">—</span></div>
-          </div>
+          <div class="chart-wrap" id="fin-cascata"></div>
         </div>
-
         <div class="block">
           <div class="block-head">
-            <div class="block-head-title"><span class="bdot" style="background:var(--red)"></span>Custos</div>
+            <div class="block-head-title">Receitas e custos</div>
+            <span class="g-hint" id="fin-comp-hint"></span>
           </div>
-          <div class="block-body">
-            <div class="fin-row"><span class="lbl">📣 Meta Ads</span><span style="color:var(--red);font-family:var(--mono);" id="fin-c-meta">—</span></div>
-            <div id="fin-c-fixos-lista"></div>
-            <div class="fin-row"><span class="lbl">✍️ Gastos avulsos</span><span style="color:var(--red);font-family:var(--mono);" id="fin-extra-desp">-R$0</span></div>
-            <div class="fin-row fin-total"><span class="lbl">Total Custos</span><span style="color:var(--red);font-family:var(--mono);font-size:18px;" id="fin-c-total">—</span></div>
-          </div>
+          <div class="block-body" id="fin-comp"></div>
         </div>
       </div>
 
       <!-- Lançamentos manuais do mês selecionado -->
+      <div class="g-grid-2 g-grid-top">
       <div class="block">
         <div class="block-head" style="flex-wrap:wrap;gap:10px;">
           <div class="block-head-title">
@@ -1383,31 +1365,18 @@ input[type="month"]::-webkit-calendar-picker-indicator { filter:invert(.6);curso
           <div id="fin-fixos-lista"></div>
         </div>
       </div>
+      </div>
 
-      <!-- Resultado -->
-      <div class="block">
-        <div class="block-head">
-          <div class="block-head-title"><span class="bdot" style="background:var(--amber)"></span><span id="fin-res-titulo">Resultado</span></div>
+      <!-- Faturamento geral total (todos os meses) -->
+      <div class="block fin-acum">
+        <div>
+          <div class="g-eyebrow">Desde o começo</div>
+          <div class="fin-acum-val" id="fin-geral-total">—</div>
+          <div class="g-meta-sub" id="fin-geral-sub">todos os meses · cursos + assessorias + mentorias</div>
         </div>
-        <div class="block-body fin-result-grid">
-          <div>
-            <div class="fin-row"><span class="lbl">Receita Líquida HM</span><span style="color:var(--green);font-family:var(--mono);" id="fin-res-hm">—</span></div>
-            <div class="fin-row"><span class="lbl">Assessorias</span><span style="color:var(--purple);font-family:var(--mono);" id="fin-res-assess">+R$0</span></div>
-            <div class="fin-row"><span class="lbl">Mentorias</span><span style="color:var(--blue);font-family:var(--mono);" id="fin-res-ment">+R$0</span></div>
-            <div class="fin-row"><span class="lbl">SaaS Gestão</span><span style="color:var(--orange);font-family:var(--mono);" id="fin-res-saas">+R$0</span></div>
-            <div class="fin-row"><span class="lbl">Outras receitas</span><span style="color:var(--green);font-family:var(--mono);" id="fin-res-extra-rec">+R$0</span></div>
-            <div class="fin-row"><span class="lbl">Meta Ads</span><span style="color:var(--red);font-family:var(--mono);" id="fin-res-meta">—</span></div>
-            <div class="fin-row"><span class="lbl">Custos fixos</span><span style="color:var(--red);font-family:var(--mono);" id="fin-res-fixos">—</span></div>
-            <div class="fin-row"><span class="lbl">Gastos avulsos</span><span style="color:var(--red);font-family:var(--mono);" id="fin-res-extra-desp">-R$0</span></div>
-            <div class="fin-row fin-total" style="border-top:1px solid var(--border2);margin-top:8px;padding-top:16px;">
-              <span class="lbl" style="font-size:15px;">✦ Lucro Líquido</span>
-              <span style="color:var(--amber);font-family:var(--mono);font-size:24px;" id="fin-resultado">—</span>
-            </div>
-          </div>
-          <div style="text-align:center;padding:20px;">
-            <div style="font-family:var(--mono);font-size:40px;color:var(--amber);font-weight:500;" id="fin-margem">—%</div>
-            <div style="font-size:11px;color:var(--muted);margin-top:4px;">margem líquida</div>
-          </div>
+        <div class="fin-acum-lado">
+          <div><div class="g-eyebrow">Gasto com Meta</div><div class="fin-acum-num" id="fin-geral-meta">—</div></div>
+          <div><div class="g-eyebrow">Lucro limpo</div><div class="fin-acum-num" style="color:#4cd964" id="fin-geral-lucro">—</div></div>
         </div>
       </div>
 
@@ -2847,7 +2816,85 @@ function calcFinanceiro() {
   set('fin-geral-meta',  br(Math.round(somaMeta)));
   set('fin-geral-lucro', sinal(Math.round(geralLucro)));
   set('fin-geral-sub',   `${meses.length} meses de cursos · histórico de assessorias · ${slots.filter(s=>!s.disponivel).length} mentorias realizadas${extraRecTotal ? ' · receitas manuais incluídas' : ''}`);
+  if (mesKeySel) renderFinVisual(mesKeySel);
   atualizarGeral();
+}
+
+// Parte visual da Visão Financeira (só leitura): indicadores, cascata e barras.
+// Usa o mesmo cálculo mês a mês da Visão Geral (numerosDoMes).
+const COR_CUSTO = '#e66767';
+function renderFinVisual(mk) {
+  const m = numerosDoMes(mk), a = numerosDoMes(mesAnt(mk));
+  const margem = v => v.receita > 0 ? Math.round(v.lucro / v.receita * 100) : 0;
+  document.getElementById('fin-kpis').innerHTML = [
+    ['Receita',      brl(m.receita), deltaHtml(m.receita, a.receita, brl)],
+    ['Custos',       brl(m.custos),  deltaHtml(m.custos, a.custos, brl).replace('g-delta up', 'g-delta tmp').replace('g-delta down', 'g-delta up').replace('g-delta tmp', 'g-delta down')],
+    ['Lucro limpo',  brlS(m.lucro),  deltaHtml(m.lucro, a.lucro, brl)],
+    ['Margem',       margem(m) + '%', deltaPontos(margem(m) - margem(a))],
+  ].map(([l, v, d]) => `<div class="g-kpi"><div class="g-kpi-label">${l}</div><div class="g-kpi-val">${v}</div>${d} <small class="as-k-sub">vs ${nomeMesLongo(a.mk)}</small></div>`).join('');
+
+  // Composição: barras proporcionais à maior linha do bloco
+  const receitas = FRENTES.map(fr => ({ nm: fr.nome, v: m[fr.k], cor: fr.cor })).filter(x => x.v > 0).sort((x, y) => y.v - x.v);
+  const custos = [{ nm: 'Meta Ads', v: m.meta },
+    ...Object.values(finFixos).map(f => ({ nm: f.nome, v: parseFloat(f.valor) || 0 })),
+    { nm: 'Gastos avulsos', v: m.despesa }].filter(x => x.v > 0).sort((x, y) => y.v - x.v);
+  const maxV = Math.max(1, ...receitas.map(x => x.v), ...custos.map(x => x.v));
+  const linha = (x, cor, sinal) => `<div class="fin-comp-row"><span class="nm"><i style="background:${cor}"></i>${esc(x.nm)}</span>`
+    + `<span class="tr"><div style="width:${x.v / maxV * 100}%;background:${cor}"></div></span><span class="vl">${sinal}${brl(x.v)}</span></div>`;
+  document.getElementById('fin-comp-hint').textContent = nomeMesLongo(mk);
+  document.getElementById('fin-comp').innerHTML =
+    `<div class="fin-comp-sec"><span>Receitas</span></div>`
+    + (receitas.length ? receitas.map(x => linha(x, x.cor, '+')).join('') : '<div class="g-empty" style="padding:6px 0">Nenhuma receita nesse mês.</div>')
+    + `<div class="fin-comp-tot"><span>Total de receitas</span><span>${brl(m.receita)}</span></div>`
+    + `<div class="fin-comp-sec"><span>Custos</span></div>`
+    + (custos.length ? custos.map(x => linha(x, COR_CUSTO, '−')).join('') : '<div class="g-empty" style="padding:6px 0">Nenhum custo nesse mês.</div>')
+    + `<div class="fin-comp-tot"><span>Total de custos</span><span>${brl(m.custos)}</span></div>`
+    + (saasLicencas.length ? '' : `<p class="g-hint" style="margin-top:12px">SaaS só entra na conta depois de abrir a aba SaaS Gestão.</p>`);
+
+  // Cascata: cada receita sobe, cada custo desce, a última barra é o lucro
+  document.getElementById('fin-res-titulo').textContent = `Resultado de ${nomeMesLongo(mk)}`;
+  const passos = [
+    ...FRENTES.filter(fr => m[fr.k] > 0).map(fr => ({ nm: fr.nome.replace(' (Hotmart)', ''), v: m[fr.k], cor: fr.cor })),
+    ...[['Meta Ads', m.meta], ['Custos fixos', m.fixos], ['Gastos avulsos', m.despesa]].filter(c => c[1] > 0).map(([nm, v]) => ({ nm, v: -v, cor: COR_CUSTO })),
+  ];
+  const el = document.getElementById('fin-cascata');
+  if (!passos.length) { el.innerHTML = '<div class="g-empty">Sem movimento nesse mês.</div>'; return; }
+  const W = 560, H = 360, mL = 46, mR = 10, mT = 24, mB = 40, pw = W-mL-mR, ph = H-mT-mB;
+  const minV = Math.min(0, m.lucro);
+  const { passo, topo } = eixoBonito(Math.max(m.receita, 1) - minV);
+  const base = minV < 0 ? -Math.ceil(-minV / passo) * passo : 0;
+  const y = v => mT + ph - (v - base) / topo * ph;
+  const n = passos.length + 1, gw = pw / n, bw = Math.min(gw * .62, 44);
+  let g = '', bars = '', hits = '';
+  for (let v = base; v <= base + topo + 1; v += passo)
+    g += `<line x1="${mL}" x2="${W-mR}" y1="${y(v)}" y2="${y(v)}" stroke="${v === 0 ? 'var(--axis)' : 'var(--grid)'}" stroke-width="1"/>`
+       + `<text x="${mL-8}" y="${y(v)+3.5}" text-anchor="end" font-size="10" fill="var(--muted)" font-family="var(--mono)">${kfmt(v)}</text>`;
+  let acum = 0;
+  const rotulo = (x, txt) => {
+    const partes = txt.split(' ');
+    return partes.length > 1 && txt.length > 9
+      ? `<text x="${x}" y="${H-24}" text-anchor="middle" font-size="10" fill="var(--muted)">${partes[0]}</text><text x="${x}" y="${H-12}" text-anchor="middle" font-size="10" fill="var(--muted)">${partes.slice(1).join(' ')}</text>`
+      : `<text x="${x}" y="${H-18}" text-anchor="middle" font-size="10" fill="var(--muted)">${txt}</text>`;
+  };
+  const desenha = (i, de, ate, cor, nm, valorTxt, tip) => {
+    const x = mL + gw*i + (gw-bw)/2, y1 = y(Math.max(de, ate)), y2 = y(Math.min(de, ate));
+    bars += `<rect x="${x}" y="${y1}" width="${bw}" height="${Math.max(y2 - y1, 1.5)}" rx="3" fill="${cor}"/>`
+      + `<text x="${x+bw/2}" y="${y1-6}" text-anchor="middle" font-size="10" font-weight="600" fill="var(--muted2)" font-family="var(--mono)">${valorTxt}</text>`
+      + rotulo(x + bw/2, nm);
+    if (i < n - 1) {
+      const xn = mL + gw*(i+1) + (gw-bw)/2;
+      bars += `<line x1="${x+bw}" x2="${xn}" y1="${y(ate)}" y2="${y(ate)}" stroke="var(--border2)" stroke-dasharray="2 3"/>`;
+    }
+    hits += `<rect x="${mL+gw*i}" y="${mT}" width="${gw}" height="${ph}" fill="transparent" onmousemove='tipShow(event, ${JSON.stringify(tip).replace(/'/g,"&#39;")})' onmouseleave="tipHide()"/>`;
+  };
+  passos.forEach((p, i) => {
+    const de = acum; acum += p.v;
+    desenha(i, de, acum, p.cor, p.nm, (p.v > 0 ? '+' : '−') + kfmt(Math.abs(p.v)),
+      `<div class="tt-title">${p.nm}</div>${p.v > 0 ? 'Entrou' : 'Saiu'}: <b>${brl(Math.abs(p.v))}</b><br>${Math.round(Math.abs(p.v) / (m.receita || 1) * 100)}% da receita<br>Saldo depois: <b>${brlS(acum)}</b>`);
+  });
+  desenha(n - 1, 0, m.lucro, 'var(--amber)', 'Lucro limpo', kfmt(m.lucro),
+    `<div class="tt-title">Lucro limpo</div><b style="color:${lc(m.lucro)}">${brlS(m.lucro)}</b><br>margem ${margem(m)}%`);
+  el.innerHTML = `<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="Cascata do resultado de ${nomeMesLongo(mk)}: receitas somam ${brl(m.receita)}, custos ${brl(m.custos)}, lucro ${brlS(m.lucro)}">${g}${bars}${hits}</svg>`;
 }
 
 // ══════════════════════════════════════════════════════════════
