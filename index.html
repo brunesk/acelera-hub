@@ -1337,6 +1337,12 @@ input[type="month"]::-webkit-calendar-picker-indicator { filter:invert(.6);curso
   </div>
 </div>
 
+<div id="db-login" style="display:none;position:fixed;right:20px;bottom:20px;z-index:1000;max-width:300px;padding:16px;background:var(--surface);border:1px solid var(--amber);border-radius:12px;color:var(--text);box-shadow:0 8px 30px rgba(0,0,0,.4)">
+  <div style="font-weight:600;margin-bottom:6px">Entre para ver Assessorias e Financeiro</div>
+  <div style="font-size:13px;color:var(--muted);margin-bottom:12px">Esses dados agora são protegidos por login.</div>
+  <button class="btn btn-amber" onclick="dbLogin()">Entrar com Google</button>
+</div>
+
 <!-- Firebase (Firestore do SaaS shopee-relatorio — licenças/assinantes) -->
 <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
@@ -1347,6 +1353,32 @@ input[type="month"]::-webkit-calendar-picker-indicator { filter:invert(.6);curso
 // GLOBALS
 // ══════════════════════════════════════════════════════════════
 const DB = 'https://mentorias-bruno-default-rtdb.firebaseio.com';
+
+// Login Google no projeto mentorias-bruno: as regras do banco só liberam
+// assessorias/financeiro para a equipe. O token vai em ?auth= em toda chamada ao DB.
+const dbApp  = firebase.initializeApp({
+  apiKey:      'AIzaSyBxLkNQ6kjiyyApxmOdhdOoWDY1ju0ne1Q',
+  authDomain:  'mentorias-bruno.firebaseapp.com',
+  projectId:   'mentorias-bruno',
+  databaseURL: DB
+}, 'mentorias');
+const dbAuth = dbApp.auth();
+const _fetch = window.fetch.bind(window);
+window.fetch = async (url, opts) => {
+  if (typeof url === 'string' && url.startsWith(DB) && dbAuth.currentUser) {
+    const token = await dbAuth.currentUser.getIdToken();
+    url += (url.includes('?') ? '&' : '?') + 'auth=' + token;
+  }
+  return _fetch(url, opts);
+};
+async function dbLogin() {
+  try {
+    await dbAuth.signInWithPopup(new firebase.auth.GoogleAuthProvider());
+  } catch(e) {
+    if (e.code !== 'auth/popup-closed-by-user') alert('Erro no login: ' + e.message);
+  }
+}
+
 let todosSlots = {};
 let configAtual = {};
 let slotParaAgendar = null;
@@ -1768,7 +1800,7 @@ function getAssessorias() { return Object.values(todosAssessorias); }
 async function carregarAssessorias() {
   try {
     const r = await fetch(`${DB}/assessorias.json`);
-    todosAssessorias = (await r.json()) || {};
+    todosAssessorias = r.ok ? ((await r.json()) || {}) : {};
   } catch(e) { todosAssessorias = {}; }
   renderAssessorias();
 }
@@ -2171,8 +2203,8 @@ async function carregarFinanceiroManual() {
       fetch(`${DB}/financeiro/fixos.json`),
       fetch(`${DB}/financeiro/lancamentos.json`)
     ]);
-    finFixos = (await rf.json()) || {};
-    finLancamentos = (await rl.json()) || {};
+    finFixos = rf.ok ? ((await rf.json()) || {}) : {};
+    finLancamentos = rl.ok ? ((await rl.json()) || {}) : {};
   } catch(e) { finFixos = {}; finLancamentos = {}; }
   calcFinanceiro();
 }
@@ -2431,9 +2463,14 @@ function calcFinanceiro() {
 carregarConfig();
 carregarSlots();
 setInterval(carregarSlots, 15000);
-carregarAssessorias();
-setInterval(carregarAssessorias, 15000);
-carregarFinanceiroManual();
+let assessTimer = null;
+dbAuth.onAuthStateChanged(user => {
+  document.getElementById('db-login').style.display = user ? 'none' : '';
+  if (!user) return;
+  carregarAssessorias();
+  carregarFinanceiroManual();
+  if (!assessTimer) assessTimer = setInterval(carregarAssessorias, 15000);
+});
 
 // ══════════════════════════════════════════════════════════════
 // DASHBOARD CURSOS — lê data/latest.json (gerado pelo GitHub Actions)
