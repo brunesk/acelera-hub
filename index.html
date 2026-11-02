@@ -2786,6 +2786,12 @@ function deltaHtml(atual, antes, fmtFn) {
   return `<span class="g-delta ${d > 0 ? 'up' : 'down'}">${d > 0 ? '▲' : '▼'} ${Math.abs(p)}% <small>${fmtFn ? fmtFn(Math.abs(d)) : ''}</small></span>`;
 }
 
+// Diferença de percentuais (margem) vai em pontos, não em % de %
+function deltaPontos(d) {
+  if (Math.abs(d) < 1) return `<span class="g-delta flat">= estável</span>`;
+  return `<span class="g-delta ${d > 0 ? 'up' : 'down'}">${d > 0 ? '▲' : '▼'} ${Math.abs(d)} pontos</span>`;
+}
+
 function renderGeralKpis(f, a) {
   document.getElementById('g-kpi-titulo').textContent = `${nomeMesLongo(f.mk)[0].toUpperCase() + nomeMesLongo(f.mk).slice(1)} fechado`;
   document.getElementById('g-kpi-hint').textContent = `comparado com ${nomeMesLongo(a.mk)}`;
@@ -2794,7 +2800,7 @@ function renderGeralKpis(f, a) {
   const cards = [
     ['Receita total',      brl(f.receita), deltaHtml(f.receita, a.receita, brl)],
     ['Lucro limpo',        brl(f.lucro),   deltaHtml(f.lucro, a.lucro, brl)],
-    ['Margem',             margem(f) + '%', deltaHtml(margem(f), margem(a))],
+    ['Margem',             margem(f) + '%', deltaPontos(margem(f) - margem(a))],
     ['Lojas pagando',      f.lojas,        deltaHtml(f.lojas, a.lojas, v => '+' + v)],
     ['Ticket por loja',    brl(ticket(f)), deltaHtml(ticket(f), ticket(a), brl)],
     ['Mentorias',          f.mentQtd,      deltaHtml(f.mentQtd, a.mentQtd)],
@@ -2952,7 +2958,7 @@ function renderGeralAlertas(atual, fechado, antes, proj) {
       d:`${nomesLista(atrasadas)}. Somam ${brl(atrasadas.reduce((s,a)=>s+(parseFloat(a.valor)||0),0))}/mês. Cobre hoje.`, a:['Ver assessorias','assessorias'] });
 
     const sairam = assess.filter(a => pagou(a, antes.mk) && !pagou(a, fechado.mk));
-    if (sairam.length) al.push({ nivel:'serious', t:`${sairam.length} loja${sairam.length>1?'s':''} não renovou em ${nomeMesLongo(fechado.mk)}`,
+    if (sairam.length) al.push({ nivel:'serious', t:`${sairam.length} loja${sairam.length>1?'s não renovaram':' não renovou'} em ${nomeMesLongo(fechado.mk)}`,
       d:`${nomesLista(sairam)}. São ${brl(sairam.reduce((s,a)=>s+(parseFloat(a.pagamentos?.[antes.mk]?.valor)||parseFloat(a.valor)||0),0))}/mês que pararam de entrar. Vale uma conversa pra entender o motivo.`, a:['Ver assessorias','assessorias'] });
 
     const paradas = ativas.filter(a => diasDesde(a.ultimaMexida) > 14);
@@ -2968,7 +2974,7 @@ function renderGeralAlertas(atual, fechado, antes, proj) {
       const dd = Math.ceil((new Date(hoje.getFullYear(), hoje.getMonth(), a.renovDia || 1) - hoje) / 86400000);
       return dd >= 0 && dd <= 7;
     });
-    if (breve.length) al.push({ nivel:'info', t:`${breve.length} renovação${breve.length>1?'ões':''} nos próximos 7 dias`,
+    if (breve.length) al.push({ nivel:'info', t:`${breve.length} ${breve.length>1?'renovações':'renovação'} nos próximos 7 dias`,
       d:`${nomesLista(breve)} · ${brl(breve.reduce((s,a)=>s+(parseFloat(a.valor)||0),0))} a receber.` });
   }
 
