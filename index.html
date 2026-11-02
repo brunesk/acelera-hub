@@ -1437,6 +1437,12 @@ async function carregarSlots() {
   try {
     const r = await fetch(`${DB}/slots.json`);
     const brutos = (await r.json()) || {};
+    // Nome e WhatsApp ficam em clientes/ (só abre com login); junta de volta no slot
+    if (dbAuth.currentUser) {
+      const rc = await fetch(`${DB}/clientes.json`);
+      const clientes = rc.ok ? ((await rc.json()) || {}) : {};
+      for (const [id, c] of Object.entries(clientes)) if (brutos[id]) Object.assign(brutos[id], c);
+    }
     // Descarta registros malformados (sem data/hora) -- um so ja derrubava
     // a aba inteira antes. Nunca deveriam existir, mas nao confiamos cegamente.
     todosSlots = {};
@@ -1702,7 +1708,9 @@ async function confirmarAgendamento() {
   const btn = document.getElementById('btn-conf-agt');
   btn.disabled = true; btn.textContent = 'Confirmando...';
   await fetch(`${DB}/slots/${slotParaAgendar.id}.json`, { method:'PATCH', headers:{'Content-Type':'application/json'},
-    body: JSON.stringify({disponivel:false, clienteNome:nome, clienteTel:tel, agendadoEm:Date.now()}) });
+    body: JSON.stringify({disponivel:false, agendadoEm:Date.now()}) });
+  await fetch(`${DB}/clientes/${slotParaAgendar.id}.json`, { method:'PUT', headers:{'Content-Type':'application/json'},
+    body: JSON.stringify({clienteNome:nome, clienteTel:tel}) });
   fecharModalAgendar();
   btn.disabled = false; btn.textContent = 'Confirmar agendamento';
   carregarSlots();
@@ -2467,6 +2475,7 @@ let assessTimer = null;
 dbAuth.onAuthStateChanged(user => {
   document.getElementById('db-login').style.display = user ? 'none' : '';
   if (!user) return;
+  carregarSlots();
   carregarAssessorias();
   carregarFinanceiroManual();
   if (!assessTimer) assessTimer = setInterval(carregarAssessorias, 15000);
