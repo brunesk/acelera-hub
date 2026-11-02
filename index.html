@@ -747,6 +747,48 @@ body::after {
   .g-meta { padding:18px 16px 14px; }
 }
 
+/* ── ASSESSORIAS ──────────────────────────────────────── */
+.as-top { display:grid; grid-template-columns:minmax(260px,1fr) 2fr; gap:14px; margin-bottom:18px; }
+.as-top > .block { margin-bottom:0; }
+.as-receb { padding:20px 22px; }
+.as-receb-val { font-size:28px; font-weight:700; letter-spacing:-.02em; }
+.as-kpis { display:grid; grid-template-columns:repeat(3,1fr); gap:14px; }
+.as-k-sub { font-size:12px; color:var(--muted); }
+.as-mini { width:15px; height:15px; font-size:9.5px; margin-right:6px; vertical-align:-2px; }
+.as-toolbar { gap:12px; flex-wrap:wrap; }
+.as-chips { display:flex; gap:6px; flex-wrap:wrap; }
+.as-chip { background:var(--surface2); border:1px solid var(--border); color:var(--muted2); border-radius:20px; padding:6px 12px;
+  font-family:var(--sans); font-size:12px; font-weight:600; cursor:pointer; display:flex; align-items:center; gap:6px; transition:all .15s; }
+.as-chip:hover { border-color:var(--border2); color:var(--text); }
+.as-chip.on { background:var(--amber-dim); border-color:rgba(245,166,35,.4); color:var(--amber); }
+.as-chip b { font-family:var(--mono); font-weight:600; font-size:11px; opacity:.85; }
+.as-busca { background:var(--surface2); border:1px solid var(--border); border-radius:8px; padding:7px 12px; color:var(--text);
+  font-family:var(--sans); font-size:12.5px; outline:none; width:220px; }
+.as-busca:focus { border-color:rgba(245,166,35,.45); }
+#assess-table { min-width:960px; }
+#assess-table td:first-child { min-width:180px; }
+#assess-table .badge { white-space:nowrap; }
+.as-grupo td { background:rgba(255,255,255,.02); font-size:11px !important; font-weight:700; letter-spacing:.08em; text-transform:uppercase; color:var(--muted); padding:9px 14px !important; }
+.assess-table tr.as-inativa td { opacity:.6; }
+.as-valor { font-family:var(--mono); font-size:13px; font-variant-numeric:tabular-nums; white-space:nowrap; }
+.as-renov { font-size:12.5px; white-space:nowrap; }
+.as-renov small { display:block; margin-top:3px; font-size:11px; font-weight:600; }
+.as-pill { display:inline-flex; align-items:center; gap:6px; padding:4px 10px; border-radius:20px; font-size:11.5px; font-weight:700; cursor:pointer;
+  border:1px solid transparent; white-space:nowrap; background:none; font-family:inherit; }
+.as-pill .g-st { width:15px; height:15px; font-size:9.5px; }
+.as-pill.pago     { background:rgba(12,163,12,.12); border-color:rgba(12,163,12,.3); color:#4cd964; }
+.as-pill.atrasado { background:rgba(208,59,59,.14); border-color:rgba(208,59,59,.4); color:#ff8080; }
+.as-pill.pendente { background:var(--surface2); border-color:var(--border2); color:var(--muted2); }
+.as-mex { display:grid; grid-template-columns:62px 1fr auto; align-items:center; gap:6px; padding:2px 0; font-size:11.5px; white-space:nowrap; }
+.as-mex .lb { color:var(--muted); font-size:11px; }
+.as-mex .dot { display:inline-block; width:7px; height:7px; border-radius:50%; margin-right:5px; }
+.as-mex button { background:none; border:1px solid var(--border); color:var(--muted2); border-radius:6px; padding:2px 7px; font-size:11px; cursor:pointer; font-family:inherit; }
+.as-mex button:hover { border-color:var(--amber); color:var(--amber); }
+.as-acesso { font-family:var(--mono); font-size:11.5px; color:var(--muted2); max-width:190px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+.as-acesso + .pwd-field { margin-top:3px; }
+@media(max-width:900px){ .as-top { grid-template-columns:1fr; } }
+@media(max-width:640px){ .as-kpis { grid-template-columns:1fr 1fr; gap:10px; } .as-busca { width:100%; } .as-receb-val { font-size:23px; } }
+
 ::-webkit-scrollbar { width:5px; height:5px; }
 ::-webkit-scrollbar-thumb { background:var(--border2);border-radius:3px; }
 input[type="date"]::-webkit-calendar-picker-indicator,
@@ -1115,46 +1157,50 @@ input[type="month"]::-webkit-calendar-picker-indicator { filter:invert(.6);curso
   </div>
 
   <!-- ── PÁGINA: ASSESSORIAS ── -->
-  <div class="page" id="page-assessorias">
+  <div class="page g-viz" id="page-assessorias">
     <div class="container">
-      <div class="section-header" style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;">
+      <div class="g-head">
         <div>
           <h2>Assessorias de Loja</h2>
-          <p>Gerencie lojas de clientes — acesso, renovação e pagamentos</p>
+          <p id="as-head-sub">Lojas dos clientes · acesso, renovação, pagamentos e acompanhamento</p>
         </div>
         <button class="btn btn-amber" onclick="abrirModalAssess()">+ Nova assessoria</button>
       </div>
 
       <!-- Resumo -->
-      <div class="cards-grid-4" id="assess-kpis">
-        <div class="kpi-card c-purple"><div class="kpi-icon">🏪</div><div class="kpi-label">Total clientes</div><div class="kpi-value c-purple" id="ak-total">0</div></div>
-        <div class="kpi-card c-green"><div class="kpi-icon">✅</div><div class="kpi-label">Pagamentos ok</div><div class="kpi-value c-green" id="ak-pago">0</div></div>
-        <div class="kpi-card c-amber"><div class="kpi-icon">⚠️</div><div class="kpi-label">Renovando em breve</div><div class="kpi-value c-amber" id="ak-renov">0</div></div>
-        <div class="kpi-card c-red"><div class="kpi-icon">🚨</div><div class="kpi-label">Pendentes</div><div class="kpi-value c-red" id="ak-pend">0</div></div>
-        <div class="kpi-card c-orange"><div class="kpi-icon">😴</div><div class="kpi-label">Lojas paradas</div><div class="kpi-value c-orange" id="ak-paradas">0</div><div class="kpi-sub">+14 dias sem mexer</div></div>
-        <div class="kpi-card c-green"><div class="kpi-icon">💰</div><div class="kpi-label">A receber no mês</div><div class="kpi-value c-green" id="ak-receber">R$0</div><div class="kpi-sub" id="ak-receber-sub">se todos os clientes pagarem</div></div>
+      <div class="as-top">
+        <div class="block as-receb">
+          <div class="g-eyebrow" id="as-receb-titulo">Recebido no mês</div>
+          <div class="as-receb-val"><span id="as-receb-val">R$0</span><span class="g-meta-de"> de <span id="as-receb-esp">R$0</span></span></div>
+          <div class="g-bar" style="margin:14px 0 8px;"><div class="g-bar-fill" id="as-receb-bar" style="background:var(--s-assess)"></div></div>
+          <div class="g-meta-sub" id="as-receb-sub">—</div>
+        </div>
+        <div class="as-kpis">
+          <div class="g-kpi"><div class="g-kpi-label">Lojas ativas</div><div class="g-kpi-val" id="as-k-ativas">0</div><div class="as-k-sub" id="as-k-ativas-sub">—</div></div>
+          <div class="g-kpi"><div class="g-kpi-label">Receita recorrente</div><div class="g-kpi-val" id="as-k-mrr">R$0</div><div class="as-k-sub" id="as-k-mrr-sub">por mês</div></div>
+          <div class="g-kpi"><div class="g-kpi-label"><i class="g-st g-st-critical as-mini">!</i>Atrasadas</div><div class="g-kpi-val" id="as-k-atras">0</div><div class="as-k-sub" id="as-k-atras-sub">—</div></div>
+          <div class="g-kpi"><div class="g-kpi-label"><i class="g-st g-st-info as-mini">i</i>Renovam em 7 dias</div><div class="g-kpi-val" id="as-k-breve">0</div><div class="as-k-sub" id="as-k-breve-sub">—</div></div>
+          <div class="g-kpi"><div class="g-kpi-label"><i class="g-st g-st-warning as-mini">!</i>Paradas +14 dias</div><div class="g-kpi-val" id="as-k-paradas">0</div><div class="as-k-sub">sem mexer na loja</div></div>
+          <div class="g-kpi"><div class="g-kpi-label">Inativas</div><div class="g-kpi-val" id="as-k-inativas">0</div><div class="as-k-sub" id="as-k-inativas-sub">—</div></div>
+        </div>
       </div>
 
       <!-- Tabela -->
       <div class="block">
-        <div class="block-head">
-          <div class="block-head-title">
-            <span class="bdot" style="background:var(--purple)"></span>
-            Clientes ativos
-          </div>
-          <input type="text" placeholder="🔍 Buscar cliente..." oninput="filtrarAssess(this.value)"
-            style="background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:6px 12px;color:var(--text);font-family:var(--sans);font-size:12px;outline:none;width:200px;">
+        <div class="block-head as-toolbar">
+          <div class="as-chips" id="as-chips" role="tablist" aria-label="Filtrar lojas"></div>
+          <input type="search" placeholder="Buscar cliente ou loja..." oninput="filtrarAssess(this.value)" class="as-busca" aria-label="Buscar cliente ou loja">
         </div>
         <div style="overflow-x:auto;">
           <table class="assess-table" id="assess-table">
             <thead>
               <tr>
                 <th>Cliente / Loja</th>
-                <th>Login</th>
-                <th>Senha</th>
+                <th>Mensalidade</th>
                 <th>Renovação</th>
-                <th>Já mexi</th>
                 <th>Pagamento</th>
+                <th>Já mexi</th>
+                <th>Acesso</th>
                 <th>Ações</th>
               </tr>
             </thead>
@@ -2124,116 +2170,158 @@ async function salvarPagamento() {
 
 function filtrarAssess(v) { assessFiltro = v.toLowerCase(); renderAssessorias(); }
 
+// Situação da loja: 'ativa' (pagou este mês ou o passado), 'nova' (cadastrada,
+// sem nenhum pagamento ainda) ou 'inativa' (tem histórico mas parou de pagar).
+// Só muda a exibição; nenhum cadastro é alterado.
+function situacaoAssess(a, mk) {
+  if (!Object.keys(a.pagamentos || {}).length) return 'nova';
+  return pagou(a, mk) || pagou(a, mesAnt(mk)) ? 'ativa' : 'inativa';
+}
+
+// Dias até a renovação deste mês (negativo = vencida)
+function diasParaRenovar(a, mk) {
+  const hoje = new Date(); hoje.setHours(0,0,0,0);
+  const [ano, mes] = mk.split('-').map(Number);
+  return Math.ceil((new Date(ano, mes-1, a.renovDia || 1) - hoje) / 86400000);
+}
+
+let assessStatus = 'ativas';
+function setAssessStatus(s) { assessStatus = s; renderAssessorias(); }
+
 function renderAssessorias() {
   const todos = getAssessorias();
   const mesAtual = mesKeyAtual();
-  const lista = todos.filter(a => !assessFiltro || a.nome.toLowerCase().includes(assessFiltro) || a.loja.toLowerCase().includes(assessFiltro));
+  const nomeMesAtual = nomeMesLongo(mesAtual);
 
-  // KPIs (status do mês corrente)
-  const statusTodos = todos.map(a => statusAssessMes(a, mesAtual));
-  document.getElementById('ak-total').textContent = todos.length;
-  document.getElementById('ak-pago').textContent  = statusTodos.filter(s => s === 'pago').length;
-  document.getElementById('ak-pend').textContent  = statusTodos.filter(s => s === 'pendente' || s === 'atrasado').length;
+  const info = todos.map(a => {
+    const sit = situacaoAssess(a, mesAtual);
+    const status = statusAssessMes(a, mesAtual);
+    const dias = diasParaRenovar(a, mesAtual);
+    return { a, sit, status, dias, breve: status !== 'pago' && dias >= 0 && dias <= 7,
+             parada: diasDesde(a.ultimaMexida) > 14 };
+  });
+  const emCarteira = info.filter(i => i.sit !== 'inativa');
+  const valorDe = i => parseFloat(i.a.valor) || 0;
+  const soma = (arr, f) => arr.reduce((s, i) => s + f(i), 0);
+
+  // ── Resumo (só lojas em carteira; inativas ficam fora das contas)
+  const atrasadas = emCarteira.filter(i => i.status === 'atrasado');
+  const breve     = emCarteira.filter(i => i.breve);
+  const paradas   = emCarteira.filter(i => i.parada);
+  const pagas     = emCarteira.filter(i => i.status === 'pago');
+  const recebido  = soma(pagas, i => parseFloat(i.a.pagamentos[mesAtual].valor) || 0);
+  const esperado  = recebido + soma(emCarteira.filter(i => i.status !== 'pago'), valorDe);
+  const mrr       = soma(emCarteira, valorDe);
+  const clientes  = new Set(emCarteira.map(i => (i.a.nome || '').trim().toLowerCase())).size;
+  const set = (id, t) => { const el = document.getElementById(id); if (el) el.textContent = t; };
+
+  set('as-receb-titulo', `Recebido em ${nomeMesAtual}`);
+  set('as-receb-val', brl(recebido));
+  set('as-receb-esp', brl(esperado));
+  set('as-receb-sub', `${pagas.length} de ${emCarteira.length} lojas pagaram · faltam ${brl(esperado - recebido)}`);
+  document.getElementById('as-receb-bar').style.width = (esperado ? recebido / esperado * 100 : 0) + '%';
+  set('as-k-ativas', emCarteira.length);
+  set('as-k-ativas-sub', `${clientes} cliente${clientes !== 1 ? 's' : ''}`);
+  set('as-k-mrr', brl(mrr));
+  set('as-k-mrr-sub', `ticket médio ${brl(emCarteira.length ? mrr / emCarteira.length : 0)}`);
+  set('as-k-atras', atrasadas.length);
+  set('as-k-atras-sub', atrasadas.length ? `${brl(soma(atrasadas, valorDe))} em aberto` : 'nenhuma em atraso');
+  set('as-k-breve', breve.length);
+  set('as-k-breve-sub', breve.length ? `${brl(soma(breve, valorDe))} a receber` : 'nenhuma');
+  set('as-k-paradas', paradas.length);
+  const inativas = info.filter(i => i.sit === 'inativa');
+  set('as-k-inativas', inativas.length);
+  set('as-k-inativas-sub', inativas.length ? `${brl(soma(inativas, valorDe))}/mês que parou de entrar` : 'nenhuma');
+  set('as-head-sub', `${emCarteira.length} lojas em carteira · ${brl(mrr)} por mês`
+    + (inativas.length ? ` · ${inativas.length} inativa${inativas.length > 1 ? 's' : ''} guardada${inativas.length > 1 ? 's' : ''} no filtro "Inativas"` : ''));
+
   const nb = document.getElementById('nb-assess');
-  const pend = statusTodos.filter(s => s !== 'pago').length;
-  if (pend > 0) { nb.textContent = pend; nb.style.display = ''; } else nb.style.display = 'none';
+  if (atrasadas.length) { nb.textContent = atrasadas.length; nb.style.display = ''; } else nb.style.display = 'none';
 
-  // Renovando em breve (≤7 dias, ainda não pago este mês)
-  const hoje = new Date(); hoje.setHours(0,0,0,0);
-  const [anoAtual, mAtual] = mesAtual.split('-').map(Number);
-  let renovBreve = 0;
-  todos.forEach(a => {
-    if (statusAssessMes(a, mesAtual) === 'pago') return;
-    const dataRenov = new Date(anoAtual, mAtual-1, a.renovDia || 1);
-    const diff = Math.ceil((dataRenov - hoje) / 86400000);
-    if (diff >= 0 && diff <= 7) renovBreve++;
-  });
-  document.getElementById('ak-renov').textContent = renovBreve;
+  // ── Filtros
+  const filtros = [
+    ['ativas',   'Em carteira',      emCarteira],
+    ['atrasadas','Atrasadas',        atrasadas],
+    ['breve',    'Renovam em 7 dias',breve],
+    ['pendentes','A receber',        emCarteira.filter(i => i.status !== 'pago')],
+    ['pagas',    'Pagas',            pagas],
+    ['paradas',  'Paradas +14d',     paradas],
+    ['inativas', 'Inativas',         info.filter(i => i.sit === 'inativa')],
+    ['todas',    'Todas',            info],
+  ];
+  document.getElementById('as-chips').innerHTML = filtros.map(([k, l, arr]) =>
+    `<button class="as-chip${assessStatus === k ? ' on' : ''}" role="tab" aria-selected="${assessStatus === k}" onclick="setAssessStatus('${k}')">${l} <b>${arr.length}</b></button>`).join('');
 
-  // Lojas paradas (nunca mexeu, ou +14 dias sem mexer)
-  const paradas = todos.filter(a => {
-    if (!a.ultimaMexida) return true;
-    const dias = Math.floor((hoje - new Date(a.ultimaMexida + 'T00:00:00')) / 86400000);
-    return dias > 14;
-  }).length;
-  const elParadas = document.getElementById('ak-paradas');
-  if (elParadas) elParadas.textContent = paradas;
+  let lista = (filtros.find(f => f[0] === assessStatus) || filtros[0])[2];
+  if (assessFiltro) lista = lista.filter(i => (i.a.nome || '').toLowerCase().includes(assessFiltro) || (i.a.loja || '').toLowerCase().includes(assessFiltro));
 
-  // Quanto entra no mes se todos os clientes pagarem:
-  // quem ja pagou conta pelo valor realmente pago, quem nao pagou conta pela mensalidade cadastrada.
-  let recebido = 0, aReceber = 0;
-  todos.forEach(a => {
-    const pg = a.pagamentos && a.pagamentos[mesAtual];
-    if (pg) recebido += parseFloat(pg.valor) || 0;
-    else    aReceber += parseFloat(a.valor)  || 0;
-  });
-  const elReceber = document.getElementById('ak-receber');
-  if (elReceber) {
-    elReceber.textContent = brFin(recebido + aReceber);
-    document.getElementById('ak-receber-sub').textContent =
-      `${brFin(recebido)} já pago · falta ${brFin(aReceber)}`;
-  }
+  // Ordem: atrasadas (mais antigas primeiro) → renovam logo → a receber → pagas → inativas
+  const peso = i => i.sit === 'inativa' ? 5 : i.status === 'atrasado' ? 0 : i.breve ? 1 : i.status === 'pendente' ? 2 : 3;
+  lista = [...lista].sort((x, y) => peso(x) - peso(y) || x.dias - y.dias || (x.a.nome || '').localeCompare(y.a.nome || ''));
 
   if (!lista.length) {
-    document.getElementById('assess-tbody').innerHTML = `<tr><td colspan="7"><div class="empty-state"><div class="icon">🏪</div><p>Nenhuma assessoria encontrada.</p></div></td></tr>`;
+    document.getElementById('assess-tbody').innerHTML = `<tr><td colspan="7"><div class="empty-state"><p>${assessFiltro ? 'Nenhuma loja encontrada nessa busca.' : 'Nenhuma loja nesse filtro.'}</p></div></td></tr>`;
     return;
   }
 
-  document.getElementById('assess-tbody').innerHTML = lista.map(a => {
-    const status = statusAssessMes(a, mesAtual);
-    let renovClass = '', renovBadge = '';
-    if (status !== 'pago') {
-      const dataRenov = new Date(anoAtual, mAtual-1, a.renovDia || 1);
-      const diff = Math.ceil((dataRenov - hoje) / 86400000);
-      if (diff < 0)       { renovClass = 'renov-overdue'; renovBadge = ` <span class="badge badge-red">vencido</span>`; }
-      else if (diff <= 7) { renovClass = 'renov-near';    renovBadge = ` <span class="badge badge-amber">${diff}d</span>`; }
-    }
-    const renovText = `Todo dia ${a.renovDia || '—'}${renovBadge}`;
+  let ultimoGrupo = null;
+  document.getElementById('assess-tbody').innerHTML = lista.map(i => {
+    const { a, status, dias } = i;
+    const grupo = i.sit === 'inativa' ? 'Inativas · sem pagamento há 2 meses ou mais' : null;
+    let cab = '';
+    if (assessStatus === 'todas' && grupo !== ultimoGrupo && grupo) cab = `<tr class="as-grupo"><td colspan="7">${grupo}</td></tr>`;
+    ultimoGrupo = grupo;
+
     const pg = a.pagamentos && a.pagamentos[mesAtual];
-    const pagBadge = status === 'pago' ? `<span class="badge badge-green">✅ Pago${pg ? ` (${pg.data.split('-').reverse().join('/')})` : ''}</span>` :
-                     status === 'atrasado' ? `<span class="badge badge-red">🚨 Atrasado</span>` :
-                     `<span class="badge badge-amber">⚠️ Pendente</span>`;
-    // Já mexi: loja, Ads e Afiliados (data + quem mexeu)
+    let renovNota = '';
+    if (status === 'pago') renovNota = `<small style="color:#4cd964">pago em ${pg.data ? pg.data.split('-').reverse().slice(0,2).join('/') : nomeMesAtual}</small>`;
+    else if (i.sit === 'inativa') renovNota = `<small style="color:var(--muted)">último pagamento: ${nomeMes(Object.keys(a.pagamentos).sort().pop())}</small>`;
+    else if (dias < 0) renovNota = `<small style="color:#ff8080">venceu há ${-dias} dia${dias === -1 ? '' : 's'}</small>`;
+    else if (dias === 0) renovNota = `<small style="color:var(--st-warning)">vence hoje</small>`;
+    else if (dias <= 7) renovNota = `<small style="color:var(--st-warning)">vence em ${dias} dia${dias === 1 ? '' : 's'}</small>`;
+    else renovNota = `<small style="color:var(--muted)">em ${dias} dias</small>`;
+
+    const pill = status === 'pago'
+      ? `<button class="as-pill pago" onclick="abrirModalPagamento('${a.id}')" title="Ver/registrar pagamento"><i class="g-st g-st-good">✓</i>Pago ${brl(parseFloat(pg.valor) || 0)}</button>`
+      : status === 'atrasado' && i.sit !== 'inativa'
+      ? `<button class="as-pill atrasado" onclick="abrirModalPagamento('${a.id}')" title="Registrar pagamento"><i class="g-st g-st-critical">!</i>Atrasado</button>`
+      : `<button class="as-pill pendente" onclick="abrirModalPagamento('${a.id}')" title="Registrar pagamento">${i.sit === 'inativa' ? 'Sem pagamento' : 'A receber'}</button>`;
+
+    const hoje = new Date(); hoje.setHours(0,0,0,0);
     const mexidaHtml = Object.keys(MEXIDA_TIPOS).map(tipo => {
       const t = MEXIDA_TIPOS[tipo];
       const data = a[t.campo], quem = a[t.campoPor];
-      let info;
+      let txt;
       if (data) {
-        const dias = Math.floor((hoje - new Date(data + 'T00:00:00')) / 86400000);
-        const cor = dias <= 7 ? 'var(--green)' : dias <= 14 ? 'var(--amber)' : 'var(--red)';
-        const rotulo = dias === 0 ? 'hoje' : dias === 1 ? 'ontem' : `há ${dias}d`;
-        info = `<span style="font-family:var(--mono);font-size:11.5px;">${data.split('-').reverse().join('/')}</span>`
-          + ` <span style="font-size:10.5px;color:${cor};font-weight:700;">● ${rotulo}</span>`
-          + (quem ? ` <span style="font-size:10.5px;color:var(--muted);">· ${quem}</span>` : '');
-      } else {
-        info = `<span style="font-size:11px;color:var(--red);font-weight:700;">nunca</span>`;
-      }
-      return `<div style="display:flex;align-items:center;gap:8px;justify-content:space-between;padding:3px 0;">
-        <div style="white-space:nowrap;"><span style="font-size:10.5px;color:var(--muted);display:inline-block;width:58px;">${t.rotulo}</span>${info}</div>
-        <button class="btn btn-ghost btn-sm" onclick="abrirModalMexida('${a.id}','${tipo}')" title="Marcar que mexi em ${t.rotulo} hoje">✓ mexi</button>
-      </div>`;
+        const d = Math.floor((hoje - new Date(data + 'T00:00:00')) / 86400000);
+        const cor = d <= 7 ? 'var(--st-good)' : d <= 14 ? 'var(--st-warning)' : 'var(--st-critical)';
+        txt = `<span title="${data.split('-').reverse().join('/')}${quem ? ' · ' + esc(quem) : ''}"><span class="dot" style="background:${cor}"></span>${d === 0 ? 'hoje' : d === 1 ? 'ontem' : `há ${d}d`}${quem ? ` <span style="color:var(--muted)">· ${esc(quem)}</span>` : ''}</span>`;
+      } else txt = `<span><span class="dot" style="background:var(--st-critical)"></span><span style="color:var(--muted)">nunca</span></span>`;
+      return `<div class="as-mex"><span class="lb">${t.rotulo}</span>${txt}<button onclick="abrirModalMexida('${a.id}','${tipo}')" title="Marcar que mexi em ${t.rotulo} hoje">✓ mexi</button></div>`;
     }).join('');
-    return `<tr>
+
+    return `${cab}<tr class="${i.sit === 'inativa' ? 'as-inativa' : ''}">
       <td>
-        <div class="client-name">${a.nome}</div>
-        <div class="client-store">🏪 ${a.loja}${a.url ? ` · <a href="${a.url}" target="_blank" style="color:var(--blue);text-decoration:none;">${a.url.replace('https://','')}</a>` : ''}</div>
-        ${a.roasIdeal ? `<div style="margin-top:4px;"><span class="badge badge-amber" title="ROAS ideal desta loja">🎯 ROAS ideal ${String(a.roasIdeal).replace('.',',')}</span></div>` : ''}
+        <div class="client-name">${esc(a.nome)}</div>
+        <div class="client-store">${esc(a.loja)}${a.url ? ` · <a href="${esc(a.url)}" target="_blank" rel="noopener" style="color:var(--blue);text-decoration:none;">abrir loja ↗</a>` : ''}</div>
+        ${a.roasIdeal ? `<div style="margin-top:5px;"><span class="badge badge-amber" title="ROAS ideal desta loja">ROAS ideal ${String(a.roasIdeal).replace('.',',')}</span></div>` : ''}
       </td>
-      <td style="font-family:var(--mono);font-size:12px;">${a.login || '—'}</td>
+      <td class="as-valor">${brl(parseFloat(a.valor) || 0)}</td>
+      <td class="as-renov">Todo dia ${a.renovDia || '—'}${renovNota}</td>
+      <td>${pill}</td>
+      <td>${mexidaHtml}</td>
       <td>
+        <div class="as-acesso" title="${esc(a.login || '')}">${esc(a.login || '—')}</div>
         <div class="pwd-field">
           <span class="pwd-text" id="pwd-${a.id}">••••••</span>
-          <button class="pwd-toggle" onclick="togglePwd('${a.id}','${(a.senha||'').replace(/'/g,"\\'")}')">👁</button>
+          <button class="pwd-toggle" onclick="togglePwd('${a.id}','${(a.senha||'').replace(/\\/g,'\\\\').replace(/'/g,"\\'")}')" title="Mostrar/ocultar senha">👁</button>
         </div>
       </td>
-      <td class="${renovClass}" style="font-family:var(--mono);font-size:12px;">${renovText}</td>
-      <td>${mexidaHtml}</td>
-      <td><span onclick="abrirModalPagamento('${a.id}')" style="cursor:pointer;" title="Clique para registrar pagamento">${pagBadge}</span></td>
       <td>
         <div class="action-btns">
           <button class="btn btn-green btn-sm" onclick="abrirModalPagamento('${a.id}')" title="Registrar pagamento">💳</button>
-          <button class="btn btn-ghost btn-sm" onclick="abrirModalAssess('${a.id}')">✏️</button>
-          <button class="btn btn-red btn-sm" onclick="deletarAssess('${a.id}')">🗑</button>
+          <button class="btn btn-ghost btn-sm" onclick="abrirModalAssess('${a.id}')" title="Editar">✏️</button>
+          <button class="btn btn-red btn-sm" onclick="deletarAssess('${a.id}')" title="Excluir">🗑</button>
         </div>
       </td>
     </tr>`;
