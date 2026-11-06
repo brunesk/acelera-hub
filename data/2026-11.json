@@ -1,14 +1,14 @@
 {
-  "gerado_em": "05/11/2026 às 22:54 (BRT)",
-  "periodo": "01/11 – 05/11/2026",
+  "gerado_em": "06/11/2026 às 05:44 (BRT)",
+  "periodo": "01/11 – 06/11/2026",
   "mes_key": "2026-11",
   "kpis": {
     "vendas": 24,
     "bruto": 1776.0,
     "liq": 1540.44,
-    "gasto_meta": 532.91,
-    "lucro": 1007.53,
-    "roas": 2.89,
+    "gasto_meta": 545.71,
+    "lucro": 994.73,
+    "roas": 2.82,
     "ticket": 74.0
   },
   "dias": [
@@ -69,25 +69,37 @@
       "vendas": 7,
       "bruto": 513.0,
       "liq": 444.79,
-      "gasto_meta": 77.5,
+      "gasto_meta": 83.79,
       "gasto_por_conta": {
         "Ferrack Store": 0.0,
-        "Robotics Guide": 77.5
+        "Robotics Guide": 83.79
       },
-      "lucro": 367.29,
-      "roas": 5.74
+      "lucro": 361.0,
+      "roas": 5.31
+    },
+    {
+      "dia": "06/11",
+      "vendas": 0,
+      "bruto": 0.0,
+      "liq": 0.0,
+      "gasto_meta": 6.51,
+      "gasto_por_conta": {
+        "Robotics Guide": 6.51
+      },
+      "lucro": -6.51,
+      "roas": 0.0
     }
   ],
   "semanas": [
     {
       "semana": "Semana 1",
-      "periodo": "01/11 – 05/11",
+      "periodo": "01/11 – 06/11",
       "vendas": 24,
       "bruto": 1776.0,
       "liq": 1540.44,
-      "gasto_meta": 532.91,
-      "lucro": 1007.53,
-      "roas": 2.89,
+      "gasto_meta": 545.71,
+      "lucro": 994.73,
+      "roas": 2.82,
       "atual": true
     }
   ],
