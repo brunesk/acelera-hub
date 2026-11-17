@@ -565,6 +565,36 @@ body {
 .as-acesso + .pwd-field { margin-top:3px; }
 .txt-ok { color: var(--green); } .txt-erro { color: var(--red); }
 
+/* Histórico de pagamentos */
+.as-hist-link { display:inline-block; margin-top:6px; background:none; border:none; padding:2px 0; font:inherit; font-size:12.5px; font-weight:600; color:var(--amber-ink); cursor:pointer; }
+.as-hist-link:hover { text-decoration:underline; }
+.assess-table tr.as-hist-row td, .assess-table tr.as-hist-row:hover td { background:var(--surface3); padding:14px 16px 18px; }
+.as-hist-resumo { display:flex; flex-wrap:wrap; gap:6px 22px; font-size:13.5px; color:var(--muted2); margin-bottom:12px; }
+.as-hist-resumo b { color:var(--text); }
+.as-meses { display:grid; grid-template-columns:repeat(auto-fill, minmax(118px, 1fr)); gap:8px; }
+.as-mes { display:flex; flex-direction:column; align-items:flex-start; gap:1px; text-align:left; padding:9px 11px; border-radius:var(--radius-sm);
+  border:1px solid var(--border); background:var(--surface); font-family:inherit; cursor:pointer; transition:border-color .15s, box-shadow .15s; }
+.as-mes:hover { border-color:var(--border2); box-shadow:var(--shadow); }
+.as-mes .m { font-size:12px; font-weight:600; color:var(--muted); }
+.as-mes .v { font-size:14.5px; font-weight:700; color:var(--text); }
+.as-mes .s { font-size:11.5px; color:var(--muted); }
+.as-mes.pago  { background:var(--green-dim); border-color:#bfe3cc; } .as-mes.pago .v { color:var(--green); }
+.as-mes.nao, .as-mes.atras { background:var(--red-dim); border-color:#f3c4c4; } .as-mes.nao .v, .as-mes.atras .v { color:var(--red); }
+.as-mes.pend  { background:var(--surface2); border-color:var(--border2); }
+.as-mes.fora  { background:transparent; border-style:dashed; } .as-mes.fora .v { color:var(--muted); }
+.pg-mat th, .pg-mat td { text-align:center; padding:8px 6px; }
+.pg-mat th:first-child, .pg-mat td:first-child { text-align:left; padding-left:18px; min-width:200px; }
+.pg-mat th:last-child, .pg-mat td:last-child { text-align:right; padding-right:18px; white-space:nowrap; }
+.pg-mat tfoot td { background:var(--surface3); font-weight:700; border-top:1px solid var(--border2); }
+.pg-mat .fr-pc { display:block; font-size:12px; color:var(--muted); font-weight:400; }
+.pg-cel { width:100%; min-width:84px; min-height:30px; padding:5px 6px; border-radius:7px; border:1px solid transparent; background:none;
+  font:inherit; font-size:12.5px; font-weight:600; cursor:pointer; white-space:nowrap; }
+.pg-cel.pago  { background:var(--green-dim); border-color:#bfe3cc; color:var(--green); }
+.pg-cel.nao, .pg-cel.atras { background:var(--red-dim); border-color:#f3c4c4; color:var(--red); }
+.pg-cel.pend  { background:var(--surface2); border-color:var(--border2); color:var(--muted2); }
+.pg-cel.fora  { border:1px dashed var(--border); }
+.pg-cel:hover { box-shadow:0 0 0 2px rgba(210,74,14,.25); }
+
 /* ── VISÃO FINANCEIRA ─────────────────────────────────── */
 .dash-kpis { grid-template-columns:repeat(6,1fr); }
 @media(max-width:1100px){ .dash-kpis { grid-template-columns:repeat(3,1fr); } }
@@ -1041,6 +1071,27 @@ body {
 
       <div class="block">
         <div class="block-head">
+          <div class="block-head-title">Pagamentos mês a mês</div>
+          <div class="g-head-acoes">
+            <span class="g-hint">clique num mês para registrar ou corrigir</span>
+            <select class="select-mes" id="pg-mat-n" aria-label="Período" onchange="renderPagMatriz()">
+              <option value="6">Últimos 6 meses</option>
+              <option value="12">Últimos 12 meses</option>
+            </select>
+          </div>
+        </div>
+        <div style="overflow-x:auto"><table class="tbl pg-mat" id="pg-mat"></table></div>
+        <div class="g-legend" style="padding:12px 20px 16px">
+          <span><i style="background:var(--green-dim);border:1px solid #bfe3cc"></i>pago</span>
+          <span><i style="background:var(--red-dim);border:1px solid #f3c4c4"></i>não pagou / atrasado</span>
+          <span><i style="background:var(--surface2);border:1px solid var(--border2)"></i>a receber</span>
+          <span><i style="background:transparent;border:1px dashed var(--border2)"></i>ainda não era cliente / parou</span>
+          <span>* mês em andamento</span>
+        </div>
+      </div>
+
+      <div class="block">
+        <div class="block-head">
           <div class="block-head-title">Carteira mês a mês</div>
           <span class="g-hint">lojas que pagaram em cada mês · passe o mouse para ver quem entrou e saiu</span>
         </div>
@@ -1323,13 +1374,14 @@ body {
 <!-- ══ MODAL: REGISTRAR PAGAMENTO ══════════════════════════════ -->
 <div class="modal-overlay" id="modal-pagamento" onclick="if(event.target===this)fecharModalPagamento()">
   <div class="modal-box">
-    <div class="modal-title">💳 Registrar pagamento</div>
+    <div class="modal-title" id="pg-titulo">Registrar pagamento</div>
     <div class="form-grid">
       <div class="field"><label>Cliente</label><input type="text" id="pg-cliente" disabled></div>
       <div class="field-row">
         <div class="field"><label>Data do pagamento</label><input type="date" id="pg-data"></div>
         <div class="field"><label>Valor pago (R$)</label><input type="number" id="pg-valor"></div>
       </div>
+      <p class="fin-ajuste-hint" style="margin:0">O pagamento conta no mês da data escolhida. Se aquele mês já tinha pagamento, ele é substituído.</p>
     </div>
     <div class="modal-actions">
       <button class="btn btn-ghost" onclick="fecharModalPagamento()">Cancelar</button>
@@ -2030,14 +2082,102 @@ async function deletarAssess(id) {
 }
 
 let pagamentoClienteId = null;
-function abrirModalPagamento(id) {
+// mk (opcional): abre já no mês clicado no histórico. Se o mês já tem pagamento, vem preenchido para corrigir.
+function abrirModalPagamento(id, mk) {
   const a = todosAssessorias[id];
   if (!a) return;
   pagamentoClienteId = id;
+  const existente = mk && a.pagamentos && a.pagamentos[mk];
+  let data = dataLocalHoje();
+  if (existente && existente.data) data = existente.data;
+  else if (mk && mk !== mesKeyAtual()) {
+    const [y, m] = mk.split('-').map(Number);
+    data = `${mk}-${String(Math.min(a.renovDia || 1, new Date(y, m, 0).getDate())).padStart(2, '0')}`;
+  }
+  document.getElementById('pg-titulo').textContent = existente
+    ? `Corrigir pagamento de ${nomeMesLongo(mk)}`
+    : mk ? `Registrar pagamento de ${nomeMesLongo(mk)}` : 'Registrar pagamento';
   document.getElementById('pg-cliente').value = `${a.nome} — ${a.loja}`;
-  document.getElementById('pg-data').value = dataLocalHoje();
-  document.getElementById('pg-valor').value = a.valor || '';
+  document.getElementById('pg-data').value = data;
+  document.getElementById('pg-valor').value = existente ? (existente.valor || '') : (a.valor || '');
   document.getElementById('modal-pagamento').classList.add('open');
+}
+
+// ── Histórico de pagamentos ───────────────────────────────────
+// Como cada mês aparece no histórico de um cliente
+function estadoPagMes(a, k) {
+  const mkHoje = mesKeyAtual();
+  const pg = a.pagamentos && a.pagamentos[k];
+  if (pg) return { cls:'pago', txt: brl(parseFloat(pg.valor) || 0), sub: pg.data ? 'pago em ' + pg.data.split('-').reverse().slice(0, 2).join('/') : 'pago' };
+  if (k > mkHoje) return null;
+  const chaves = Object.keys(a.pagamentos || {}).sort();
+  const primeiro = chaves[0], ultimo = chaves[chaves.length - 1];
+  if (k === mkHoje) return statusAssessMes(a, k) === 'atrasado'
+    ? { cls:'atras', txt:'Atrasado', sub:`venceu dia ${a.renovDia || 1}` }
+    : { cls:'pend', txt:'A receber', sub:`vence dia ${a.renovDia || 1}` };
+  if (!primeiro || k < primeiro) return { cls:'fora', txt:'—', sub:'ainda não era cliente' };
+  if (k > ultimo && situacaoAssess(a, mkHoje) === 'inativa') return { cls:'fora', txt:'—', sub:'parou de pagar' };
+  return { cls:'nao', txt:'Não pagou', sub:'nenhum pagamento registrado' };
+}
+
+const histAbertos = new Set();
+function toggleHistAssess(id) {
+  histAbertos.has(id) ? histAbertos.delete(id) : histAbertos.add(id);
+  renderAssessorias();
+}
+
+function histAssessHtml(a) {
+  const mkHoje = mesKeyAtual();
+  const chaves = Object.keys(a.pagamentos || {}).sort();
+  const total = chaves.reduce((s, k) => s + (parseFloat(a.pagamentos[k].valor) || 0), 0);
+  const inicio = chaves[0] || mkHoje;
+  const meses = [];
+  for (let k = mkHoje; meses.length < 24; k = mesAnt(k)) { meses.unshift(k); if (k <= inicio) break; }
+  const naoPagou = meses.filter(k => estadoPagMes(a, k)?.cls === 'nao');
+  const ult = chaves.length ? a.pagamentos[chaves[chaves.length - 1]] : null;
+  const fmtData = d => d ? d.split('-').reverse().join('/') : '—';
+  const resumo = chaves.length
+    ? `<span>Cliente desde <b>${nomeMesLongo(chaves[0])} de ${chaves[0].slice(0, 4)}</b></span>`
+      + `<span><b>${chaves.length}</b> ${chaves.length === 1 ? 'mês pago' : 'meses pagos'}</span>`
+      + `<span>Total pago: <b>${brl(total)}</b></span>`
+      + `<span>Média: <b>${brl(total / chaves.length)}</b>/mês</span>`
+      + `<span>Último pagamento: <b>${fmtData(ult && ult.data)}</b></span>`
+      + (naoPagou.length ? `<span class="txt-erro">${naoPagou.length} ${naoPagou.length === 1 ? 'mês' : 'meses'} sem pagamento</span>` : '')
+    : '<span>Nenhum pagamento registrado ainda.</span>';
+  return `<div class="as-hist">
+    <div class="as-hist-resumo">${resumo}</div>
+    <div class="as-meses">${meses.slice().reverse().map(k => {
+      const e = estadoPagMes(a, k);
+      return `<button class="as-mes ${e.cls}" onclick="abrirModalPagamento('${a.id}','${k}')" title="${e.cls === 'pago' ? 'Clique para corrigir' : 'Clique para registrar'}">`
+        + `<span class="m">${maiusc(nomeMesLongo(k)).slice(0, 3)}/${k.slice(2, 4)}</span><span class="v">${e.txt}</span><span class="s">${e.sub}</span></button>`;
+    }).join('')}</div>
+    ${meses.length === 24 && inicio < meses[0] ? '<p class="g-hint" style="margin-top:8px">Mostrando os últimos 24 meses.</p>' : ''}
+  </div>`;
+}
+
+// Quadro com todos os clientes x meses
+function renderPagMatriz() {
+  const el = document.getElementById('pg-mat');
+  if (!el) return;
+  const n = parseInt(document.getElementById('pg-mat-n')?.value) || 6;
+  const mkHoje = mesKeyAtual();
+  const meses = [];
+  for (let k = mkHoje; meses.length < n; k = mesAnt(k)) meses.push(k);   // mais recente primeiro
+  let clientes = getAssessorias().filter(a => meses.some(k => pagou(a, k)) || situacaoAssess(a, mkHoje) !== 'inativa');
+  if (assessFiltro) clientes = clientes.filter(a => (a.nome || '').toLowerCase().includes(assessFiltro) || (a.loja || '').toLowerCase().includes(assessFiltro));
+  clientes.sort((x, y) => (x.nome || '').localeCompare(y.nome || '') || (x.loja || '').localeCompare(y.loja || ''));
+  if (!clientes.length) { el.innerHTML = '<tbody><tr><td class="g-empty">Nenhum cliente nesse período.</td></tr></tbody>'; return; }
+  const valorMes = (a, k) => parseFloat(a.pagamentos?.[k]?.valor) || 0;
+  el.innerHTML = `<thead><tr><th>Cliente / loja</th>${meses.map(k => `<th>${maiusc(nomeMesLongo(k)).slice(0, 3)}/${k.slice(2, 4)}${k === mkHoje ? '*' : ''}</th>`).join('')}<th>Total no período</th></tr></thead><tbody>`
+    + clientes.map(a => `<tr><td><b>${esc(a.nome)}</b> <span class="fr-pc" style="display:inline">${esc(a.loja)}</span></td>`
+      + meses.map(k => {
+          const e = estadoPagMes(a, k);
+          const curto = { pago: e.txt, nao: 'não pagou', atras: 'atrasado', pend: 'a receber', fora: '' }[e.cls];
+          return `<td><button class="pg-cel ${e.cls}" onclick="abrirModalPagamento('${a.id}','${k}')" title="${esc(a.nome)} · ${nomeMesLongo(k)}: ${e.sub}">${curto}</button></td>`;
+        }).join('')
+      + `<td><b>${brl(meses.reduce((s, k) => s + valorMes(a, k), 0))}</b></td></tr>`).join('')
+    + `</tbody><tfoot><tr><td>Recebido no mês</td>${meses.map(k => `<td>${brl(clientes.reduce((s, a) => s + valorMes(a, k), 0))}<span class="fr-pc">${clientes.filter(a => pagou(a, k)).length} lojas</span></td>`).join('')}`
+    + `<td>${brl(clientes.reduce((s, a) => s + meses.reduce((t, k) => t + valorMes(a, k), 0), 0))}</td></tr></tfoot>`;
 }
 function fecharModalPagamento() { document.getElementById('modal-pagamento').classList.remove('open'); pagamentoClienteId = null; }
 
@@ -2148,6 +2288,7 @@ function renderAssessorias() {
   const peso = i => i.sit === 'inativa' ? 5 : i.status === 'atrasado' ? 0 : i.breve ? 1 : i.status === 'pendente' ? 2 : 3;
   lista = [...lista].sort((x, y) => peso(x) - peso(y) || x.dias - y.dias || (x.a.nome || '').localeCompare(y.a.nome || ''));
 
+  renderPagMatriz();
   if (!lista.length) {
     document.getElementById('assess-tbody').innerHTML = `<tr><td colspan="7"><div class="empty-state"><p>${assessFiltro ? 'Nenhuma loja encontrada nessa busca.' : 'Nenhuma loja nesse filtro.'}</p></div></td></tr>`;
     return;
@@ -2194,6 +2335,7 @@ function renderAssessorias() {
         <div class="client-name">${esc(a.nome)}</div>
         <div class="client-store">${esc(a.loja)}${a.url ? ` · <a href="${esc(a.url)}" target="_blank" rel="noopener" style="color:var(--blue);text-decoration:none;">abrir loja ↗</a>` : ''}</div>
         ${a.roasIdeal ? `<div style="margin-top:5px;"><span class="badge badge-amber" title="ROAS ideal desta loja">ROAS ideal ${String(a.roasIdeal).replace('.',',')}</span></div>` : ''}
+        <button class="as-hist-link" onclick="toggleHistAssess('${a.id}')" aria-expanded="${histAbertos.has(a.id)}">${histAbertos.has(a.id) ? '▾' : '▸'} Pagamentos (${Object.keys(a.pagamentos || {}).length})</button>
       </td>
       <td class="as-valor">${brl(parseFloat(a.valor) || 0)}</td>
       <td class="as-renov">Todo dia ${a.renovDia || '—'}${renovNota}</td>
@@ -2213,7 +2355,7 @@ function renderAssessorias() {
           <button class="btn btn-red btn-sm" onclick="deletarAssess('${a.id}')" title="Excluir">🗑</button>
         </div>
       </td>
-    </tr>`;
+    </tr>${histAbertos.has(a.id) ? `<tr class="as-hist-row"><td colspan="7">${histAssessHtml(a)}</td></tr>` : ''}`;
   }).join('');
 }
 
