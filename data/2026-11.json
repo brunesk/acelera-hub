@@ -1,15 +1,15 @@
 {
-  "gerado_em": "17/11/2026 às 10:58 (BRT)",
+  "gerado_em": "17/11/2026 às 18:56 (BRT)",
   "periodo": "01/11 – 17/11/2026",
   "mes_key": "2026-11",
   "kpis": {
-    "vendas": 53,
-    "bruto": 3824.59,
-    "liq": 3318.75,
-    "gasto_meta": 1421.88,
-    "lucro": 1896.87,
-    "roas": 2.33,
-    "ticket": 72.16
+    "vendas": 57,
+    "bruto": 4106.16,
+    "liq": 3563.04,
+    "gasto_meta": 1456.5,
+    "lucro": 2106.54,
+    "roas": 2.45,
+    "ticket": 72.04
   },
   "dias": [
     {
@@ -212,15 +212,15 @@
     },
     {
       "dia": "17/11",
-      "vendas": 1,
-      "bruto": 43.2,
-      "liq": 36.85,
-      "gasto_meta": 25.21,
+      "vendas": 5,
+      "bruto": 324.77,
+      "liq": 281.14,
+      "gasto_meta": 59.83,
       "gasto_por_conta": {
-        "Robotics Guide": 25.21
+        "Robotics Guide": 59.83
       },
-      "lucro": 11.64,
-      "roas": 1.46
+      "lucro": 221.31,
+      "roas": 4.7
     }
   ],
   "semanas": [
@@ -249,12 +249,12 @@
     {
       "semana": "Semana 3",
       "periodo": "15/11 – 17/11",
-      "vendas": 6,
-      "bruto": 365.67,
-      "liq": 316.68,
-      "gasto_meta": 191.33,
-      "lucro": 125.35,
-      "roas": 1.66,
+      "vendas": 10,
+      "bruto": 647.24,
+      "liq": 560.97,
+      "gasto_meta": 225.95,
+      "lucro": 335.02,
+      "roas": 2.48,
       "atual": true
     }
   ],
