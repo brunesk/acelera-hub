@@ -419,6 +419,53 @@ body {
 .aviso.ok   { color:var(--green);background:var(--green-dim); }
 .aviso.erro { color:var(--red);background:var(--red-dim); }
 
+/* ── TAREFAS ──────────────────────────────────────────── */
+.tf-add-row { display:flex; gap:12px; align-items:flex-end; flex-wrap:wrap; }
+.tf-f-loja { width:250px; }
+.tf-f-texto { flex:1; min-width:220px; }
+.tf-add-opc { margin-top:14px; align-items:center; }
+.tf-btn-add { margin-left:auto; }
+.tf-data { width:auto; padding:5px 10px; }
+.tf-sug { display:flex; gap:6px; flex-wrap:wrap; margin-top:10px; }
+.tf-sug button { background:transparent; border:1px dashed var(--border2); color:var(--muted2); border-radius:20px; padding:4px 11px; font:inherit; font-size:12.5px; cursor:pointer; }
+.tf-sug button:hover { border-color:var(--amber); color:var(--amber-ink); background:var(--amber-glow); }
+.tf-urg-tog { display:flex; align-items:center; gap:7px; font-size:13.5px; font-weight:600; color:var(--red); cursor:pointer; user-select:none; padding:6px 0; }
+.tf-urg-tog input { width:17px; height:17px; accent-color:var(--red); }
+.tf-dia-head { flex-wrap:wrap; gap:12px; }
+.tf-dia-nav { display:flex; align-items:center; gap:12px; flex-wrap:wrap; }
+.tf-prog { margin-bottom:18px; }
+.tf-prog-txt { font-size:14px; color:var(--muted); margin-bottom:8px; }
+.tf-prog-txt b { color:var(--text); font-size:16px; }
+.tf-loja { border:1px solid var(--border); border-radius:var(--radius-sm); margin-bottom:12px; overflow:hidden; }
+.tf-loja-head { display:flex; align-items:center; justify-content:space-between; gap:10px; padding:10px 14px; background:var(--surface3); border-bottom:1px solid var(--border); }
+.tf-loja-nome { font-weight:650; font-size:14.5px; }
+.tf-loja-nome small { font-weight:500; color:var(--muted); font-size:12.5px; margin-left:6px; }
+.tf-loja-cont { font-size:12.5px; color:var(--muted); white-space:nowrap; }
+.tf-item { display:flex; align-items:flex-start; gap:12px; padding:11px 14px; border-bottom:1px solid var(--border); }
+.tf-item:last-child { border-bottom:none; }
+.tf-check { flex-shrink:0; width:28px; height:28px; border-radius:50%; border:2px solid var(--border2); background:var(--surface); cursor:pointer; display:flex; align-items:center; justify-content:center; color:#fff; transition:all .15s; }
+.tf-check:hover { border-color:var(--green); background:var(--green-dim); }
+.tf-check svg { width:15px; height:15px; fill:none; stroke:currentColor; stroke-width:3; stroke-linecap:round; stroke-linejoin:round; opacity:0; }
+.tf-item.feita .tf-check { background:var(--green); border-color:var(--green); }
+.tf-item.feita .tf-check svg { opacity:1; }
+.tf-corpo { flex:1; min-width:0; padding-top:3px; }
+.tf-texto { font-size:14.5px; overflow-wrap:anywhere; }
+.tf-item.feita .tf-texto { text-decoration:line-through; color:var(--muted); }
+.tf-meta { font-size:12px; color:var(--muted); margin-top:3px; display:flex; gap:8px; flex-wrap:wrap; align-items:center; }
+.tf-tag { font-size:11.5px; font-weight:650; padding:1px 7px; border-radius:10px; }
+.tf-tag.urg { background:var(--red-dim); color:var(--red); }
+.tf-tag.atr { background:var(--orange-dim); color:var(--orange); }
+.tf-acoes { display:flex; gap:4px; flex-shrink:0; }
+.tf-acoes button { background:transparent; border:1px solid transparent; color:var(--muted); border-radius:7px; padding:4px 8px; font:inherit; font-size:12.5px; cursor:pointer; }
+.tf-acoes button:hover { background:var(--surface2); border-color:var(--border); color:var(--text); }
+@media(max-width:640px){
+  .tf-f-loja, .tf-f-texto { width:100%; min-width:0; }
+  .tf-btn-add { width:100%; margin-left:0; }
+  .tf-item { flex-wrap:wrap; }
+  .tf-acoes { width:100%; padding-left:40px; }
+  .tf-check { width:32px; height:32px; }
+}
+
 .empty-state { text-align:center;padding:56px 20px;color:var(--muted); }
 .empty-state .icon { font-size:36px;margin-bottom:10px; }
 .empty-state p { font-size:14px;line-height:1.6; }
@@ -732,6 +779,11 @@ body {
     <div class="nav-item" onclick="showPage('financeiro')" id="nav-financeiro">
       <span class="nav-icon"><svg viewBox="0 0 24 24"><rect x="2" y="6" width="20" height="13" rx="2"/><circle cx="12" cy="12.5" r="2.5"/><path d="M6 9.5v.01M18 15.5v.01"/></svg></span>
       <span>Visão Financeira</span>
+    </div>
+    <div class="nav-item" onclick="showPage('tarefas')" id="nav-tarefas">
+      <span class="nav-icon"><svg viewBox="0 0 24 24"><rect x="4" y="3" width="16" height="18" rx="2"/><path d="M8.5 9l1.5 1.5 3-3M8.5 15.5l1.5 1.5 3-3"/></svg></span>
+      <span>Tarefas</span>
+      <span class="nav-badge" id="nb-tarefas" style="display:none">0</span>
     </div>
 
     <div class="nav-section-label">Frentes</div>
@@ -1100,6 +1152,66 @@ body {
     </div>
   </div>
 
+  <!-- ── PÁGINA: TAREFAS ── -->
+  <div class="page" id="page-tarefas">
+    <div class="container" style="max-width:980px;">
+      <div class="g-head">
+        <div>
+          <h2>Tarefas das lojas</h2>
+          <p>O que precisa ser feito em cada loja de assessoria · marque quando terminar</p>
+        </div>
+      </div>
+
+      <div class="block tf-add">
+        <div class="block-head"><div class="block-head-title">Nova tarefa</div></div>
+        <div class="block-body">
+          <div class="tf-add-row">
+            <div class="field tf-f-loja"><label for="tf-loja">Loja</label><select id="tf-loja"></select></div>
+            <div class="field tf-f-texto"><label for="tf-texto">O que fazer</label>
+              <input type="text" id="tf-texto" placeholder="Ex: subir 5 produtos novos" onkeydown="if(event.key==='Enter')adicionarTarefa()">
+            </div>
+          </div>
+          <div class="tf-sug" id="tf-sug" aria-label="Sugestões rápidas"></div>
+          <div class="tf-add-row tf-add-opc">
+            <div class="as-chips" id="tf-quando" role="group" aria-label="Para quando">
+              <button class="as-chip on" data-q="0" onclick="setTfQuando(0)">Hoje</button>
+              <button class="as-chip" data-q="1" onclick="setTfQuando(1)">Amanhã</button>
+              <input type="date" id="tf-data" class="as-busca tf-data" aria-label="Outra data" onchange="setTfQuando('data')">
+            </div>
+            <label class="tf-urg-tog"><input type="checkbox" id="tf-urgente"> Urgente</label>
+            <button class="btn btn-amber tf-btn-add" onclick="adicionarTarefa()">+ Adicionar</button>
+          </div>
+          <div class="aviso" id="tf-aviso"></div>
+        </div>
+      </div>
+
+      <div class="block">
+        <div class="block-head tf-dia-head">
+          <div class="tf-dia-nav">
+            <button class="cal-nav-btn" onclick="moverDiaTf(-1)" aria-label="Dia anterior">‹</button>
+            <div>
+              <div class="block-head-title" id="tf-dia-titulo">Hoje</div>
+              <div class="g-hint" id="tf-dia-sub"></div>
+            </div>
+            <button class="cal-nav-btn" onclick="moverDiaTf(1)" aria-label="Próximo dia">›</button>
+            <button class="btn btn-ghost btn-sm" id="tf-btn-hoje" onclick="irHojeTf()" style="display:none;">Voltar para hoje</button>
+          </div>
+          <div class="as-chips" id="tf-ver" role="tablist" aria-label="Mostrar">
+            <button class="as-chip on" data-v="pend" onclick="setTfVer('pend')">A fazer</button>
+            <button class="as-chip" data-v="todas" onclick="setTfVer('todas')">Todas</button>
+          </div>
+        </div>
+        <div class="block-body">
+          <div class="tf-prog">
+            <div class="tf-prog-txt"><b id="tf-prog-n">0 de 0</b> <span id="tf-prog-sub">feitas</span></div>
+            <div class="g-bar"><div class="g-bar-fill" id="tf-prog-bar" style="background:var(--green)"></div></div>
+          </div>
+          <div id="tf-lista"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <!-- ── PÁGINA: SAAS GESTÃO ── -->
   <div class="page" id="page-saas">
     <div class="container">
@@ -1371,6 +1483,26 @@ body {
   </div>
 </div>
 
+<!-- ══ MODAL: EDITAR TAREFA ════════════════════════════════════ -->
+<div class="modal-overlay" id="modal-tarefa" onclick="if(event.target===this)fecharModalTarefa()">
+  <div class="modal-box" style="max-width:440px;">
+    <div class="modal-title">Editar tarefa</div>
+    <div class="form-grid">
+      <div class="field"><label for="te-loja">Loja</label><select id="te-loja"></select></div>
+      <div class="field"><label for="te-texto">O que fazer</label><textarea id="te-texto" rows="2"></textarea></div>
+      <div class="field-row">
+        <div class="field"><label for="te-data">Para o dia</label><input type="date" id="te-data"></div>
+        <div class="field"><label>&nbsp;</label><label class="tf-urg-tog"><input type="checkbox" id="te-urgente"> Urgente</label></div>
+      </div>
+    </div>
+    <div class="modal-actions">
+      <button class="btn btn-red" onclick="excluirTarefa()" style="margin-right:auto;">Excluir</button>
+      <button class="btn btn-ghost" onclick="fecharModalTarefa()">Cancelar</button>
+      <button class="btn btn-amber" onclick="salvarEdicaoTarefa()">Salvar</button>
+    </div>
+  </div>
+</div>
+
 <!-- ══ MODAL: REGISTRAR PAGAMENTO ══════════════════════════════ -->
 <div class="modal-overlay" id="modal-pagamento" onclick="if(event.target===this)fecharModalPagamento()">
   <div class="modal-box">
@@ -1493,6 +1625,7 @@ const pageTitles = {
   assessorias:  ['Assessorias', 'Lojas em carteira · renovação, pagamentos e acompanhamento'],
   saas:         ['SaaS Gestão', 'Assinantes do Acelera Shopee Gestão Financeira · Mercado Pago'],
   financeiro:   ['Visão Financeira', 'Consolidado de receitas e custos do ecossistema'],
+  tarefas:      ['Tarefas', 'O que fazer em cada loja de assessoria, dia a dia'],
 };
 
 function showPage(page) {
@@ -1507,6 +1640,7 @@ function showPage(page) {
   document.querySelector(`#page-${page}`).scrollTop = 0;
   if (page === 'financeiro') calcFinanceiro();
   if (page === 'geral') renderGeral();
+  if (page === 'tarefas') renderTarefas();
 }
 
 // ══════════════════════════════════════════════════════════════
@@ -1991,6 +2125,7 @@ async function carregarAssessorias() {
     todosAssessorias = r.ok ? ((await r.json()) || {}) : {};
   } catch(e) { todosAssessorias = {}; }
   renderAssessorias();
+  renderTarefas();
   atualizarGeral();
 }
 
@@ -2392,6 +2527,261 @@ async function confirmarMexida(quem) {
 function togglePwd(id, senha) {
   const el = document.getElementById(`pwd-${id}`);
   el.textContent = el.textContent === '••••••' ? senha : '••••••';
+}
+
+// ══════════════════════════════════════════════════════════════
+// TAREFAS — ficam dentro de cada loja: assessorias/{loja}/tarefas/{id}
+// (mesmo acesso das Assessorias; os PATCH do cadastro preservam o campo)
+// ══════════════════════════════════════════════════════════════
+const TF_SUGESTOES = ['Ajustar ADS', 'Subir produtos novos', 'Revisar preços', 'Responder afiliados', 'Responder avaliações', 'Conferir pedidos', 'Trocar fotos/capas'];
+let tfDia = dataLocalHoje();
+let tfVer = 'pend';
+let tfQuando = 0;          // 0 = hoje, 1 = amanhã, 'data' = escolhida no calendário
+let tfEdit = null;         // { lojaId, id }
+let tfUltimaLoja = '';
+
+function somaDias(iso, n) {
+  const [y, m, d] = iso.split('-').map(Number);
+  const dt = new Date(y, m - 1, d + n);
+  return `${dt.getFullYear()}-${String(dt.getMonth()+1).padStart(2,'0')}-${String(dt.getDate()).padStart(2,'0')}`;
+}
+function fmtDiaCurto(iso) { return iso.split('-').reverse().slice(0, 2).join('/'); }
+function quemSou() {
+  const u = dbAuth.currentUser;
+  if (!u) return '';
+  if ((u.email || '').toLowerCase() === 'brunoferrack@gmail.com') return 'Bruno';
+  return (u.displayName || u.email || '').split(/[ @]/)[0];
+}
+
+// Lojas que aparecem na lista de escolha (ativas e novas; inativas ficam de fora)
+function lojasParaTarefa() {
+  const mk = mesKeyAtual();
+  return getAssessorias()
+    .filter(a => situacaoAssess(a, mk) !== 'inativa')
+    .sort((a, b) => (a.loja || '').localeCompare(b.loja || '', 'pt-BR'));
+}
+function opcoesLojas(sel) {
+  return lojasParaTarefa().map(a => `<option value="${esc(a.id)}"${a.id === sel ? ' selected' : ''}>${esc(a.loja)} — ${esc(a.nome)}</option>`).join('');
+}
+
+function todasTarefas() {
+  const out = [];
+  for (const a of getAssessorias())
+    for (const [id, t] of Object.entries(a.tarefas || {}))
+      if (t && t.texto) out.push({ ...t, id, lojaId: a.id, loja: a.loja, cliente: a.nome });
+  return out;
+}
+
+// Tarefas do dia d. Hoje também puxa as que ficaram pra trás e não foram feitas.
+function tarefasDoDia(d) {
+  const hoje = dataLocalHoje();
+  return todasTarefas().filter(t =>
+    t.data === d ||
+    (d === hoje && !t.feita && t.data < hoje) ||
+    (t.feita && t.feitaDia === d && t.data < d));
+}
+function pendentesHoje() { return tarefasDoDia(dataLocalHoje()).filter(t => !t.feita).length; }
+
+function setTfQuando(q) {
+  tfQuando = q;
+  if (q !== 'data') document.getElementById('tf-data').value = '';
+  if (q === 'data' && !document.getElementById('tf-data').value) tfQuando = 0;
+  document.querySelectorAll('#tf-quando .as-chip').forEach(b => b.classList.toggle('on', String(tfQuando) === b.dataset.q));
+}
+function setTfVer(v) {
+  tfVer = v;
+  document.querySelectorAll('#tf-ver .as-chip').forEach(b => b.classList.toggle('on', b.dataset.v === v));
+  renderTarefas();
+}
+function moverDiaTf(n) { tfDia = somaDias(tfDia, n); renderTarefas(); }
+function irHojeTf() { tfDia = dataLocalHoje(); renderTarefas(); }
+function usarSugestaoTf(i) {
+  const el = document.getElementById('tf-texto');
+  el.value = TF_SUGESTOES[i]; el.focus();
+}
+
+function avisoTf(txt, tipo) {
+  const el = document.getElementById('tf-aviso');
+  el.textContent = txt; el.className = 'aviso ' + tipo; el.style.display = 'block';
+  clearTimeout(avisoTf.t); avisoTf.t = setTimeout(() => el.style.display = 'none', 3500);
+}
+
+async function gravarTarefa(lojaId, id, dados, metodo) {
+  const r = await fetch(`${DB}/assessorias/${lojaId}/tarefas/${id}.json`, {
+    method: metodo, headers: {'Content-Type':'application/json'}, body: dados ? JSON.stringify(dados) : undefined });
+  if (!r.ok) throw new Error('HTTP ' + r.status);
+}
+
+async function adicionarTarefa() {
+  const lojaId = document.getElementById('tf-loja').value;
+  const texto = document.getElementById('tf-texto').value.trim();
+  if (!lojaId) { avisoTf('Escolha a loja.', 'erro'); return; }
+  if (!texto) { avisoTf('Escreva o que precisa ser feito.', 'erro'); document.getElementById('tf-texto').focus(); return; }
+  const data = tfQuando === 'data' ? document.getElementById('tf-data').value : somaDias(dataLocalHoje(), tfQuando);
+  const id = Date.now().toString(36) + Math.random().toString(36).slice(2, 6);
+  const t = { texto, data, urgente: document.getElementById('tf-urgente').checked, feita: false, criadaEm: Date.now(), criadaPor: quemSou() };
+  try {
+    await gravarTarefa(lojaId, id, t, 'PUT');
+  } catch(e) { avisoTf('Não consegui salvar. Confira a internet e o login.', 'erro'); return; }
+  const a = todosAssessorias[lojaId];
+  a.tarefas = { ...(a.tarefas || {}), [id]: t };
+  tfUltimaLoja = lojaId;
+  document.getElementById('tf-texto').value = '';
+  document.getElementById('tf-urgente').checked = false;
+  document.getElementById('tf-texto').focus();
+  avisoTf(`Tarefa adicionada para ${data === dataLocalHoje() ? 'hoje' : fmtDiaCurto(data)} em ${a.loja}.`, 'ok');
+  renderTarefas();
+}
+
+async function alterarTarefa(lojaId, id, mudancas) {
+  const a = todosAssessorias[lojaId];
+  if (!a || !a.tarefas || !a.tarefas[id]) return;
+  const antes = { ...a.tarefas[id] };
+  Object.assign(a.tarefas[id], mudancas);
+  renderTarefas();
+  try { await gravarTarefa(lojaId, id, mudancas, 'PATCH'); }
+  catch(e) { a.tarefas[id] = antes; renderTarefas(); alert('Não consegui salvar a alteração. Tente de novo.'); }
+}
+
+function marcarTarefa(lojaId, id) {
+  const t = todosAssessorias[lojaId]?.tarefas?.[id];
+  if (!t) return;
+  alterarTarefa(lojaId, id, t.feita
+    ? { feita: false, feitaEm: null, feitaDia: null, feitaPor: null }
+    : { feita: true, feitaEm: Date.now(), feitaDia: dataLocalHoje(), feitaPor: quemSou() });
+}
+function adiarTarefa(lojaId, id) {
+  const base = tfDia < dataLocalHoje() ? dataLocalHoje() : tfDia;
+  alterarTarefa(lojaId, id, { data: somaDias(base, 1) });
+}
+
+function abrirModalTarefa(lojaId, id) {
+  const t = todosAssessorias[lojaId]?.tarefas?.[id];
+  if (!t) return;
+  tfEdit = { lojaId, id };
+  document.getElementById('te-loja').innerHTML = opcoesLojas(lojaId) ||
+    `<option value="${esc(lojaId)}">${esc(todosAssessorias[lojaId].loja)}</option>`;
+  document.getElementById('te-loja').value = lojaId;
+  document.getElementById('te-texto').value = t.texto || '';
+  document.getElementById('te-data').value = t.data || dataLocalHoje();
+  document.getElementById('te-urgente').checked = !!t.urgente;
+  document.getElementById('modal-tarefa').classList.add('open');
+}
+function fecharModalTarefa() { document.getElementById('modal-tarefa').classList.remove('open'); tfEdit = null; }
+
+async function salvarEdicaoTarefa() {
+  if (!tfEdit) return;
+  const { lojaId, id } = tfEdit;
+  const novaLoja = document.getElementById('te-loja').value;
+  const texto = document.getElementById('te-texto').value.trim();
+  const data = document.getElementById('te-data').value;
+  if (!texto || !data) { alert('Preencha o que fazer e o dia.'); return; }
+  const mud = { texto, data, urgente: document.getElementById('te-urgente').checked };
+  if (novaLoja === lojaId) { fecharModalTarefa(); return alterarTarefa(lojaId, id, mud); }
+  // Trocou de loja: grava na nova e apaga da antiga
+  const t = { ...todosAssessorias[lojaId].tarefas[id], ...mud };
+  try {
+    await gravarTarefa(novaLoja, id, t, 'PUT');
+    await gravarTarefa(lojaId, id, null, 'DELETE');
+  } catch(e) { alert('Não consegui mover a tarefa. Tente de novo.'); return; }
+  delete todosAssessorias[lojaId].tarefas[id];
+  const nova = todosAssessorias[novaLoja];
+  nova.tarefas = { ...(nova.tarefas || {}), [id]: t };
+  fecharModalTarefa();
+  renderTarefas();
+}
+
+async function excluirTarefa() {
+  if (!tfEdit || !confirm('Excluir esta tarefa?')) return;
+  const { lojaId, id } = tfEdit;
+  try { await gravarTarefa(lojaId, id, null, 'DELETE'); }
+  catch(e) { alert('Não consegui excluir. Tente de novo.'); return; }
+  delete todosAssessorias[lojaId].tarefas[id];
+  fecharModalTarefa();
+  renderTarefas();
+}
+
+function itemTarefaHtml(t) {
+  const hoje = dataLocalHoje();
+  const hora = ts => new Date(ts).toLocaleTimeString('pt-BR', { hour:'2-digit', minute:'2-digit' });
+  const meta = [];
+  if (t.urgente && !t.feita) meta.push('<span class="tf-tag urg">Urgente</span>');
+  if (!t.feita && t.data < hoje) meta.push(`<span class="tf-tag atr">Atrasada desde ${fmtDiaCurto(t.data)}</span>`);
+  if (t.feita) meta.push(`Feita${t.feitaPor ? ' por ' + esc(t.feitaPor) : ''}${t.feitaEm ? ' às ' + hora(t.feitaEm) : ''}`);
+  else if (t.criadaPor) meta.push(`Pedida por ${esc(t.criadaPor)}`);
+  const L = esc(t.lojaId), I = esc(t.id);
+  return `<div class="tf-item${t.feita ? ' feita' : ''}">
+    <button class="tf-check" onclick="marcarTarefa('${L}','${I}')" aria-label="${t.feita ? 'Desmarcar' : 'Marcar como feita'}" title="${t.feita ? 'Desmarcar' : 'Marcar como feita'}">
+      <svg viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></button>
+    <div class="tf-corpo">
+      <div class="tf-texto">${esc(t.texto)}</div>
+      ${meta.length ? `<div class="tf-meta">${meta.join('')}</div>` : ''}
+    </div>
+    <div class="tf-acoes">
+      ${t.feita ? '' : `<button onclick="adiarTarefa('${L}','${I}')" title="Passar para o dia seguinte">→ amanhã</button>`}
+      <button onclick="abrirModalTarefa('${L}','${I}')" title="Editar ou excluir">✎ Editar</button>
+    </div>
+  </div>`;
+}
+
+function renderTarefas() {
+  if (!document.getElementById('tf-lista')) return;
+  const hoje = dataLocalHoje();
+
+  // Selecionador de loja (só reconstrói se a lista mudou, para não atrapalhar quem está escolhendo)
+  const sel = document.getElementById('tf-loja');
+  const atual = sel.value || tfUltimaLoja;
+  const opts = '<option value="">Escolha a loja...</option>' + opcoesLojas(atual);
+  if (sel.dataset.opts !== opts) { sel.innerHTML = opts; sel.dataset.opts = opts; }
+  if (!document.getElementById('tf-sug').children.length)
+    document.getElementById('tf-sug').innerHTML = TF_SUGESTOES.map((s, i) => `<button type="button" onclick="usarSugestaoTf(${i})">${esc(s)}</button>`).join('');
+
+  // Cabeçalho do dia
+  const [y, m, d] = tfDia.split('-').map(Number);
+  const nomeDia = new Date(y, m - 1, d).toLocaleDateString('pt-BR', { weekday:'long', day:'numeric', month:'long' });
+  const rot = tfDia === hoje ? 'Hoje' : tfDia === somaDias(hoje, 1) ? 'Amanhã' : tfDia === somaDias(hoje, -1) ? 'Ontem' : maiusc(nomeDia.split(',')[0]);
+  document.getElementById('tf-dia-titulo').textContent = rot;
+  document.getElementById('tf-dia-sub').textContent = nomeDia;
+  document.getElementById('tf-btn-hoje').style.display = tfDia === hoje ? 'none' : '';
+
+  const doDia = tarefasDoDia(tfDia);
+  const feitas = doDia.filter(t => t.feita).length;
+  document.getElementById('tf-prog-n').textContent = `${feitas} de ${doDia.length}`;
+  document.getElementById('tf-prog-sub').textContent = !doDia.length ? 'nenhuma tarefa neste dia'
+    : feitas === doDia.length ? 'feitas · tudo pronto! 🎉' : `feitas · faltam ${doDia.length - feitas}`;
+  document.getElementById('tf-prog-bar').style.width = doDia.length ? (feitas / doDia.length * 100) + '%' : '0%';
+
+  // Badge do menu
+  const nb = document.getElementById('nb-tarefas');
+  const pend = pendentesHoje();
+  nb.textContent = pend; nb.style.display = pend ? '' : 'none';
+
+  // Lista agrupada por loja
+  const visiveis = tfVer === 'pend' ? doDia.filter(t => !t.feita) : doDia;
+  const lista = document.getElementById('tf-lista');
+  if (!visiveis.length) {
+    lista.innerHTML = `<div class="empty-state" style="padding:36px 20px;"><div class="icon">${doDia.length ? '✅' : '📋'}</div><p>${
+      doDia.length ? 'Tudo feito neste dia!<br>Clique em "Todas" para ver o que foi concluído.'
+                   : 'Nenhuma tarefa para este dia.<br>Use o quadro "Nova tarefa" acima para adicionar.'}</p></div>`;
+    return;
+  }
+  const grupos = {};
+  for (const t of visiveis) (grupos[t.lojaId] ||= []).push(t);
+  const peso = t => (t.feita ? 100 : 0) + (t.urgente ? 0 : 2) + (t.data < hoje ? 0 : 1);
+  const ordem = Object.values(grupos).map(ts => {
+    ts.sort((a, b) => peso(a) - peso(b) || (a.criadaEm || 0) - (b.criadaEm || 0));
+    return ts;
+  }).sort((A, B) => peso(A[0]) - peso(B[0]) || B.filter(t => !t.feita).length - A.filter(t => !t.feita).length || (A[0].loja || '').localeCompare(B[0].loja || '', 'pt-BR'));
+  lista.innerHTML = ordem.map(ts => {
+    const f = ts.filter(t => t.feita).length;
+    return `<div class="tf-loja">
+      <div class="tf-loja-head">
+        <div class="tf-loja-nome">${esc(ts[0].loja)}<small>${esc(ts[0].cliente)}</small></div>
+        <div class="tf-loja-cont">${tfVer === 'pend' ? `${ts.length} a fazer` : `${f} de ${ts.length} feitas`}</div>
+      </div>
+      ${ts.map(itemTarefaHtml).join('')}
+    </div>`;
+  }).join('');
 }
 
 // ══════════════════════════════════════════════════════════════
