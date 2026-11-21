@@ -466,6 +466,47 @@ body {
   .tf-check { width:32px; height:32px; }
 }
 
+/* ── Plano do negócio ── */
+.pn-add-row { display:flex; gap:12px; align-items:flex-end; flex-wrap:wrap; }
+.pn-f-texto { flex:1; min-width:240px; }
+.pn-f-area { width:170px; }
+.pn-add-opc { margin-top:14px; align-items:center; gap:18px; }
+.pn-grupo { display:flex; align-items:center; gap:8px; flex-wrap:wrap; }
+.pn-grupo > span { font-size:13px; font-weight:600; color:var(--muted2); }
+.pn-filtros { display:flex; gap:18px; flex-wrap:wrap; align-items:center; margin-bottom:16px; }
+.pn-cols { display:grid; grid-template-columns: repeat(3, 1fr); gap:14px; align-items:start; }
+.pn-col { background:var(--surface3); border:1px solid var(--border); border-radius:var(--radius-sm); min-width:0; }
+.pn-col-head { display:flex; align-items:center; justify-content:space-between; padding:11px 14px; border-bottom:1px solid var(--border); font-weight:650; font-size:14.5px; }
+.pn-col-head small { font-weight:600; color:var(--muted); font-size:12.5px; }
+.pn-dot { display:inline-block; width:9px; height:9px; border-radius:50%; margin-right:8px; }
+.pn-col-body { padding:10px; display:flex; flex-direction:column; gap:8px; }
+.pn-vazio { font-size:13px; color:var(--muted); text-align:center; padding:18px 8px; }
+.pn-card { background:var(--surface); border:1px solid var(--border); border-radius:var(--radius-sm); padding:11px 12px; display:flex; gap:10px; align-items:flex-start; box-shadow:var(--shadow); }
+.pn-card.alta { border-left:3px solid var(--red); }
+.pn-card.feito { opacity:.75; }
+.pn-card.feito .pn-txt { text-decoration:line-through; color:var(--muted); }
+.pn-card .tf-check { width:24px; height:24px; }
+.pn-card.feito .tf-check { background:var(--green); border-color:var(--green); }
+.pn-card.feito .tf-check svg { opacity:1; }
+.pn-corpo { flex:1; min-width:0; }
+.pn-txt { font-size:14px; line-height:1.4; overflow-wrap:anywhere; }
+.pn-nota { font-size:12.5px; color:var(--muted); margin-top:3px; overflow-wrap:anywhere; white-space:pre-line; }
+.pn-tags { display:flex; gap:5px; flex-wrap:wrap; margin-top:7px; align-items:center; }
+.pn-tag { font-size:11.5px; font-weight:600; padding:1px 8px; border-radius:10px; background:var(--surface2); color:var(--muted2); }
+.pn-tag.alta { background:var(--red-dim); color:var(--red); }
+.pn-tag.media { background:var(--orange-dim); color:var(--orange); }
+.pn-tag.baixa { background:var(--blue-dim); color:var(--blue); }
+.pn-tag.atr { background:var(--red-dim); color:var(--red); }
+.pn-tag.quem { background:var(--purple-dim); color:var(--purple); }
+.pn-acoes { display:flex; gap:4px; margin-top:8px; flex-wrap:wrap; }
+.pn-acoes button { background:transparent; border:1px solid var(--border); color:var(--muted2); border-radius:7px; padding:3px 9px; font:inherit; font-size:12px; cursor:pointer; }
+.pn-acoes button:hover { background:var(--surface2); color:var(--text); }
+.pn-mais { background:transparent; border:none; color:var(--amber-ink); font:inherit; font-size:12.5px; font-weight:600; cursor:pointer; padding:6px; }
+@media (max-width: 900px) {
+  .pn-cols { grid-template-columns: 1fr; }
+  .pn-f-texto, .pn-f-area { width:100%; min-width:0; }
+}
+
 .empty-state { text-align:center;padding:56px 20px;color:var(--muted); }
 .empty-state .icon { font-size:36px;margin-bottom:10px; }
 .empty-state p { font-size:14px;line-height:1.6; }
@@ -784,6 +825,11 @@ body {
       <span class="nav-icon"><svg viewBox="0 0 24 24"><rect x="4" y="3" width="16" height="18" rx="2"/><path d="M8.5 9l1.5 1.5 3-3M8.5 15.5l1.5 1.5 3-3"/></svg></span>
       <span>Tarefas</span>
       <span class="nav-badge" id="nb-tarefas" style="display:none">0</span>
+    </div>
+    <div class="nav-item" onclick="showPage('plano')" id="nav-plano">
+      <span class="nav-icon"><svg viewBox="0 0 24 24"><path d="M12 3l2.6 5.3 5.9.9-4.3 4.1 1 5.8L12 16.4 6.8 19.1l1-5.8L3.5 9.2l5.9-.9z"/></svg></span>
+      <span>Plano do negócio</span>
+      <span class="nav-badge" id="nb-plano" style="display:none;background:var(--red)">0</span>
     </div>
 
     <div class="nav-section-label">Frentes</div>
@@ -1212,6 +1258,62 @@ body {
     </div>
   </div>
 
+  <!-- ── PÁGINA: PLANO DO NEGÓCIO ── -->
+  <div class="page" id="page-plano">
+    <div class="container" style="max-width:1180px;">
+      <div class="g-head">
+        <div>
+          <h2>Plano do negócio</h2>
+          <p>O que fazer pra melhorar o negócio · suas tarefas e as da Mylene, por área</p>
+        </div>
+      </div>
+
+      <div class="block">
+        <div class="block-head"><div class="block-head-title">Nova tarefa</div></div>
+        <div class="block-body">
+          <div class="pn-add-row">
+            <div class="field pn-f-texto"><label for="pn-texto">O que fazer</label>
+              <input type="text" id="pn-texto" placeholder="Ex: gravar 3 reels sobre ADS da Shopee" onkeydown="if(event.key==='Enter')adicionarPlano()">
+            </div>
+            <div class="field pn-f-area"><label for="pn-area">Área</label><select id="pn-area"></select></div>
+          </div>
+          <div class="tf-sug" id="pn-sug" aria-label="Ideias rápidas"></div>
+          <div class="pn-add-row pn-add-opc">
+            <div class="pn-grupo"><span>Quem</span>
+              <div class="as-chips" id="pn-quem" role="group" aria-label="Quem faz">
+                <button class="as-chip on" data-v="Bruno" onclick="setPnChip('pn-quem','Bruno')">Bruno</button>
+                <button class="as-chip" data-v="Mylene" onclick="setPnChip('pn-quem','Mylene')">Mylene</button>
+              </div>
+            </div>
+            <div class="pn-grupo"><span>Prioridade</span>
+              <div class="as-chips" id="pn-prio" role="group" aria-label="Prioridade">
+                <button class="as-chip" data-v="alta" onclick="setPnChip('pn-prio','alta')">Alta</button>
+                <button class="as-chip on" data-v="media" onclick="setPnChip('pn-prio','media')">Média</button>
+                <button class="as-chip" data-v="baixa" onclick="setPnChip('pn-prio','baixa')">Baixa</button>
+              </div>
+            </div>
+            <div class="pn-grupo"><span>Prazo</span>
+              <input type="date" id="pn-prazo" class="as-busca tf-data" aria-label="Prazo (opcional)">
+            </div>
+            <button class="btn btn-amber tf-btn-add" onclick="adicionarPlano()">+ Adicionar</button>
+          </div>
+          <div class="aviso" id="pn-aviso"></div>
+        </div>
+      </div>
+
+      <div class="pn-filtros">
+        <div class="pn-grupo"><span>Mostrar</span>
+          <div class="as-chips" id="pn-f-quem" role="tablist" aria-label="Filtrar por pessoa"></div>
+        </div>
+        <div class="pn-grupo"><span>Área</span>
+          <div class="as-chips" id="pn-f-area" role="tablist" aria-label="Filtrar por área"></div>
+        </div>
+      </div>
+
+      <div id="pn-quadro"></div>
+    </div>
+  </div>
+
   <!-- ── PÁGINA: SAAS GESTÃO ── -->
   <div class="page" id="page-saas">
     <div class="container">
@@ -1483,6 +1585,31 @@ body {
   </div>
 </div>
 
+<!-- ══ MODAL: EDITAR TAREFA DO PLANO ═══════════════════════════ -->
+<div class="modal-overlay" id="modal-plano" onclick="if(event.target===this)fecharModalPlano()">
+  <div class="modal-box" style="max-width:480px;">
+    <div class="modal-title">Editar tarefa</div>
+    <div class="form-grid">
+      <div class="field"><label for="pe-texto">O que fazer</label><textarea id="pe-texto" rows="2"></textarea></div>
+      <div class="field-row">
+        <div class="field"><label for="pe-area">Área</label><select id="pe-area"></select></div>
+        <div class="field"><label for="pe-quem">Quem</label><select id="pe-quem"><option>Bruno</option><option>Mylene</option></select></div>
+      </div>
+      <div class="field-row-3">
+        <div class="field"><label for="pe-prio">Prioridade</label><select id="pe-prio"><option value="alta">Alta</option><option value="media">Média</option><option value="baixa">Baixa</option></select></div>
+        <div class="field"><label for="pe-status">Situação</label><select id="pe-status"><option value="afazer">A fazer</option><option value="fazendo">Fazendo</option><option value="feito">Feito</option></select></div>
+        <div class="field"><label for="pe-prazo">Prazo</label><input type="date" id="pe-prazo"></div>
+      </div>
+      <div class="field"><label for="pe-nota">Anotações (opcional)</label><textarea id="pe-nota" rows="3" placeholder="Links, ideias, passo a passo..."></textarea></div>
+    </div>
+    <div class="modal-actions">
+      <button class="btn btn-red" onclick="excluirPlano()" style="margin-right:auto;">Excluir</button>
+      <button class="btn btn-ghost" onclick="fecharModalPlano()">Cancelar</button>
+      <button class="btn btn-amber" onclick="salvarEdicaoPlano()">Salvar</button>
+    </div>
+  </div>
+</div>
+
 <!-- ══ MODAL: EDITAR TAREFA ════════════════════════════════════ -->
 <div class="modal-overlay" id="modal-tarefa" onclick="if(event.target===this)fecharModalTarefa()">
   <div class="modal-box" style="max-width:440px;">
@@ -1626,6 +1753,7 @@ const pageTitles = {
   saas:         ['SaaS Gestão', 'Assinantes do Acelera Shopee Gestão Financeira · Mercado Pago'],
   financeiro:   ['Visão Financeira', 'Consolidado de receitas e custos do ecossistema'],
   tarefas:      ['Tarefas', 'O que fazer em cada loja de assessoria, dia a dia'],
+  plano:        ['Plano do negócio', 'Criativos, conteúdo, curso, sistema · o que fazer pra crescer'],
 };
 
 function showPage(page) {
@@ -1641,6 +1769,7 @@ function showPage(page) {
   if (page === 'financeiro') calcFinanceiro();
   if (page === 'geral') renderGeral();
   if (page === 'tarefas') renderTarefas();
+  if (page === 'plano') renderPlano();
 }
 
 // ══════════════════════════════════════════════════════════════
@@ -2785,6 +2914,218 @@ function renderTarefas() {
 }
 
 // ══════════════════════════════════════════════════════════════
+// PLANO DO NEGÓCIO — tarefas gerais (Bruno e Mylene), não ligadas a loja.
+// Ficam em financeiro/plano/{id} (mesmo acesso do Financeiro: só a equipe logada)
+// ══════════════════════════════════════════════════════════════
+const PN_AREAS = ['Criativos', 'Conteúdo/Posts', 'Curso', 'Vendas', 'Tráfego', 'Sistema', 'Financeiro', 'Outros'];
+const PN_SUGESTOES = ['Fazer criativos novos', 'Gravar posts da semana', 'Melhorar o sistema do curso', 'Mudar hospedagem das aulas (taxa menor)', 'Responder comentários e direct', 'Revisar página de vendas'];
+const PN_COLS = [
+  { id:'afazer',  nome:'A fazer', cor:'var(--muted)' },
+  { id:'fazendo', nome:'Fazendo', cor:'var(--amber)' },
+  { id:'feito',   nome:'Feito',   cor:'var(--green)' },
+];
+const PN_PRIO = { alta:'Alta', media:'Média', baixa:'Baixa' };
+const PN_INICIAIS = [
+  ['Fazer criativos novos sem promessas pro Meta Ads', 'Criativos', 'alta'],
+  ['Gravar os posts/reels da semana', 'Conteúdo/Posts', 'media'],
+  ['Melhorar a área do curso (módulos, materiais, organização)', 'Curso', 'media'],
+  ['Mudar a hospedagem das aulas pra pagar menos taxa — testar Cakto (cadastro, pixel, compra de R$ 5)', 'Curso', 'alta'],
+  ['Refazer a página /sv sem promessas', 'Vendas', 'alta'],
+  ['Vincular Página/pixel e criar campanha pequena na Robotics Guide', 'Tráfego', 'alta'],
+  ['Pedir reembolso do saldo R$ 1.212,70 no Meta (formulário + extrato C6)', 'Financeiro', 'alta'],
+  ['Corrigir o preço no ManyChat para R$ 79', 'Vendas', 'media'],
+  ['Liberar o e-mail da Mylene no hub', 'Sistema', 'media'],
+  ['Afiliados / TikTok em paralelo', 'Vendas', 'baixa'],
+];
+let planoItens = {};
+let planoCarregado = false;
+let pnFQuem = 'Bruno', pnFArea = '', pnVerFeitos = false, pnEditId = null;
+
+async function carregarPlano() {
+  try {
+    const r = await fetch(`${DB}/financeiro/plano.json`);
+    planoItens = r.ok ? ((await r.json()) || {}) : {};
+    planoCarregado = r.ok;
+  } catch(e) { planoItens = {}; planoCarregado = false; }
+  renderPlano();
+}
+async function gravarPlano(id, dados, metodo) {
+  const r = await fetch(`${DB}/financeiro/plano/${id}.json`, {
+    method: metodo, headers: {'Content-Type':'application/json'}, body: dados ? JSON.stringify(dados) : undefined });
+  if (!r.ok) throw new Error('HTTP ' + r.status);
+}
+const novoIdPlano = () => Date.now().toString(36) + Math.random().toString(36).slice(2, 6);
+
+function setPnChip(grupo, v) {
+  document.querySelectorAll(`#${grupo} .as-chip`).forEach(b => b.classList.toggle('on', b.dataset.v === v));
+}
+const pnChip = grupo => document.querySelector(`#${grupo} .as-chip.on`)?.dataset.v;
+function setPnFiltro(tipo, v) { if (tipo === 'quem') pnFQuem = v; else pnFArea = v; renderPlano(); }
+function avisoPn(txt, tipo) {
+  const el = document.getElementById('pn-aviso');
+  el.textContent = txt; el.className = 'aviso ' + tipo; el.style.display = 'block';
+  clearTimeout(avisoPn.t); avisoPn.t = setTimeout(() => el.style.display = 'none', 3500);
+}
+function usarSugestaoPn(i) { const el = document.getElementById('pn-texto'); el.value = PN_SUGESTOES[i]; el.focus(); }
+
+async function adicionarPlano() {
+  const texto = document.getElementById('pn-texto').value.trim();
+  if (!texto) { avisoPn('Escreva o que precisa ser feito.', 'erro'); document.getElementById('pn-texto').focus(); return; }
+  const t = { texto, area: document.getElementById('pn-area').value, quem: pnChip('pn-quem') || 'Bruno',
+    prioridade: pnChip('pn-prio') || 'media', prazo: document.getElementById('pn-prazo').value || '',
+    status: 'afazer', criadaEm: Date.now(), criadaPor: quemSou() };
+  const id = novoIdPlano();
+  try { await gravarPlano(id, t, 'PUT'); }
+  catch(e) { avisoPn('Não consegui salvar. Confira a internet e o login.', 'erro'); return; }
+  planoItens[id] = t;
+  document.getElementById('pn-texto').value = '';
+  document.getElementById('pn-prazo').value = '';
+  document.getElementById('pn-texto').focus();
+  avisoPn(`Tarefa adicionada para ${t.quem}.`, 'ok');
+  renderPlano();
+}
+
+async function carregarIniciaisPlano() {
+  const lote = {};
+  PN_INICIAIS.forEach(([texto, area, prioridade], i) => {
+    lote[novoIdPlano() + i] = { texto, area, prioridade, quem: 'Bruno', prazo: '', status: 'afazer', criadaEm: Date.now() + i, criadaPor: quemSou() };
+  });
+  try {
+    const r = await fetch(`${DB}/financeiro/plano.json`, { method:'PATCH', headers:{'Content-Type':'application/json'}, body: JSON.stringify(lote) });
+    if (!r.ok) throw new Error();
+  } catch(e) { alert('Não consegui salvar. Confira a internet e o login.'); return; }
+  Object.assign(planoItens, lote);
+  renderPlano();
+}
+
+async function alterarPlano(id, mud) {
+  const t = planoItens[id]; if (!t) return;
+  const antes = { ...t };
+  Object.assign(t, mud);
+  renderPlano();
+  try { await gravarPlano(id, mud, 'PATCH'); }
+  catch(e) { planoItens[id] = antes; renderPlano(); alert('Não consegui salvar a alteração. Tente de novo.'); }
+}
+function statusPlano(id, status) {
+  alterarPlano(id, status === 'feito'
+    ? { status, feitaEm: Date.now(), feitaPor: quemSou() }
+    : { status, feitaEm: null, feitaPor: null });
+}
+function marcarPlano(id) { statusPlano(id, planoItens[id]?.status === 'feito' ? 'afazer' : 'feito'); }
+
+function abrirModalPlano(id) {
+  const t = planoItens[id]; if (!t) return;
+  pnEditId = id;
+  document.getElementById('pe-area').innerHTML = PN_AREAS.map(a => `<option>${esc(a)}</option>`).join('');
+  document.getElementById('pe-texto').value = t.texto || '';
+  document.getElementById('pe-area').value = PN_AREAS.includes(t.area) ? t.area : 'Outros';
+  document.getElementById('pe-quem').value = t.quem || 'Bruno';
+  document.getElementById('pe-prio').value = t.prioridade || 'media';
+  document.getElementById('pe-status').value = t.status || 'afazer';
+  document.getElementById('pe-prazo').value = t.prazo || '';
+  document.getElementById('pe-nota').value = t.nota || '';
+  document.getElementById('modal-plano').classList.add('open');
+}
+function fecharModalPlano() { document.getElementById('modal-plano').classList.remove('open'); pnEditId = null; }
+function salvarEdicaoPlano() {
+  if (!pnEditId) return;
+  const id = pnEditId, t = planoItens[id];
+  const texto = document.getElementById('pe-texto').value.trim();
+  if (!texto) { alert('Escreva o que precisa ser feito.'); return; }
+  const status = document.getElementById('pe-status').value;
+  const mud = { texto, area: document.getElementById('pe-area').value, quem: document.getElementById('pe-quem').value,
+    prioridade: document.getElementById('pe-prio').value, prazo: document.getElementById('pe-prazo').value || '',
+    nota: document.getElementById('pe-nota').value.trim(), status };
+  if (status !== t.status) Object.assign(mud, status === 'feito' ? { feitaEm: Date.now(), feitaPor: quemSou() } : { feitaEm: null, feitaPor: null });
+  fecharModalPlano();
+  alterarPlano(id, mud);
+}
+async function excluirPlano() {
+  if (!pnEditId || !confirm('Excluir esta tarefa?')) return;
+  const id = pnEditId;
+  try { await gravarPlano(id, null, 'DELETE'); }
+  catch(e) { alert('Não consegui excluir. Tente de novo.'); return; }
+  delete planoItens[id];
+  fecharModalPlano();
+  renderPlano();
+}
+
+function cardPlanoHtml(t) {
+  const hoje = dataLocalHoje();
+  const I = esc(t.id), st = t.status || 'afazer';
+  const tags = [];
+  if (st !== 'feito') tags.push(`<span class="pn-tag ${esc(t.prioridade || 'media')}">${PN_PRIO[t.prioridade] || 'Média'}</span>`);
+  tags.push(`<span class="pn-tag">${esc(t.area || 'Outros')}</span>`);
+  if (pnFQuem === 'todos') tags.push(`<span class="pn-tag quem">${esc(t.quem || 'Bruno')}</span>`);
+  if (t.prazo && st !== 'feito') tags.push(t.prazo < hoje
+    ? `<span class="pn-tag atr">Atrasada · ${fmtDiaCurto(t.prazo)}</span>`
+    : `<span class="pn-tag">até ${t.prazo === hoje ? 'hoje' : fmtDiaCurto(t.prazo)}</span>`);
+  if (st === 'feito' && t.feitaEm) tags.push(`<span class="pn-tag">feita ${new Date(t.feitaEm).toLocaleDateString('pt-BR', {day:'2-digit', month:'2-digit'})}</span>`);
+  const mover = st === 'afazer' ? `<button onclick="statusPlano('${I}','fazendo')">▶ Começar</button>`
+              : st === 'fazendo' ? `<button onclick="statusPlano('${I}','afazer')">⏸ Voltar</button>` : '';
+  return `<div class="pn-card ${esc(st)}${st !== 'feito' && t.prioridade === 'alta' ? ' alta' : ''}">
+    <button class="tf-check" onclick="marcarPlano('${I}')" aria-label="${st === 'feito' ? 'Desmarcar' : 'Marcar como feita'}" title="${st === 'feito' ? 'Desmarcar' : 'Marcar como feita'}">
+      <svg viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></button>
+    <div class="pn-corpo">
+      <div class="pn-txt">${esc(t.texto)}</div>
+      ${t.nota ? `<div class="pn-nota">${esc(t.nota)}</div>` : ''}
+      <div class="pn-tags">${tags.join('')}</div>
+      <div class="pn-acoes">${mover}<button onclick="abrirModalPlano('${I}')">✎ Editar</button></div>
+    </div>
+  </div>`;
+}
+
+function renderPlano() {
+  const quadro = document.getElementById('pn-quadro');
+  if (!quadro) return;
+  const hoje = dataLocalHoje();
+  const todos = Object.entries(planoItens).filter(([, t]) => t && t.texto).map(([id, t]) => ({ ...t, id }));
+
+  // Badge do menu: tarefas de prioridade alta do Bruno ainda abertas
+  const nb = document.getElementById('nb-plano');
+  const urg = todos.filter(t => t.status !== 'feito' && (t.quem || 'Bruno') === 'Bruno' && (t.prioridade === 'alta' || (t.prazo && t.prazo < hoje))).length;
+  nb.textContent = urg; nb.style.display = urg ? '' : 'none';
+
+  // Formulário (monta uma vez)
+  const selA = document.getElementById('pn-area');
+  if (!selA.options.length) selA.innerHTML = PN_AREAS.map(a => `<option>${esc(a)}</option>`).join('');
+  const sug = document.getElementById('pn-sug');
+  if (!sug.children.length) sug.innerHTML = PN_SUGESTOES.map((s, i) => `<button type="button" onclick="usarSugestaoPn(${i})">${esc(s)}</button>`).join('');
+
+  // Filtros
+  const abertas = q => todos.filter(t => t.status !== 'feito' && (q === 'todos' || (t.quem || 'Bruno') === q)).length;
+  document.getElementById('pn-f-quem').innerHTML = [['Bruno','Minhas'], ['Mylene','Mylene'], ['todos','Todos']].map(([v, n]) =>
+    `<button class="as-chip${pnFQuem === v ? ' on' : ''}" onclick="setPnFiltro('quem','${v}')">${n} <b>${abertas(v)}</b></button>`).join('');
+  document.getElementById('pn-f-area').innerHTML = [['', 'Todas'], ...PN_AREAS.map(a => [a, a])].map(([v, n]) =>
+    `<button class="as-chip${pnFArea === v ? ' on' : ''}" onclick="setPnFiltro('area','${esc(v)}')">${esc(n)}</button>`).join('');
+
+  if (!todos.length) {
+    quadro.innerHTML = `<div class="block"><div class="empty-state" style="padding:40px 20px;"><div class="icon">⭐</div>
+      <p>${planoCarregado ? 'Nenhuma tarefa no plano ainda.<br>Adicione acima ou comece com uma lista de ideias pronta.' : 'Entre com o login Google (no topo) para ver o plano.'}</p>
+      ${planoCarregado ? '<button class="btn btn-amber" style="margin-top:14px" onclick="carregarIniciaisPlano()">Carregar ideias iniciais</button>' : ''}</div></div>`;
+    return;
+  }
+
+  const vis = todos.filter(t => (pnFQuem === 'todos' || (t.quem || 'Bruno') === pnFQuem) && (!pnFArea || t.area === pnFArea));
+  const pesoP = { alta:0, media:1, baixa:2 };
+  const ord = (a, b) => (pesoP[a.prioridade] ?? 1) - (pesoP[b.prioridade] ?? 1)
+    || (a.prazo || '9999').localeCompare(b.prazo || '9999') || (a.criadaEm || 0) - (b.criadaEm || 0);
+  quadro.innerHTML = `<div class="pn-cols">${PN_COLS.map(c => {
+    let itens = vis.filter(t => (t.status || 'afazer') === c.id);
+    itens.sort(c.id === 'feito' ? (a, b) => (b.feitaEm || 0) - (a.feitaEm || 0) : ord);
+    const total = itens.length;
+    if (c.id === 'feito' && !pnVerFeitos) itens = itens.slice(0, 8);
+    return `<div class="pn-col">
+      <div class="pn-col-head"><span><span class="pn-dot" style="background:${c.cor}"></span>${c.nome}</span><small>${total}</small></div>
+      <div class="pn-col-body">
+        ${itens.length ? itens.map(cardPlanoHtml).join('') : `<div class="pn-vazio">${c.id === 'fazendo' ? 'Clique em "▶ Começar" numa tarefa' : c.id === 'feito' ? 'Nada concluído ainda' : 'Nada a fazer aqui 🎉'}</div>`}
+        ${c.id === 'feito' && total > 8 ? `<button class="pn-mais" onclick="pnVerFeitos=!pnVerFeitos;renderPlano()">${pnVerFeitos ? 'Mostrar menos' : `Ver todas (${total})`}</button>` : ''}
+      </div>
+    </div>`;
+  }).join('')}</div>`;
+}
+
+// ══════════════════════════════════════════════════════════════
 // SAAS GESTÃO — Firestore do shopee-relatorio (licenças via webhook MP)
 // ══════════════════════════════════════════════════════════════
 const SAAS_ADMIN = 'brunoferrack@gmail.com';
@@ -3707,6 +4048,7 @@ dbAuth.onAuthStateChanged(user => {
   carregarSlots();
   carregarAssessorias();
   carregarFinanceiroManual();
+  carregarPlano();
   if (!assessTimer) assessTimer = setInterval(carregarAssessorias, 15000);
 });
 
